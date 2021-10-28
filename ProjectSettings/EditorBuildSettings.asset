@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Wook/Scene/Test/TestMove.unity
+    guid: afa162854d820a248a432d1c971b60e4
   m_configObjects: {}
