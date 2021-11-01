@@ -72,7 +72,6 @@ public class TestPlayer : MonoBehaviour
             ani.SetBool("WalkFront", false);
             ani.SetBool("WalkBack", false);
             isRun = false;
-
         }
         ani.SetBool("Run", isRun);
         if (Input.GetKey(KeyCode.A))
