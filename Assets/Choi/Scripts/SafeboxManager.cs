@@ -4,12 +4,24 @@ using UnityEngine;
 
 public class SafeboxManager : MonoBehaviour
 {
+    MeshRenderer meshRenderer;
+    GameObject piece;
+    Material material;
+
     [SerializeField] List<Material> origin; // 텍스쳐를 저장할 list
+    public List<Material> Origin { get { return origin; } }
+
     [SerializeField] List<int> correct; // 정답을 저장
     [SerializeField] List<int> safeboxA;
+    public List<int> SafeboxA { get { return safeboxA; } }
+
     [SerializeField] List<int> safeboxB;
+    public List<int> SafeboxB { get { return safeboxB; } }
 
     List<int> arr;  // correct에 값을 부여할 때 사용할 때 사용
+
+    [SerializeField] GameObject safeboxObjectA;
+    [SerializeField] GameObject safeboxObjectB;
 
     private void Awake()
     {
@@ -20,6 +32,7 @@ public class SafeboxManager : MonoBehaviour
     private void Start()
     {
         SetCorrect();
+        SetSafeboxFromCorrect();
     }
 
     private void SetArrFromOrigin()
@@ -120,5 +133,27 @@ public class SafeboxManager : MonoBehaviour
             // 값을 교체한다.
             safe[idx] = temp;
         }
+    }
+
+
+    public void SetMaterial()
+    {
+        for (int i = 0; i < origin.Count; i++)
+        {
+            //
+            piece = safeboxObjectA.transform.GetChild(i).gameObject;
+            meshRenderer = piece.GetComponent<MeshRenderer>();
+
+            material = origin[safeboxA[i]];
+            meshRenderer.material = material;
+            
+            //
+            piece = safeboxObjectB.transform.GetChild(i).gameObject;
+            meshRenderer = piece.GetComponent<MeshRenderer>();
+
+            material = origin[safeboxB[i]];
+            meshRenderer.material = material;
+            
+        }        
     }
 }
