@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class SafeboxManager : MonoBehaviour
 {
-    MeshRenderer meshRenderer;
-    GameObject piece;
-    Material material;
+    MeshRenderer meshRenderer; // 머터리얼을 갈아끼울 때 사용할 메쉬렌더러
+    GameObject piece; // piece = cube 1조각을 의미한다
+    Material material; // 교체할 머터리얼의 정보를 잠깐 저장
 
     [SerializeField] List<Material> origin; // 텍스쳐를 저장할 list
     public List<Material> Origin { get { return origin; } }
@@ -21,8 +21,8 @@ public class SafeboxManager : MonoBehaviour
 
     List<int> arr;  // correct에 값을 부여할 때 사용할 때 사용
 
-    [SerializeField] GameObject safeboxObjectA;
-    [SerializeField] GameObject safeboxObjectB;
+    [SerializeField] GameObject safeboxObjectA; // 금고 A의 부모 오브젝트
+    [SerializeField] GameObject safeboxObjectB; // 금고 B의 부모 오브젝트
 
 
     private void Awake()
@@ -39,11 +39,12 @@ public class SafeboxManager : MonoBehaviour
 
     public bool IsMatch(int index, List<int> box)
     {
-        if(correct[index] == box[index])
+        // 만약 인덱스의 값이 같다면 = 정답 = 접근불가능(false)
+        if (correct[index] == box[index])
         {
-            return true;
+            return false;
         }
-        else return false;
+        else return true;
     }
 
     private void SetArrFromOrigin()
@@ -151,20 +152,29 @@ public class SafeboxManager : MonoBehaviour
     {
         for (int i = 0; i < origin.Count; i++)
         {
-            //
+            // Safebox 오브젝트 A의 자식 = 큐브 1조각을 piece에 할당한다
             piece = safeboxObjectA.transform.GetChild(i).gameObject;
+            // 그 piece를 통해 변경할때 사용할 meshRendere도 할당한다
             meshRenderer = piece.GetComponent<MeshRenderer>();
 
+            // 변경할 머터리얼을 origin에서 가져온다
+            // safeboxA[i]가 텍스쳐를 불러올 인덱스 값이다
             material = origin[safeboxA[i]];
+            // 머터리얼을 적용한다.
             meshRenderer.material = material;
-            
-            //
+
+            /* 아래 또한 주체만 다르고 같은 일이다 */
+
+            // Safebox 오브젝트 B의 자식 = 큐브 1조각을 piece에 할당한다
             piece = safeboxObjectB.transform.GetChild(i).gameObject;
+            // 그 piece를 통해 변경할때 사용할 meshRendere도 할당한다
             meshRenderer = piece.GetComponent<MeshRenderer>();
 
+            // 변경할 머터리얼을 origin에서 가져온다
+            // safeboxB[i]가 텍스쳐를 불러올 인덱스 값이다
             material = origin[safeboxB[i]];
-            meshRenderer.material = material;
-            
+            // 머터리얼을 적용한다.
+            meshRenderer.material = material;            
         }        
     }
 }
