@@ -22,7 +22,11 @@ public class SafeboxManager : MonoBehaviour
     List<int> arr;  // correct에 값을 부여할 때 사용할 때 사용
 
     [SerializeField] GameObject safeboxObjectA; // 금고 A의 부모 오브젝트
+    public GameObject SafeboxObjectA { get { return safeboxObjectA; } }
+
     [SerializeField] GameObject safeboxObjectB; // 금고 B의 부모 오브젝트
+    public GameObject SafeboxObjectB { get { return safeboxObjectB; } }
+
 
 
     private void Awake()
@@ -33,8 +37,9 @@ public class SafeboxManager : MonoBehaviour
 
     private void Start()
     {
-        SetCorrect();
-        SetSafeboxFromCorrect();
+        //SetCorrect();
+        //SetSafeboxFromCorrect();
+        //SetMaterial();
     }
 
     public bool IsMatch(int index, List<int> box)

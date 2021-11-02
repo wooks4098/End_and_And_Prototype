@@ -4,41 +4,52 @@ using UnityEngine;
 
 public class SelectManager : MonoBehaviour
 {
-    int currentIndex = 0;
-    GameObject currentPiece = null;
+    // index 0번 = 금고 A
+    // index 1번 = 금고 B
+    [SerializeField] int[] currentIndex;
+    [SerializeField] GameObject currentPiece = null;
 
     [SerializeField] SafeboxManager safeboxManager;
 
     // safeboxA 혹은 B의 값을 값을 복사해올 컨테이너
     [SerializeField] List<int> safeboxList;
     // 접근할 수 있는지를 체크하는 list
-    [SerializeField] List<bool> availableList; // true = 접근 가능, false = 접근 불가능  
+    // true = 접근 가능, false = 접근 불가능  
+    [SerializeField] List<bool> availableList; 
 
 
     private void Awake()
     {
         availableList = new List<bool>();
+        currentIndex = new int[2];
     }
 
     private void Start()
     {
+        currentIndex[0] = 0;
+        currentIndex[1] = 0;
+
         // 걸어둔 Tag로 어떤 금고인지 구분한다.
         if (gameObject.CompareTag("SafeBoxA"))
         {
             safeboxList = safeboxManager.SafeboxA;
+            currentPiece = transform.GetChild(currentIndex[0]).gameObject;
         }            
         else if (gameObject.CompareTag("SafeBoxB"))
         {
             safeboxList = safeboxManager.SafeboxB;
+            currentPiece = transform.GetChild(currentIndex[1]).gameObject;
         }
     }
 
     private void Update()
     {
-        CheckAvailable();
+        //CheckAvailable();
+
+        SelectInputKey();
     }
 
-    private void CheckAvailable()
+    public void CheckAvailable()
     {
         availableList.Clear();
 
@@ -47,5 +58,72 @@ public class SelectManager : MonoBehaviour
             // 일치하는지 검사한 결과가 availableList에 추가된다. (true or false)
             availableList.Add(safeboxManager.IsMatch(i, safeboxList));
         }
+    }
+
+    void SelectInputKey()
+    {
+        // 위쪽
+        if(Input.GetKeyDown(KeyCode.W))
+        {            
+        }
+        else if(Input.GetKeyDown(KeyCode.UpArrow))
+        {
+
+        }
+
+        // 왼쪽
+        if(Input.GetKeyDown(KeyCode.A))
+        {
+            MoveOnPrev(0);
+        }
+        else if(Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            MoveOnPrev(1);
+        }
+
+        // 아래쪽
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            
+        }
+        else if(Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            
+        }
+
+        // 오른쪽
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            MoveOnNext(0);
+        }
+        else if(Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            MoveOnNext(1);
+        }
+    }
+
+    // index 0 = 금고 A / index 1 = 금고 B
+    private void MoveOnPrev(int index)
+    {
+        currentPiece.GetComponent<Outline>().enabled = false;
+        currentIndex[index]--;
+        if (currentIndex[index] < 0)
+        {
+            currentIndex[index] = 7;
+        }
+        currentPiece = transform.GetChild(currentIndex[index]).gameObject;
+        currentPiece.GetComponent<Outline>().enabled = true;
+    }
+
+    private void MoveOnNext(int index)
+    {
+        currentPiece.GetComponent<Outline>().enabled = false;
+        currentIndex[index]++;
+        if (currentIndex[index] > 7)
+        {
+            currentIndex[index] = 0;
+        }
+        currentPiece = transform.GetChild(currentIndex[index]).gameObject;
+        currentPiece.GetComponent<Outline>().enabled = true;
     }
 }
