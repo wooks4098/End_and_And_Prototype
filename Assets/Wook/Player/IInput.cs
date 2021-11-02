@@ -5,6 +5,7 @@ public enum MoveType
 {
     Front = 0,
     Back,
+    Stay,
     LeftTurn,
     RightTrun,
     Run,
