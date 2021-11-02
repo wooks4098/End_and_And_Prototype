@@ -7,7 +7,7 @@ public class SelectManager : MonoBehaviour
     // index 0번 = 금고 A
     // index 1번 = 금고 B
     [SerializeField] int[] currentIndex;
-    [SerializeField] GameObject currentPiece = null;
+    [SerializeField] GameObject[] currentPiece = null;
 
     [SerializeField] SafeboxManager safeboxManager;
 
@@ -22,6 +22,7 @@ public class SelectManager : MonoBehaviour
     {
         availableList = new List<bool>();
         currentIndex = new int[2];
+        currentPiece = new GameObject[2];
     }
 
     private void Start()
@@ -33,12 +34,12 @@ public class SelectManager : MonoBehaviour
         if (gameObject.CompareTag("SafeBoxA"))
         {
             safeboxList = safeboxManager.SafeboxA;
-            currentPiece = transform.GetChild(currentIndex[0]).gameObject;
+            currentPiece[0] = transform.GetChild(currentIndex[0]).gameObject;
         }            
         else if (gameObject.CompareTag("SafeBoxB"))
         {
             safeboxList = safeboxManager.SafeboxB;
-            currentPiece = transform.GetChild(currentIndex[1]).gameObject;
+            currentPiece[1] = transform.GetChild(currentIndex[1]).gameObject;
         }
     }
 
@@ -105,25 +106,30 @@ public class SelectManager : MonoBehaviour
     // index 0 = 금고 A / index 1 = 금고 B
     private void MoveOnPrev(int index)
     {
-        currentPiece.GetComponent<Outline>().enabled = false;
+        if (currentPiece[index] == null) return;
+
+        currentPiece[index].GetComponent<Outline>().enabled = false;
         currentIndex[index]--;
         if (currentIndex[index] < 0)
         {
             currentIndex[index] = 7;
         }
-        currentPiece = transform.GetChild(currentIndex[index]).gameObject;
-        currentPiece.GetComponent<Outline>().enabled = true;
+
+        currentPiece[index] = transform.GetChild(currentIndex[index]).gameObject;
+        currentPiece[index].GetComponent<Outline>().enabled = true;
     }
 
     private void MoveOnNext(int index)
     {
-        currentPiece.GetComponent<Outline>().enabled = false;
+        if (currentPiece[index] == null) return;
+
+        currentPiece[index].GetComponent<Outline>().enabled = false;
         currentIndex[index]++;
         if (currentIndex[index] > 7)
         {
             currentIndex[index] = 0;
         }
-        currentPiece = transform.GetChild(currentIndex[index]).gameObject;
-        currentPiece.GetComponent<Outline>().enabled = true;
+        currentPiece[index] = transform.GetChild(currentIndex[index]).gameObject;
+        currentPiece[index].GetComponent<Outline>().enabled = true;
     }
 }
