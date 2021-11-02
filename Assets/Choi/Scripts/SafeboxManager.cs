@@ -12,6 +12,7 @@ public class SafeboxManager : MonoBehaviour
     public List<Material> Origin { get { return origin; } }
 
     [SerializeField] List<int> correct; // 정답을 저장
+
     [SerializeField] List<int> safeboxA;
     public List<int> SafeboxA { get { return safeboxA; } }
 
@@ -23,6 +24,7 @@ public class SafeboxManager : MonoBehaviour
     [SerializeField] GameObject safeboxObjectA;
     [SerializeField] GameObject safeboxObjectB;
 
+
     private void Awake()
     {
         correct = new List<int>();
@@ -33,6 +35,15 @@ public class SafeboxManager : MonoBehaviour
     {
         SetCorrect();
         SetSafeboxFromCorrect();
+    }
+
+    public bool IsMatch(int index, List<int> box)
+    {
+        if(correct[index] == box[index])
+        {
+            return true;
+        }
+        else return false;
     }
 
     private void SetArrFromOrigin()
