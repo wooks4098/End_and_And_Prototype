@@ -80,7 +80,7 @@ public class PlayerInput : MonoBehaviour, IInput
         {
             if (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.RightShift))
                 OnRun?.Invoke(true);
-            else
+            else if(!(Input.GetKey(KeyCode.RightControl)) && !(Input.GetKey(KeyCode.RightShift)))
                 OnRun?.Invoke(false);
         }
     }
