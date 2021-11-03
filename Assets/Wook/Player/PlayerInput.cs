@@ -44,8 +44,6 @@ public class PlayerInput : MonoBehaviour, IInput
             else
                 OnMove?.Invoke(MoveType.Stay);
         }
-       
-
     }
 
     void RotationInput()
