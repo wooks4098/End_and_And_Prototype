@@ -69,10 +69,7 @@ public class PlayerInput : MonoBehaviour, IInput
     {
         if (playerType == PlayerType.FirstPlayer)
         {
-            if (Input.GetKey(KeyCode.LeftShift))
-                OnRun?.Invoke(true);
-            else
-                OnRun?.Invoke(false);
+            OnRun?.Invoke(Input.GetKey(KeyCode.LeftShift));
         }
         else if (playerType == PlayerType.SecondPlayer)
         {
