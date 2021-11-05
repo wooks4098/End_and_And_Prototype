@@ -183,8 +183,24 @@ public class SafeboxManager : MonoBehaviour
     }
 
 
-    public void CheckAllCorrect()
+    public bool CheckAllCorrect(List<int> list)
     {
-        
+        bool same;
+
+        for(int i = 0; i < correct.Count; i++)
+        {
+            if (list[i] == correct[i]) continue;
+            else
+            {
+                same = false;
+                Debug.Log(same);
+
+                return same;
+            }
+        }
+        same = true;
+        Debug.Log(same);
+
+        return same;
     }
 }

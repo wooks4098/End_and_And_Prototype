@@ -937,7 +937,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 434225583}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47173ea7ae475c14eaf0fde40d8c95d9, type: 3}
+  m_Script: {fileID: 11500000, guid: d4e1fbda359a390429ae06b0ba9de3ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   currentIndex: 0
@@ -1474,7 +1474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &929087851
 Camera:
   m_ObjectHideFlags: 0
@@ -1496,12 +1496,12 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 2.09
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
@@ -1549,7 +1549,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &963194226
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1767,12 +1767,12 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 0.5
+    width: 1
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
@@ -2604,7 +2604,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 434225585}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SelectManager, Assembly-CSharp
         m_MethodName: CheckAvailable
         m_Mode: 1

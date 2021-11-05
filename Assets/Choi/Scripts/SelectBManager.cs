@@ -61,6 +61,8 @@ public class SelectBManager : BaseSelectManager
 
             // SetMaterial() ¿ª »£√‚
             safeboxManager.SetMaterial();
+
+            safeboxManager.CheckAllCorrect(safeboxManager.SafeboxB);
         }
     }
 }
