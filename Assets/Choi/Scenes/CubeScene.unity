@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 3
-  outlineColor: {r: 0, g: 1, b: 1, a: 0.3529412}
+  outlineColor: {r: 1, g: 0, b: 0.12319422, a: 0.3529412}
   outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []
@@ -574,7 +574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 3
-  outlineColor: {r: 0, g: 1, b: 1, a: 0.3529412}
+  outlineColor: {r: 1, g: 0, b: 0.12319422, a: 0.3529412}
   outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []
@@ -941,7 +941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentIndex: 
-  currentPiece: {fileID: 0}
+  currentPiece: []
   safeboxManager: {fileID: 1905989981}
   safeboxList: 
   availableList: 
@@ -1054,7 +1054,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 3
-  outlineColor: {r: 0, g: 1, b: 1, a: 0.3529412}
+  outlineColor: {r: 1, g: 0, b: 0.12319422, a: 0.3529412}
   outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []
@@ -1475,7 +1475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &929087851
 Camera:
   m_ObjectHideFlags: 0
@@ -1610,7 +1610,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 8.36, y: 1, z: 0}
+  m_LocalPosition: {x: 5.94, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1725,7 +1725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 3
-  outlineColor: {r: 0, g: 1, b: 1, a: 0.3529412}
+  outlineColor: {r: 1, g: 0, b: 0.12319422, a: 0.3529412}
   outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []
@@ -1746,7 +1746,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &1238428598
 Camera:
   m_ObjectHideFlags: 0
@@ -1970,7 +1970,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentIndex: 
-  currentPiece: {fileID: 0}
+  currentPiece: []
   safeboxManager: {fileID: 1905989981}
   safeboxList: 
   availableList: 
@@ -2083,7 +2083,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 3
-  outlineColor: {r: 0, g: 1, b: 1, a: 0.3529412}
+  outlineColor: {r: 1, g: 0, b: 0.12319422, a: 0.3529412}
   outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []
@@ -2197,7 +2197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 3
-  outlineColor: {r: 0, g: 1, b: 1, a: 0.3529412}
+  outlineColor: {r: 1, g: 0, b: 0.12319422, a: 0.3529412}
   outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []
@@ -2819,7 +2819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 3
-  outlineColor: {r: 0, g: 1, b: 1, a: 0.3529412}
+  outlineColor: {r: 1, g: 0, b: 0.12319422, a: 0.3529412}
   outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []
@@ -2933,7 +2933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 3
-  outlineColor: {r: 0, g: 1, b: 1, a: 0.3529412}
+  outlineColor: {r: 1, g: 0, b: 0.12319422, a: 0.3529412}
   outlineWidth: 10
   precomputeOutline: 0
   bakeKeys: []

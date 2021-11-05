@@ -63,15 +63,6 @@ public class SelectManager : MonoBehaviour
 
     void SelectInputKey()
     {
-        // 위쪽
-        if(Input.GetKeyDown(KeyCode.W))
-        {            
-        }
-        else if(Input.GetKeyDown(KeyCode.UpArrow))
-        {
-
-        }
-
         // 왼쪽
         if(Input.GetKeyDown(KeyCode.A))
         {
@@ -80,16 +71,6 @@ public class SelectManager : MonoBehaviour
         else if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
             MoveOnPrev(1);
-        }
-
-        // 아래쪽
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            
-        }
-        else if(Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            
         }
 
         // 오른쪽
