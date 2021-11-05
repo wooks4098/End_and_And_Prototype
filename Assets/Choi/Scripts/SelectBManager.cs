@@ -32,13 +32,13 @@ public class SelectBManager : BaseSelectManager
         // 왼쪽
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            MoveOnPrev(1);
+            MoveOnPrev();
         }
     
         // 오른쪽
         if(Input.GetKeyDown(KeyCode.RightArrow))
         {
-            MoveOnNext(1);
+            MoveOnNext();
         }
     }
 

@@ -31,13 +31,13 @@ public class SelectAManager : BaseSelectManager
         // 왼쪽
         if(Input.GetKeyDown(KeyCode.A))
         {
-            MoveOnPrev(0);
+            MoveOnPrev();
         }
     
         // 오른쪽
         if (Input.GetKeyDown(KeyCode.D))
         {
-            MoveOnNext(0);
+            MoveOnNext();
         }
     }
 

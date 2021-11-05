@@ -27,10 +27,15 @@ public abstract class BaseSelectManager : MonoBehaviour
         InputSelectKey();
     }
 
+    public void SetStartIndex()
+    {
+        MoveOnNext();
+    }
+
     public abstract void CheckAvailable();
     protected abstract void InputMoveKey();
 
-    protected void MoveOnPrev(int index)
+    protected void MoveOnPrev()
     {
         if (currentPiece == null) return;
 
@@ -39,13 +44,9 @@ public abstract class BaseSelectManager : MonoBehaviour
 
         // 현재 인덱스를 감소시킨다
         // 왼쪽으로 이동 = 인덱스 1만큼 감소
-        currentIndex--;
+        //currentIndex--;
+        CalculateMoveOnPrev();
 
-        // 범위를 벗어났을 경우를 대비한 예외처리
-        if (currentIndex < 0)
-        {
-            currentIndex = safeboxManager.Origin.Count - 1;
-        }
 
         // 현재 piece를 변경한 인덱스의 것으로 교체한다.
         currentPiece = transform.GetChild(currentIndex).gameObject;
@@ -54,7 +55,7 @@ public abstract class BaseSelectManager : MonoBehaviour
         currentPiece.GetComponent<Outline>().enabled = true;
     }
 
-    protected void MoveOnNext(int index)
+    protected void MoveOnNext()
     {
         if (currentPiece == null) return;
 
@@ -63,13 +64,9 @@ public abstract class BaseSelectManager : MonoBehaviour
 
         // 현재 인덱스를 증가시킨다
         // 오른쪽으로 이동 = 인덱스 1만큼 증가
-        currentIndex++;
+        //currentIndex++;
+        CalculateMoveOnNext();
 
-        // 범위를 벗어났을 경우를 대비한 예외처리
-        if (currentIndex > safeboxManager.Origin.Count - 1)
-        {
-            currentIndex = 0;
-        }
 
         // 현재 piece를 변경한 인덱스의 것으로 교체한다.
         currentPiece = transform.GetChild(currentIndex).gameObject;
@@ -80,4 +77,40 @@ public abstract class BaseSelectManager : MonoBehaviour
 
     protected abstract void InputSelectKey();
 
+    protected void CalculateMoveOnPrev()
+    {
+        currentIndex = currentIndex - 1;
+
+        // 범위를 벗어났을 경우를 대비한 예외처리
+        if (currentIndex < 0)
+        {
+            currentIndex = safeboxManager.Origin.Count - 1;
+        }
+
+        // availableList == false이면 지나갈 수 없으니
+        if (availableList[currentIndex] == false)
+        {
+            // 재귀를 통해 인덱스를 다시 한 번 감소시킨다.
+            CalculateMoveOnPrev();
+        }
+    }
+
+    protected void CalculateMoveOnNext()
+    {
+        currentIndex = currentIndex + 1;
+
+        // 범위를 벗어났을 경우를 대비한 예외처리
+        if (currentIndex > safeboxManager.Origin.Count - 1)
+        {
+            currentIndex = 0;
+        }
+
+        // availableList == false이면 지나갈 수 없으니
+        if (availableList[currentIndex] == false)
+        {
+            // 재귀를 통해 인덱스를 다시 한 번 증가시킨다.
+            CalculateMoveOnNext();
+        }
+    }   
+     
 }
