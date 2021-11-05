@@ -940,10 +940,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47173ea7ae475c14eaf0fde40d8c95d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentIndex: 
-  currentPiece: []
+  currentIndex: 0
+  currentPiece: {fileID: 0}
   safeboxManager: {fileID: 1905989981}
-  safeboxList: 
   availableList: 
 --- !u!1 &465902730
 GameObject:
@@ -1475,7 +1474,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!20 &929087851
 Camera:
   m_ObjectHideFlags: 0
@@ -1497,12 +1496,12 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
+    width: 2.09
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
@@ -1550,7 +1549,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &963194226
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1768,12 +1767,12 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
+    width: 0.5
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
+  orthographic: 1
   orthographic size: 5
   m_Depth: 0
   m_CullingMask:
@@ -1966,13 +1965,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1356281468}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47173ea7ae475c14eaf0fde40d8c95d9, type: 3}
+  m_Script: {fileID: 11500000, guid: a721aa65bf55cb346b1b0096ddf457b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentIndex: 
-  currentPiece: []
+  currentIndex: 0
+  currentPiece: {fileID: 0}
   safeboxManager: {fileID: 1905989981}
-  safeboxList: 
   availableList: 
 --- !u!1 &1371137034
 GameObject:
@@ -2619,24 +2617,12 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1356281470}
-        m_TargetAssemblyTypeName: SelectManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: SelectBManager, Assembly-CSharp
         m_MethodName: CheckAvailable
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SelectManager, Assembly-CSharp
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

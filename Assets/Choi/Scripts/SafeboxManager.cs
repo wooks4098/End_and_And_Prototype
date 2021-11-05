@@ -14,10 +14,10 @@ public class SafeboxManager : MonoBehaviour
     [SerializeField] List<int> correct; // 정답을 저장
 
     [SerializeField] List<int> safeboxA;
-    public List<int> SafeboxA { get { return safeboxA; } }
+    public List<int> SafeboxA { get { return safeboxA; } set { safeboxA = value; } }
 
     [SerializeField] List<int> safeboxB;
-    public List<int> SafeboxB { get { return safeboxB; } }
+    public List<int> SafeboxB { get { return safeboxB; } set { safeboxB = value; } }
 
     List<int> arr;  // correct에 값을 부여할 때 사용할 때 사용
 
@@ -26,7 +26,6 @@ public class SafeboxManager : MonoBehaviour
 
     [SerializeField] GameObject safeboxObjectB; // 금고 B의 부모 오브젝트
     public GameObject SafeboxObjectB { get { return safeboxObjectB; } }
-
 
 
     private void Awake()
@@ -181,5 +180,11 @@ public class SafeboxManager : MonoBehaviour
             // 머터리얼을 적용한다.
             meshRenderer.material = material;            
         }        
+    }
+
+
+    public void CheckAllCorrect()
+    {
+        
     }
 }
