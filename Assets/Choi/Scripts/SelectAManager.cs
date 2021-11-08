@@ -15,6 +15,14 @@ public class SelectAManager : BaseSelectManager
         }
     }
 
+    protected override void InputActiveKey()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            isActive = true;
+        }
+    }
+
     protected override void InputMoveKey()
     {
         // ¿ÞÂÊ
@@ -50,4 +58,6 @@ public class SelectAManager : BaseSelectManager
             safeboxManager.CheckAllCorrect(safeboxManager.SafeboxA);
         }
     }
+
+    
 }

@@ -14,6 +14,12 @@ public abstract class BaseSelectManager : MonoBehaviour
     [SerializeField] protected List<bool> availableList;
 
 
+    // 줌인 카메라
+    [SerializeField] Camera zoomInCamera;
+    // 활성화 체크
+    [SerializeField] protected bool isActive = false;
+
+
     protected void Awake()
     {
         availableList = new List<bool>();
@@ -21,20 +27,45 @@ public abstract class BaseSelectManager : MonoBehaviour
 
     protected void Start()
     {
+        // 현재 선택된 조각 할당
         currentPiece = transform.GetChild(currentIndex).gameObject;
 
+        // 전처리 1.활성화 2.인덱스할당
         CheckAvailable();
-
-
         SetStartIndex();
+
+        // 줌인 카메라 끄기
+        if (zoomInCamera.gameObject.activeSelf == true)
+        {
+            zoomInCamera.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
     {
-        //CheckAvailable();
+        // isActive == false이면 
+        if (!isActive)
+        {
+            // 활성화키 (금고 실행 전 확인키) 입력을 받는 메서드
+            InputActiveKey();
+
+            if (zoomInCamera.gameObject.activeSelf == true)
+            {
+                zoomInCamera.gameObject.SetActive(false);
+            }                
+            // 입력 받지 않고 빠져나감
+            return;
+        }
+        else if (isActive)
+        {
+            if (zoomInCamera.gameObject.activeSelf == false)
+            {
+                zoomInCamera.gameObject.SetActive(true);
+            }
+        }
 
         InputMoveKey();
-        InputSelectKey();
+        InputSelectKey();        
     }
 
     public void SetStartIndex()
@@ -121,6 +152,8 @@ public abstract class BaseSelectManager : MonoBehaviour
             // 재귀를 통해 인덱스를 다시 한 번 증가시킨다.
             CalculateMoveOnNext();
         }
-    }   
-     
+    }
+
+
+    protected abstract void InputActiveKey();
 }

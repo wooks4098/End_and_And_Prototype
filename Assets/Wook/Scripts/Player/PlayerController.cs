@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
         playerInput.OnMove += Move;
         playerInput.OnRotation += Rotation;
         playerInput.OnRun += Run;
-
     }
 
     private void Update()
@@ -44,8 +43,8 @@ public class PlayerController : MonoBehaviour
     void MoveTo(Vector3 direction)
     {
         characterController.Move(direction * (isRun == false ? moveSpeed : moveSpeed * 2.3f) * Time.deltaTime);
-
     }
+
     void Move(MoveType moveType)
     {
         if(moveType == MoveType.Front)

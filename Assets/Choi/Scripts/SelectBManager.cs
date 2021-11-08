@@ -16,6 +16,13 @@ public class SelectBManager : BaseSelectManager
             availableList.Add(safeboxManager.IsMatch(i, safeboxManager.SafeboxB));
         }
     }
+    protected override void InputActiveKey()
+    {
+        if (Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            isActive = true;
+        }
+    }
 
     protected override void InputMoveKey()
     {
