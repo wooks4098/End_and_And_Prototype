@@ -34,6 +34,13 @@ public class SafeboxManager : MonoBehaviour
         arr = new List<int>();
     }
 
+    void OnEnable()
+    {
+        SetCorrect();
+        SetSafeboxFromCorrect();
+        SetMaterial();
+    }
+
     private void Start()
     {
         //SetCorrect();

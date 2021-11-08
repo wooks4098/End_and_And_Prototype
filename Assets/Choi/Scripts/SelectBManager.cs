@@ -4,16 +4,6 @@ using UnityEngine;
 
 public class SelectBManager : BaseSelectManager
 {
-    private void Start()
-    {
-        // 걸어둔 Tag로 어떤 금고인지 구분한다.
-        if (gameObject.CompareTag("SafeBoxB"))
-        {
-            //safeboxList = safeboxManager.SafeboxB;
-            currentPiece = transform.GetChild(currentIndex).gameObject;
-        }
-    }
-
     
 
     public override void CheckAvailable()

@@ -19,6 +19,16 @@ public abstract class BaseSelectManager : MonoBehaviour
         availableList = new List<bool>();
     }
 
+    protected void Start()
+    {
+        currentPiece = transform.GetChild(currentIndex).gameObject;
+
+        CheckAvailable();
+
+
+        SetStartIndex();
+    }
+
     private void Update()
     {
         //CheckAvailable();
