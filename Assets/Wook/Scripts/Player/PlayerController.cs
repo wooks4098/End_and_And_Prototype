@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
         playerInput.OnMove += Move;
         playerInput.OnRotation += Rotation;
         playerInput.OnRun += Run;
-        playerInput.OnUse += UseObject;
+        //playerInput.OnUse += UseObject;
 
     }
 
@@ -114,13 +114,10 @@ public class PlayerController : MonoBehaviour
         return directionToMoveIn;
     }
 
-    void UseObject()
+    public void PlayerCanMoveChange(bool CanMove)
     {
-        playerInput.CanMoveChange(false);
-        if (playerInput.CanMove)
-            playerCamera.SetActive(false);
-        else
-            playerCamera.SetActive(true);
+        playerInput.CanMoveChange(CanMove);
+
 
     }
 

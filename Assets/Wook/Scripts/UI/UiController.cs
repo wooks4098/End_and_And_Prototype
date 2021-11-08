@@ -14,7 +14,6 @@ public class UiController : MonoBehaviour
     public RectTransform image; //이미지 위치
     public GameObject Image; //이지미 게임오브젝트
 
-
     public void ObjectUIShow( )
     {
         Image.SetActive(true);

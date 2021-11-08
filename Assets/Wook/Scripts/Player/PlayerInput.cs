@@ -19,7 +19,7 @@ public class PlayerInput : MonoBehaviour, IInput
         RunInput();
         MoveInput();
         RotationInput();
-
+        UseInput();
     }
 
     public void SetPlayerType(PlayerType _playertype)
@@ -31,65 +31,53 @@ public class PlayerInput : MonoBehaviour, IInput
     {
         if (!CanMove)
         {
-            if (playerType == PlayerType.FirstPlayer)
-            {
-                OnMove?.Invoke(MoveType.Stay);
-            }
-            else if (playerType == PlayerType.SecondPlayer)
-            {
-                OnMove?.Invoke(MoveType.Stay);
-            }
+            OnMove?.Invoke(MoveType.Stay);
+
             return;
         }
-        if (playerType == PlayerType.FirstPlayer)
+
+        switch (playerType)
         {
-            if (Input.GetKey(KeyCode.W))
-                OnMove?.Invoke(MoveType.Front);
-            else if (Input.GetKey(KeyCode.S))
-                OnMove?.Invoke(MoveType.Back);
-            else
-                OnMove?.Invoke(MoveType.Stay);
+            case PlayerType.FirstPlayer:
+                if (Input.GetKey(KeyCode.W))
+                    OnMove?.Invoke(MoveType.Front);
+                else if (Input.GetKey(KeyCode.S))
+                    OnMove?.Invoke(MoveType.Back);
+                else
+                    OnMove?.Invoke(MoveType.Stay);
+                break;
+            case PlayerType.SecondPlayer:
+                if (Input.GetKey(KeyCode.UpArrow))
+                    OnMove?.Invoke(MoveType.Front);
+                else if (Input.GetKey(KeyCode.DownArrow))
+                    OnMove?.Invoke(MoveType.Back);
+                else
+                    OnMove?.Invoke(MoveType.Stay);
+                break;
         }
-        else if (playerType == PlayerType.SecondPlayer)
-        {
-            if (Input.GetKey(KeyCode.UpArrow))
-                OnMove?.Invoke(MoveType.Front);
-            else if (Input.GetKey(KeyCode.DownArrow))
-                OnMove?.Invoke(MoveType.Back);
-            else
-                OnMove?.Invoke(MoveType.Stay);
-        }
+        
     }
 
     void RotationInput()
     {
         if (!CanMove)
-        {
-            if (playerType == PlayerType.FirstPlayer)
-            {
-                return;
-            }
-            else if (playerType == PlayerType.SecondPlayer)
-            {
-                return;
-            }
             return;
-        }
-        if (playerType == PlayerType.FirstPlayer)
-        {
-            if (Input.GetKey(KeyCode.A))
-                OnRotation?.Invoke(MoveType.LeftTurn);
-            else if (Input.GetKey(KeyCode.D))
-                OnRotation?.Invoke(MoveType.RightTrun);
-        }
-        else if (playerType == PlayerType.SecondPlayer)
-        {
-            if (Input.GetKey(KeyCode.LeftArrow))
-                OnRotation?.Invoke(MoveType.LeftTurn);
-            else if (Input.GetKey(KeyCode.RightArrow))
-                OnRotation?.Invoke(MoveType.RightTrun);
-        }
 
+        switch (playerType)
+        {
+            case PlayerType.FirstPlayer:
+                if (Input.GetKey(KeyCode.A))
+                    OnRotation?.Invoke(MoveType.LeftTurn);
+                else if (Input.GetKey(KeyCode.D))
+                    OnRotation?.Invoke(MoveType.RightTrun);
+                break;
+            case PlayerType.SecondPlayer:
+                if (Input.GetKey(KeyCode.LeftArrow))
+                    OnRotation?.Invoke(MoveType.LeftTurn);
+                else if (Input.GetKey(KeyCode.RightArrow))
+                    OnRotation?.Invoke(MoveType.RightTrun);
+                break;
+        }
     }
 
     void RunInput()
@@ -98,36 +86,61 @@ public class PlayerInput : MonoBehaviour, IInput
         {
             OnRun?.Invoke(false);
             return;
+        }
 
-        }
-        if (playerType == PlayerType.FirstPlayer)
+        switch(playerType)
         {
-            OnRun?.Invoke(Input.GetKey(KeyCode.LeftShift));
+            case PlayerType.FirstPlayer:
+                OnRun?.Invoke(Input.GetKey(KeyCode.LeftShift));
+                break;
+            case PlayerType.SecondPlayer:
+                if (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.RightShift))
+                    OnRun?.Invoke(true);
+                else if (!(Input.GetKey(KeyCode.RightControl)) && !(Input.GetKey(KeyCode.RightShift)))
+                    OnRun?.Invoke(false);
+                break;
         }
-        else if (playerType == PlayerType.SecondPlayer)
-        {
-            if (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.RightShift))
-                OnRun?.Invoke(true);
-            else if(!(Input.GetKey(KeyCode.RightControl)) && !(Input.GetKey(KeyCode.RightShift)))
-                OnRun?.Invoke(false);
-        }
+       
     }
 
     void UseInput()
     {
-        if (playerType == PlayerType.FirstPlayer)
+        switch(playerType)
         {
-            OnUse.Invoke();
+            case PlayerType.FirstPlayer:
+                Debug.Log("d");
+                if (Input.GetKey(KeyCode.E))
+                {
+                    if (CanMove)
+                        CanMove = false;
+                    else
+                        CanMove = true;
+                }
+                break;
 
+            case PlayerType.SecondPlayer:
+                if (Input.GetKey(KeyCode.P))
+                {
+                    if (CanMove)
+                        CanMove = false;
+                    else
+                        CanMove = true;
+                }
+                break;
         }
-        else if (playerType == PlayerType.SecondPlayer)
-        {
-            OnUse.Invoke();
-        }
+        //if (playerType == PlayerType.FirstPlayer)
+        //{
+        //    OnUse.Invoke();
+
+        //}
+        //else if (playerType == PlayerType.SecondPlayer)
+        //{
+        //    OnUse.Invoke();
+        //}
     }
 
     public void CanMoveChange(bool Change)
     {
-        CanMove = !CanMove;
+        CanMove = Change;
     }
 }
