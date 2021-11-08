@@ -15,9 +15,9 @@ public class UIManager : MonoBehaviour
         if (null == instance)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
-        else Destroy(gameObject);
+        //else Destroy(gameObject);
     }
     [SerializeField] UiController P1UI;
     [SerializeField] UiController P2UI;
