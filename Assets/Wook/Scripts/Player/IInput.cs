@@ -16,4 +16,6 @@ public interface IInput
     Action<MoveType> OnMove { get; set; }
     Action<MoveType> OnRotation { get; set; }
     Action<bool> OnRun { get; set; }
+
+    Action OnUse { get; set; }
 }

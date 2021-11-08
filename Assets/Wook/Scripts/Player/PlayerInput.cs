@@ -8,8 +8,11 @@ public class PlayerInput : MonoBehaviour, IInput
     public Action<MoveType> OnMove { get; set; }
     public Action<MoveType> OnRotation { get; set; }
     public Action<bool> OnRun { get; set; }
+    public Action OnUse { get; set; }
 
     PlayerType playerType;
+
+    public bool CanMove = true;
 
     private void Update()
     {
@@ -26,7 +29,19 @@ public class PlayerInput : MonoBehaviour, IInput
 
     void MoveInput()
     {
-        if(playerType == PlayerType.FirstPlayer)
+        if (!CanMove)
+        {
+            if (playerType == PlayerType.FirstPlayer)
+            {
+                OnMove?.Invoke(MoveType.Stay);
+            }
+            else if (playerType == PlayerType.SecondPlayer)
+            {
+                OnMove?.Invoke(MoveType.Stay);
+            }
+            return;
+        }
+        if (playerType == PlayerType.FirstPlayer)
         {
             if (Input.GetKey(KeyCode.W))
                 OnMove?.Invoke(MoveType.Front);
@@ -48,6 +63,18 @@ public class PlayerInput : MonoBehaviour, IInput
 
     void RotationInput()
     {
+        if (!CanMove)
+        {
+            if (playerType == PlayerType.FirstPlayer)
+            {
+                return;
+            }
+            else if (playerType == PlayerType.SecondPlayer)
+            {
+                return;
+            }
+            return;
+        }
         if (playerType == PlayerType.FirstPlayer)
         {
             if (Input.GetKey(KeyCode.A))
@@ -67,6 +94,12 @@ public class PlayerInput : MonoBehaviour, IInput
 
     void RunInput()
     {
+        if(!CanMove)
+        {
+            OnRun?.Invoke(false);
+            return;
+
+        }
         if (playerType == PlayerType.FirstPlayer)
         {
             OnRun?.Invoke(Input.GetKey(KeyCode.LeftShift));
@@ -78,5 +111,23 @@ public class PlayerInput : MonoBehaviour, IInput
             else if(!(Input.GetKey(KeyCode.RightControl)) && !(Input.GetKey(KeyCode.RightShift)))
                 OnRun?.Invoke(false);
         }
+    }
+
+    void UseInput()
+    {
+        if (playerType == PlayerType.FirstPlayer)
+        {
+            OnUse.Invoke();
+
+        }
+        else if (playerType == PlayerType.SecondPlayer)
+        {
+            OnUse.Invoke();
+        }
+    }
+
+    public void CanMoveChange(bool Change)
+    {
+        CanMove = !CanMove;
     }
 }

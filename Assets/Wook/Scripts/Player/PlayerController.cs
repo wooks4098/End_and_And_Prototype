@@ -5,7 +5,7 @@ using UnityEngine;
 public enum PlayerType
 {//1P 2P
     FirstPlayer = 0,
-    SecondPlayer, 
+    SecondPlayer,
 }
 
 
@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator ani;
     [SerializeField] PlayerInput playerInput;
 
+    //test
+    [SerializeField] GameObject playerCamera;
 
     private void Awake()
     {
@@ -34,6 +36,8 @@ public class PlayerController : MonoBehaviour
         playerInput.OnMove += Move;
         playerInput.OnRotation += Rotation;
         playerInput.OnRun += Run;
+        playerInput.OnUse += UseObject;
+
     }
 
     private void Update()
@@ -43,11 +47,11 @@ public class PlayerController : MonoBehaviour
     void MoveTo(Vector3 direction)
     {
         characterController.Move(direction * (isRun == false ? moveSpeed : moveSpeed * 2.3f) * Time.deltaTime);
-    }
 
+    }
     void Move(MoveType moveType)
     {
-        if(moveType == MoveType.Front)
+        if (moveType == MoveType.Front)
         {
             moveDirection = GetDirection(InputDir.front);
             ani.SetBool("WalkFront", true);
@@ -72,7 +76,7 @@ public class PlayerController : MonoBehaviour
 
     void Rotation(MoveType moveType)
     {
-       // ani.SetBool("Run", isRun);
+        // ani.SetBool("Run", isRun);
         if (moveType == MoveType.LeftTurn)
         {
             transform.Rotate(new Vector3(0, -rotateSpeed * Time.deltaTime, 0));
@@ -109,4 +113,15 @@ public class PlayerController : MonoBehaviour
         }
         return directionToMoveIn;
     }
+
+    void UseObject()
+    {
+        playerInput.CanMoveChange(false);
+        if (playerInput.CanMove)
+            playerCamera.SetActive(false);
+        else
+            playerCamera.SetActive(true);
+
+    }
+
 }
