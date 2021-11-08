@@ -1027,6 +1027,8 @@ MonoBehaviour:
   currentPiece: {fileID: 0}
   safeboxManager: {fileID: 2068622954}
   availableList: 
+  zoomInCamera: {fileID: 943239748}
+  isActive: 0
 --- !u!4 &643174252
 Transform:
   m_ObjectHideFlags: 0
@@ -1309,6 +1311,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 732114430}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &797985503 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1875302297691712434, guid: 5ae0c759dd460e940889d09e1ddec670, type: 3}
+  m_PrefabInstance: {fileID: 1675998096}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &820513476
 GameObject:
   m_ObjectHideFlags: 0
@@ -1975,6 +1982,8 @@ MonoBehaviour:
   currentPiece: {fileID: 0}
   safeboxManager: {fileID: 2068622954}
   availableList: 
+  zoomInCamera: {fileID: 2026565976}
+  isActive: 0
 --- !u!4 &944708907
 Transform:
   m_ObjectHideFlags: 0
@@ -2806,6 +2815,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1474643492 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 667544955514284086, guid: 90b858c2bb2770c4694a5961207bc863, type: 3}
+  m_PrefabInstance: {fileID: 1706082011}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1507878535
 GameObject:
   m_ObjectHideFlags: 0
@@ -3154,6 +3168,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1875302299224825063, guid: 5ae0c759dd460e940889d09e1ddec670, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 797985503}
     - target: {fileID: 1875302299224825080, guid: 5ae0c759dd460e940889d09e1ddec670, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3526,6 +3544,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 667544955709222235, guid: 90b858c2bb2770c4694a5961207bc863, type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 1474643492}
     - target: {fileID: 667544955709222237, guid: 90b858c2bb2770c4694a5961207bc863, type: 3}
       propertyPath: m_RootOrder
       value: 2
