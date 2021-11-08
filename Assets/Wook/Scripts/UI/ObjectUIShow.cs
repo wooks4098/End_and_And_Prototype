@@ -8,23 +8,30 @@ public class ObjectUIShow : MonoBehaviour
 {
 
     [SerializeField] PlayerType playerType;
-
+    [SerializeField] Transform ObjectUiPos;
     //testd용 UI매니저를 만들어 요청하는것으로 수정해야함
     [SerializeField] ObjectUI objectui1;
     [SerializeField] ObjectUI objectui2;
 
+    [SerializeField] bool P1CanUse = false;
+    [SerializeField] bool P2CanUse = false;
 
     private void OnTriggerEnter(Collider other)
     {
 
         if(other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
         {
-            objectui1.Show();
+            UIManager.Instance.ObjectUIShow(PlayerType.FirstPlayer);
+            //objectui1.Show();
+            P1CanUse = true;
         }
 
         if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
         {
-            objectui2.Show();
+            UIManager.Instance.ObjectUIShow(PlayerType.SecondPlayer);
+
+            //objectui2.Show();
+            P2CanUse = true;
         }
     }
 
@@ -32,12 +39,15 @@ public class ObjectUIShow : MonoBehaviour
     {
         if (other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
         {
-            objectui1.Move();
+            UIManager.Instance.ObjectUIMove(PlayerType.FirstPlayer, ObjectUiPos.position);
+
+            //objectui1.Move();
         }
 
         if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
         {
-            objectui2.Move();
+            UIManager.Instance.ObjectUIMove(PlayerType.SecondPlayer, ObjectUiPos.position);
+            //objectui2.Move();
 
         }
     }
@@ -46,14 +56,16 @@ public class ObjectUIShow : MonoBehaviour
     {
         if (other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
         {
-            objectui1.hide();
-
+            UIManager.Instance.ObjectUIHide(PlayerType.FirstPlayer);
+            //objectui1.hide();
+            P1CanUse = false;
         }
 
         if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
         {
-            objectui2.hide();
-
+            UIManager.Instance.ObjectUIHide(PlayerType.SecondPlayer);
+            //objectui2.hide();
+            P1CanUse = false;
         }
     }
 
