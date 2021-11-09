@@ -322,6 +322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   item: {fileID: 0}
   itemCount: 0
-  itemImage: {fileID: 0}
-  text_Count: {fileID: 0}
-  G_CountImage: {fileID: 0}
+  itemImage: {fileID: 710945515942796335}
+  SelectImage: {fileID: 710945516720179767}
+  text_Count: {fileID: 710945516424401532}
+  G_CountImage: {fileID: 710945516457491169}

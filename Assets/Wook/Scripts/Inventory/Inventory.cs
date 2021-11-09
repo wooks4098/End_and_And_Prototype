@@ -9,16 +9,27 @@ public class Inventory : MonoBehaviour
     [SerializeField] GameObject G_InventoryBase;
     [SerializeField] GameObject G_SlotsParent;
 
-    Slot[] slots;
+    [SerializeField] Slot[] slots;
+
+    [SerializeField] SlotSelect slotSelect;
+
+    //test
+    public Item i;
 
     private void Start()
     {
         slots = G_SlotsParent.GetComponentsInChildren<Slot>();
+        AcquireItem(i);
     }
 
     private void Update()
     {
         TryOpenInventory();
+    }
+
+    public void SlotSelectColorChange(int SlotNum,Color color)
+    {
+        slots[SlotNum].SelectColor(color);
     }
 
     public void TryOpenInventory()
@@ -34,7 +45,12 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void AcquireItem(Item _item, int _Count)
+    public Item GetSlotItem(int SlotNum)
+    {
+        return slots[SlotNum].item;
+    }
+
+    public void AcquireItem(Item _item, int _Count = 1)
     {
         //해당 아이템이 있는 경우
         for(int i = 0; i<slots.Length; i++)
@@ -61,13 +77,21 @@ public class Inventory : MonoBehaviour
 
     void OpenInventory()
     {
-        G_InventoryBase.SetActive(true);
-
+        
+        inventoryActivated = true;
+        G_InventoryBase.SetActive(inventoryActivated);
+        slotSelect.inventoryActivateChange(inventoryActivated);
+        slots[0].SelectColor(Color.red);
+        for (int i = 1; i<slots.Length; i++)
+        {
+            slots[i].SelectColor(Color.white);
+        }
     }
 
     void CloseInventory()
     {
-        G_InventoryBase.SetActive(false);
-
+        inventoryActivated = false;
+        G_InventoryBase.SetActive(inventoryActivated);
+        slotSelect.inventoryActivateChange(inventoryActivated);
     }
 }

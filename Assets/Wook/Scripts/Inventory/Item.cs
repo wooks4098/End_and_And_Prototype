@@ -9,7 +9,7 @@ public enum ItemType
 }
 
 [CreateAssetMenu(fileName = "Item", menuName = "Items/Make New Item", order = 0)]
-public class Item : MonoBehaviour
+public class Item : ScriptableObject
 {
     public string ItemName; //아이템 이름
     public ItemType itemType; //아이템 타입

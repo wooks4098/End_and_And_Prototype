@@ -6,9 +6,9 @@ using UnityEngine.UI;
 public class Slot : MonoBehaviour
 {
     public Item item; //아이템
-    public int itemCount; //아이탬  개수
+    public int itemCount; //아이탬 개수
     public Image itemImage; //아이템 이미지
-
+    public Image SelectImage; //아이템 틀 이미지
     [SerializeField]
     Text text_Count;
     [SerializeField]
@@ -20,6 +20,12 @@ public class Slot : MonoBehaviour
         Color color = itemImage.color;
         color.a = _alpha;
         itemImage.color = color;
+    }
+
+    //슬롯 선택 이미지 조절
+    public void SelectColor(Color _color)
+    {
+        SelectImage.color = _color;
     }
 
     //아이템 획득
