@@ -5,7 +5,7 @@ using UnityEngine;
 public enum ItemType
 {
     ObjectItem = 0, // 오브젝트와 상호작용을 위한 아이템
-    UseItem, //사용 아이템 (백신, 음식, 물)
+    UseItem, //사용 아이템 (백신, 음식, 물) (퀵슬롯 전용 아이템)
 }
 
 [CreateAssetMenu(fileName = "Item", menuName = "Items/Make New Item", order = 0)]

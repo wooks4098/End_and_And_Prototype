@@ -7,19 +7,25 @@ public class Inventory : MonoBehaviour
     public bool inventoryActivated = false;
 
     [SerializeField] GameObject G_InventoryBase;
-    [SerializeField] GameObject G_SlotsParent;
+    [SerializeField] GameObject G_ObjectSlotsParent;
+    [SerializeField] GameObject G_UseSlotsParent;
 
-    [SerializeField] Slot[] slots;
+    [SerializeField] Slot[] ObjectItemSlots; //오브젝트 아이템 슬롯
+    [SerializeField] Slot[] UseItemSlots; // 사용 아이템 (퀵슬롯 전용 아이템) 슬롯
 
     [SerializeField] SlotSelect slotSelect;
 
     //test
     public Item i;
+    public Item i2;
 
     private void Start()
     {
-        slots = G_SlotsParent.GetComponentsInChildren<Slot>();
+        ObjectItemSlots = G_ObjectSlotsParent.GetComponentsInChildren<Slot>();
+        UseItemSlots = G_UseSlotsParent.GetComponentsInChildren<Slot>();
+        //test Item추가
         AcquireItem(i);
+        AcquireItem(i2);
     }
 
     private void Update()
@@ -29,7 +35,7 @@ public class Inventory : MonoBehaviour
 
     public void SlotSelectColorChange(int SlotNum,Color color)
     {
-        slots[SlotNum].SelectColor(color);
+        ObjectItemSlots[SlotNum].SelectColor(color);
     }
 
     public void TryOpenInventory()
@@ -47,13 +53,30 @@ public class Inventory : MonoBehaviour
 
     public Item GetSlotItem(int SlotNum)
     {
-        return slots[SlotNum].item;
+        return ObjectItemSlots[SlotNum].item;
     }
 
     public void AcquireItem(Item _item, int _Count = 1)
     {
+        switch(_item.itemType)
+        {
+            case ItemType.ObjectItem:
+                AddItemToSlot(ObjectItemSlots, _item, _Count);
+                break;
+            case ItemType.UseItem:
+                AddItemToSlot(UseItemSlots, _item, _Count);
+                break;
+            default:
+                Debug.Log("아이템 타입이 정해져 있지 않은 아이템입니다");
+                break;
+        }
+        
+    }
+
+    void AddItemToSlot(Slot[] slots, Item _item, int _Count = 1)
+    {
         //해당 아이템이 있는 경우
-        for(int i = 0; i<slots.Length; i++)
+        for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].item != null)
             {
@@ -81,10 +104,10 @@ public class Inventory : MonoBehaviour
         inventoryActivated = true;
         G_InventoryBase.SetActive(inventoryActivated);
         slotSelect.inventoryActivateChange(inventoryActivated);
-        slots[0].SelectColor(Color.red);
-        for (int i = 1; i<slots.Length; i++)
+        ObjectItemSlots[0].SelectColor(Color.red);
+        for (int i = 1; i<ObjectItemSlots.Length; i++)
         {
-            slots[i].SelectColor(Color.white);
+            ObjectItemSlots[i].SelectColor(Color.white);
         }
     }
 
