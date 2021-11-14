@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
         ani.SetBool("Run", isRun);
     }
 
+
     void Rotation(MoveType moveType)
     {
         // ani.SetBool("Run", isRun);

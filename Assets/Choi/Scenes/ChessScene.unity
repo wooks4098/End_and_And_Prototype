@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &9082882 stripped
@@ -240,6 +244,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (19)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &9964177 stripped
@@ -302,6 +310,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (25)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &32226541 stripped
@@ -578,6 +590,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &142391143 stripped
@@ -811,6 +827,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (24)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &172007938 stripped
@@ -948,6 +968,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &221093395 stripped
@@ -1010,6 +1034,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (36)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &226643610 stripped
@@ -1072,6 +1100,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (14)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &444543468 stripped
@@ -1234,6 +1266,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (33)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &499140928 stripped
@@ -1296,6 +1332,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (21)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &535886516 stripped
@@ -1493,6 +1533,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (34)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &652141139 stripped
@@ -1555,6 +1599,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &702626338 stripped
@@ -1628,7 +1676,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 28a2520dc8719e5428bf3217a5ba432d, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1713,6 +1761,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &748518247 stripped
@@ -1871,6 +1923,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (11)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &811096036 stripped
@@ -1933,6 +1989,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (18)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &824130072 stripped
@@ -2064,7 +2124,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &985270788
 GameObject:
@@ -2310,6 +2370,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (12)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1099639126 stripped
@@ -2372,6 +2436,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1106774967 stripped
@@ -2434,6 +2502,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (17)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1140214755 stripped
@@ -2471,6 +2543,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floorSize: 5
+  floors: []
+  tParent: {fileID: 459537855}
+  chessArray: {fileID: 1970536315}
+  checkfloors: 
 --- !u!4 &1148677694
 Transform:
   m_ObjectHideFlags: 0
@@ -2479,7 +2555,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148677692}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: 0.5, z: -3.9743854e-11}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2540,6 +2616,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (22)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1173828191 stripped
@@ -2602,6 +2682,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (29)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1184321796 stripped
@@ -2673,7 +2757,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1204732755
 PrefabInstance:
@@ -2730,6 +2814,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (35)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1204732756 stripped
@@ -2792,6 +2880,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (32)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1229207051 stripped
@@ -2929,6 +3021,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (28)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1251248350 stripped
@@ -2991,6 +3087,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (16)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1257869396 stripped
@@ -3128,6 +3228,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (10)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1331307341 stripped
@@ -3190,6 +3294,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (23)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1344117095 stripped
@@ -3348,6 +3456,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1381036880 stripped
@@ -3410,6 +3522,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (31)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1424518444 stripped
@@ -3507,7 +3623,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1483465386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.92, y: 0.5, z: 0.57}
+  m_LocalPosition: {x: 15, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2070848439}
@@ -3527,8 +3643,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chessManager: {fileID: 1148677693}
-  moveSpeed: 1
+  direction: 0
+  isMoving: 0
+  moveSpeed: 4
   moveDistance: 5
+  currentFloor: {fileID: 0}
 --- !u!1 &1664960167
 GameObject:
   m_ObjectHideFlags: 0
@@ -3581,7 +3700,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4ef45bbe461098a448d46508992cfece, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3680,6 +3799,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1665755402 stripped
@@ -3868,6 +3991,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (26)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1741217261 stripped
@@ -3930,6 +4057,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (30)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1746953984 stripped
@@ -3992,6 +4123,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (27)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1750182506 stripped
@@ -4054,6 +4189,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (15)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1759796001 stripped
@@ -4116,6 +4255,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1777596509 stripped
@@ -4175,7 +4318,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 28a2520dc8719e5428bf3217a5ba432d, type: 2}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4274,6 +4417,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1861225340 stripped
@@ -4336,6 +4483,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plane (20)
       objectReference: {fileID: 0}
+    - target: {fileID: 6843254238224925515, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
+      propertyPath: chessArray
+      value: 
+      objectReference: {fileID: 1970536315}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1351324f66cb634ea762b9707b1d108, type: 3}
 --- !u!4 &1866512588 stripped
@@ -4372,6 +4523,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1970536314
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1970536316}
+  - component: {fileID: 1970536315}
+  m_Layer: 0
+  m_Name: ChessArrayInfo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1970536315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970536314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f6f2e79148d7194399adcdeb95bd06e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1970536316
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970536314}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 12.5, y: 36, z: 12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2014810989
 GameObject:
@@ -4466,7 +4660,7 @@ RectTransform:
   m_Children:
   - {fileID: 539842647}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4608,8 +4802,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 16.8
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -4633,7 +4827,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2141185457}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 12.5, y: 36, z: 12}
+  m_LocalPosition: {x: 12.55, y: 35, z: 12.55}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
