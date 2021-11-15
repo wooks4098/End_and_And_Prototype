@@ -29,7 +29,7 @@ public class ChessPlayerController : MonoBehaviour
 
     // 움직이는 속도, 거리
     [SerializeField] float moveSpeed = 4.0f;
-    [SerializeField] float moveDistance = 5.0f;
+    //[SerializeField] float moveDistance = 5.0f;
 
     Vector3 v3CurrentPosition;
 
@@ -46,6 +46,12 @@ public class ChessPlayerController : MonoBehaviour
     private void Update()
     {
         InputDirectionKey();
+
+        if (isMoving)
+        {
+            SelectFloor(currentFloorIndex);
+            MoveToDirection();
+        }
     }
 
     private void InputDirectionKey()
@@ -78,12 +84,6 @@ public class ChessPlayerController : MonoBehaviour
 
             currentFloorIndex += 1;
         }
-
-        if(isMoving)
-        {
-            SelectFloor(currentFloorIndex);
-            MoveToDirection();
-        }
     }
 
     void MoveToDirection()
@@ -95,9 +95,15 @@ public class ChessPlayerController : MonoBehaviour
                 {
                     if(isMoving)
                     {
+                        // 부드러운 이동을 위해 Mathf.MoveTowrads를 사용 
+                        // 이것은 지금은 앞과 뒤로 이동할 때 실행되므로 z값을 계산한다.
+                        // 큐브가 currentFloor (= 현재 지정된 바닥)을 타겟으로 이동한다. - 속도는 moveSpeed * time.deltaTime만큼
                         float newPositonZ = Mathf.MoveTowards(transform.position.z, currentFloor.transform.position.z, moveSpeed * Time.deltaTime);
+
+                        // Vector3를 사용하여 새로운 좌표로 업데이트.
                         transform.position = new Vector3(transform.position.x, transform.position.y, newPositonZ);
 
+                        // 도착하면 플래그를 false로 변경
                         if (transform.position == currentFloor.transform.position)
                         {
                             isMoving = false;
@@ -125,9 +131,8 @@ public class ChessPlayerController : MonoBehaviour
         }
     }
 
-    Floor SelectFloor(int _index)
+    void SelectFloor(int _index)
     {
         currentFloor = chessManager.GetFloors(_index).GetComponent<Floor>();
-        return currentFloor;
     }
 }

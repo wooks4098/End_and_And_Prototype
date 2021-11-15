@@ -8,19 +8,25 @@ public class ChessManager : MonoBehaviour
 {
     // 바닥 정보를 저장할 2차원 배열
     int[,] floorInfo;
+    [SerializeField] int[] actureOfChessFloor;
 
-    int floorWidth = 6;
-    int floorHeight = 6;
+    readonly int floorWidth = 6;
+    readonly int floorHeight = 6;
 
     [SerializeField] float floorSize = 5f;
     [SerializeField] List<Floor> floors;
     
     [SerializeField] Transform tParent;
 
+    // ==============================================
+    [SerializeField] MeshRenderer mrFloorRenderer;
+    [SerializeField] List<Texture> texTextureContainer;
 
-    // 
+    Material mFloorMaterial;
+
+    // ==============================================
     [SerializeField] ChessArrayInfo chessArray;
-    [SerializeField] List<int> checkfloors;
+    List<bool> checkAvailablefloors;
 
 
     private void Awake()
@@ -28,12 +34,14 @@ public class ChessManager : MonoBehaviour
         floorInfo = new int[8, 8];        
 
         floors = new List<Floor>();
-        checkfloors = new List<int>();
+        checkAvailablefloors = new List<bool>();
+
+        actureOfChessFloor = new int[36];
 
     }
+
     private void Start()
     {
-        // =======================================================
         tParent.GetComponentsInChildren<Floor>(floors);
 
 
@@ -41,28 +49,13 @@ public class ChessManager : MonoBehaviour
         {
             for (int j = (floorWidth + 1); j >= 0; j--)
             {
-                floorInfo[i, j] = chessArray.info[i, j];
-            }                
-        }
-
-        // ==================================================
-        int[,] tempList = new int[6, 6];
-        for (int i = 1; i <= floorHeight; i++)
-        {
-            for (int j = 1; j <= floorWidth; j++)
-            {
-                tempList[i,j] = chessArray.info[i, j];
+                floorInfo[i, j] = chessArray.infoByTwo[i, j];
             }
         }
 
-        // 2차원 배열을 1차원 배열로
-        foreach (var item in tempList)
+        for (int m = 0; m < 36; m++)
         {
-            for(int i = 0; i < 36; i++)
-            {
-                checkfloors[i] = item;
-                Debug.Log(checkfloors[i]);
-            }
+            actureOfChessFloor[m] = chessArray.infoByOne[m];
         }
 
     }
@@ -73,8 +66,43 @@ public class ChessManager : MonoBehaviour
         return floors[_index];
     }
 
-    public int[,] GetFloorCount()
+    bool GetFloorChecking(int _index)
     {
-        return floorInfo;
+        bool check;
+
+        if(actureOfChessFloor[_index] == 1)
+        {
+            check = true;
+        }
+        else
+        {
+            check = false;
+        }
+
+        Debug.Log(check);
+
+        return check;
     }
+
+    public void SetChessFloorTexture()
+    {
+        for(int i = 0; i < 36; i++)
+        {
+            mrFloorRenderer = floors[i].GetComponent<MeshRenderer>();
+
+            if (GetFloorChecking(i))
+            {
+                //mFloorMaterial = mMaterialContainer[1];
+                mrFloorRenderer.material.SetTexture("_MainTex", texTextureContainer[1]);
+            }
+            else
+            {
+                //mFloorMaterial = mMaterialContainer[0];
+                mrFloorRenderer.material.SetTexture("_MainTex", texTextureContainer[0]);
+            }
+            //mrFloorRenderer.material = mFloorMaterial;
+            
+        }        
+    }
+
 }

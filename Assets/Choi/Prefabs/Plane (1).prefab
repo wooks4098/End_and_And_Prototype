@@ -109,3 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84800007fa962f04e927257421ebe32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chessManager: {fileID: 0}
+  mMaterialContainer:
+  - {fileID: 2100000, guid: 902e61aa8b63a5c42a3b91a017aeb4f4, type: 2}
+  - {fileID: 2100000, guid: cd3fd183395a8924fa70c81c5360a15d, type: 2}
