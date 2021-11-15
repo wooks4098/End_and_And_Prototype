@@ -10,7 +10,7 @@ public abstract class BaseSelectManager : MonoBehaviour
     [SerializeField] protected SafeboxManager safeboxManager;
 
     // 접근할 수 있는지를 체크하는 list
-    // true = 접근 가능, false = 접근 불가능  
+    // true = 접근 가능][false = 접근 불가능  
     [SerializeField] protected List<bool> availableList;
 
 
