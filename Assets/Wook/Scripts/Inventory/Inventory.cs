@@ -14,7 +14,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] Slot[] UseItemSlots; // 사용 아이템 (퀵슬롯 전용 아이템) 슬롯
 
     [SerializeField] SlotSelect slotSelect;
-
+    ItemGet itemget;
     //test
     public Item i;
     public Item i2;
@@ -23,13 +23,16 @@ public class Inventory : MonoBehaviour
     {
         ObjectItemSlots = G_ObjectSlotsParent.GetComponentsInChildren<Slot>();
         UseItemSlots = G_UseSlotsParent.GetComponentsInChildren<Slot>();
+        itemget = GetComponent<ItemGet>();
         //test Item추가
         AcquireItem(i);
-        AcquireItem(i2);
+
     }
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Q))
+            AcquireItem(i2);
         TryOpenInventory();
     }
 
@@ -58,7 +61,8 @@ public class Inventory : MonoBehaviour
 
     public void AcquireItem(Item _item, int _Count = 1)
     {
-        switch(_item.itemType)
+        itemget.ShowItemGetUI(_item);
+        switch (_item.itemType)
         {
             case ItemType.ObjectItem:
                 AddItemToSlot(ObjectItemSlots, _item, _Count);
