@@ -48,14 +48,14 @@ public class ChessManager : MonoBehaviour
 
     private void OnEnable()
     {
-        player.OnWrongFloorEvent += CreatePlantThron;
+        player.OnWrongFloorEvent += CreatePlantThorn;
     }
     private void OnDisable()
     {
-        player.OnWrongFloorEvent -= CreatePlantThron;
+        player.OnWrongFloorEvent -= CreatePlantThorn;
     }
 
-    void CreatePlantThron(int _index)
+    void CreatePlantThorn(int _index)
     {
         StartCoroutine(CreatingTimeCoroutine(triggerTime, _index));
     }
@@ -71,27 +71,27 @@ public class ChessManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        InstantiatePlantThron(_index);
+        InstantiatePlantThorn(_index);
     }
 
-    private void InstantiatePlantThron(int _index)
+    private void InstantiatePlantThorn(int _index)
     {
         //Debug.Log("Trigger");
         //Debug.Log(_index);
 
         //Debug.Log("Throw");
         // ÇÁ¸®ÆÕ »ý¼º
-        //GameObject go = Instantiate(goPlantThron, transform.position, Quaternion.identity);
+        //GameObject go = Instantiate(goPlantThorn, transform.position, Quaternion.identity);
         //go.transform.parent = goParent.transform;
 
-        GameObject thron = floorObejcts[_index].GetPlantThron();
+        GameObject Thorn = floorObejcts[_index].GetPlantThorn();
         //Debug.Log(floorObejcts[_index]);
 
 
-        if (!thron.activeSelf)
+        if (!Thorn.activeSelf)
         {
             Debug.Log("Throw");
-            thron.SetActive(true);
+            Thorn.SetActive(true);
         }
     }
 

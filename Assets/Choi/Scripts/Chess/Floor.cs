@@ -6,7 +6,7 @@ using UnityEngine;
 public class Floor : MonoBehaviour
 {
     // 식물 가시
-    [SerializeField] GameObject goPlantThron;
+    [SerializeField] GameObject goPlantThorn;
     // 부모
     [SerializeField] Transform goParent;
 
@@ -19,25 +19,25 @@ public class Floor : MonoBehaviour
         goParent = this.transform;
 
         // 자식이 있는지 없는지 판별.
-        // 자식 중 <Tree> 컴포넌트가 있을 때만 자식에서 goPlantThron을 가져온다.
+        // 자식 중 <Tree> 컴포넌트가 있을 때만 자식에서 goPlantThorn을 가져온다.
         // true라고 해두면 비활성화된 객체도 찾을 수 있다.
         if (gameObject.GetComponentInChildren<Tree>(true) != null)
         {
-            goPlantThron = goParent.GetChild(0).gameObject;
+            goPlantThorn = goParent.GetChild(0).gameObject;
 
 
             // 켜져있으면 끈다.
-            if(goPlantThron.activeSelf)
+            if(goPlantThorn.activeSelf)
             {
-                goPlantThron.SetActive(false);
+                goPlantThorn.SetActive(false);
             }
         }
     }
 
 
 
-    public GameObject GetPlantThron()
+    public GameObject GetPlantThorn()
     {
-        return goPlantThron;
+        return goPlantThorn;
     }
 }
