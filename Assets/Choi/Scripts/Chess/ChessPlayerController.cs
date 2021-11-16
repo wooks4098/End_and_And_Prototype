@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+/// <summary>
+/// 방향을 구분할 enum
+/// </summary>
 public enum Direction
 {
     None,
@@ -17,7 +20,6 @@ public enum Direction
 public class ChessPlayerController : MonoBehaviour
 {
     // 테스트가 끝나면 일부는 감출 것
-
 
     [SerializeField] ChessManager chessManager;
 
@@ -36,25 +38,46 @@ public class ChessPlayerController : MonoBehaviour
     int currentFloorIndex = 33;
     [SerializeField] Floor currentFloor;
 
+    //==================================================
+
+    // [Access] delegate [Type] [Function Name]([Parameters])
+    //public delegate void EventHandler(int _index);
+    // [Access] [Delegate Function Name] [Function Name]
+    //public static event EventHandler OnWrongFloorEvent;
+
+    public event Action<int> OnWrongFloorEvent;
+
+
 
     private void Start()
     {
-        currentFloor = chessManager.GetFloors(currentFloorIndex).GetComponent<Floor>();
+        currentFloor = chessManager.GetFloorObjects(currentFloorIndex).GetComponent<Floor>();
         //v3CurrentPosition = transform.position;
     }
 
     private void Update()
     {
+        // isMoving == false 이면 (움직이는 중이 아니면)
         if (!isMoving)
         {
+            // key 입력을 받는다
             InputDirectionKey();
-        }
 
-        if (isMoving)
+            CheckCurrentFloor(currentFloorIndex);
+        }
+        // isMoving == true 이면 (움직이는 중이면)
+        else if (isMoving)
         {
+            // 계속 이동한다
             MoveToDirection();
         }
     }
+
+    public Floor GetCurrentFloor()
+    {
+        return currentFloor;
+    }
+
 
     private void InputDirectionKey()
     {
@@ -86,6 +109,7 @@ public class ChessPlayerController : MonoBehaviour
 
             currentFloorIndex += 1;
         }
+
         SelectFloor(currentFloorIndex);
     }
 
@@ -104,9 +128,10 @@ public class ChessPlayerController : MonoBehaviour
                     // Vector3를 사용하여 새로운 좌표로 업데이트.
                     transform.position = new Vector3(transform.position.x, transform.position.y, newPositonZ);
 
+                    //Debug.Log(Vector3.Distance(transform.position, currentFloor.transform.position));
 
                     // 도착하면 플래그를 false로 변경
-                    if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 0.5)
+                    if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 0.5f)
                     {
                         isMoving = false;
                     }
@@ -118,10 +143,9 @@ public class ChessPlayerController : MonoBehaviour
                     float newPositonX = Mathf.MoveTowards(transform.position.x, currentFloor.transform.position.x, moveSpeed * Time.deltaTime);
                     transform.position = new Vector3(newPositonX, transform.position.y, transform.position.z);
 
+                    //Debug.Log("newPositonX");
 
-                    Debug.Log("newPositonX");
-
-                    if (Vector3.Distance(currentFloor.transform.position, transform.position) <= 0.5)
+                    if (Vector3.Distance(currentFloor.transform.position, transform.position) <= 0.5f)
                     {
                         isMoving = false;
                     }
@@ -134,6 +158,18 @@ public class ChessPlayerController : MonoBehaviour
 
     void SelectFloor(int _index)
     {
-        currentFloor = chessManager.GetFloors(_index).GetComponent<Floor>();
+        currentFloor = chessManager.GetFloorObjects(_index).GetComponent<Floor>();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    void CheckCurrentFloor(int _index)
+    {        
+        // false이면...
+        if (!chessManager.GetFloorChecking(_index))
+        {
+            OnWrongFloorEvent?.Invoke(_index);
+        }
     }
 }
