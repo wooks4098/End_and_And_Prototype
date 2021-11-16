@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum DIRECTION
+public enum Direction
 {
-    NONE,
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
+    None,
+    Up,
+    Down,
+    Left,
+    Right,
 }
 
 
@@ -22,7 +22,7 @@ public class ChessPlayerController : MonoBehaviour
     [SerializeField] ChessManager chessManager;
 
     // 방향
-    [SerializeField] DIRECTION direction = 0;
+    [SerializeField] Direction dir;
 
     // 입력 중인지 구분할 플래그
     [SerializeField] bool isMoving = false;
@@ -33,7 +33,7 @@ public class ChessPlayerController : MonoBehaviour
 
     Vector3 v3CurrentPosition;
 
-    int currentFloorIndex = 3;
+    int currentFloorIndex = 33;
     [SerializeField] Floor currentFloor;
 
 
@@ -45,11 +45,13 @@ public class ChessPlayerController : MonoBehaviour
 
     private void Update()
     {
-        InputDirectionKey();
+        if (!isMoving)
+        {
+            InputDirectionKey();
+        }
 
         if (isMoving)
         {
-            SelectFloor(currentFloorIndex);
             MoveToDirection();
         }
     }
@@ -58,71 +60,70 @@ public class ChessPlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            direction = DIRECTION.UP;
-            isMoving = true;
-
-            currentFloorIndex += 6;
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            direction = DIRECTION.DOWN;
+            dir = Direction.Up;
             isMoving = true;
 
             currentFloorIndex -= 6;
         }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            dir = Direction.Down;
+            isMoving = true;
+
+            currentFloorIndex += 6;
+        }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            direction = DIRECTION.LEFT;
+            dir = Direction.Left;
             isMoving = true;
 
             currentFloorIndex -= 1;
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            direction = DIRECTION.RIGHT;
+            dir = Direction.Right;
             isMoving = true;
 
             currentFloorIndex += 1;
         }
+        SelectFloor(currentFloorIndex);
     }
 
     void MoveToDirection()
     {
-        switch(direction)
+        switch(dir)
         {
-            case DIRECTION.UP:
-            case DIRECTION.DOWN:
+            case Direction.Up:
+            case Direction.Down:
                 {
-                    if(isMoving)
+                    // 부드러운 이동을 위해 Mathf.MoveTowrads를 사용 
+                    // 이것은 지금은 앞과 뒤로 이동할 때 실행되므로 z값을 계산한다.
+                    // 큐브가 currentFloor (= 현재 지정된 바닥)을 타겟으로 이동한다. - 속도는 moveSpeed * time.deltaTime만큼
+                    float newPositonZ = Mathf.MoveTowards(transform.position.z, currentFloor.transform.position.z, moveSpeed * Time.deltaTime);
+                    
+                    // Vector3를 사용하여 새로운 좌표로 업데이트.
+                    transform.position = new Vector3(transform.position.x, transform.position.y, newPositonZ);
+
+
+                    // 도착하면 플래그를 false로 변경
+                    if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 0.5)
                     {
-                        // 부드러운 이동을 위해 Mathf.MoveTowrads를 사용 
-                        // 이것은 지금은 앞과 뒤로 이동할 때 실행되므로 z값을 계산한다.
-                        // 큐브가 currentFloor (= 현재 지정된 바닥)을 타겟으로 이동한다. - 속도는 moveSpeed * time.deltaTime만큼
-                        float newPositonZ = Mathf.MoveTowards(transform.position.z, currentFloor.transform.position.z, moveSpeed * Time.deltaTime);
-
-                        // Vector3를 사용하여 새로운 좌표로 업데이트.
-                        transform.position = new Vector3(transform.position.x, transform.position.y, newPositonZ);
-
-                        // 도착하면 플래그를 false로 변경
-                        if (transform.position == currentFloor.transform.position)
-                        {
-                            isMoving = false;
-                        }
+                        isMoving = false;
                     }
                 }
                 break;
-            case DIRECTION.LEFT:
-            case DIRECTION.RIGHT:
+            case Direction.Left:
+            case Direction.Right:
                 {
-                    if (isMoving)
-                    {
-                        float newPositonX = Mathf.MoveTowards(transform.position.x, currentFloor.transform.position.x, moveSpeed * Time.deltaTime);
-                        transform.position = new Vector3(newPositonX, transform.position.y, transform.position.z);
+                    float newPositonX = Mathf.MoveTowards(transform.position.x, currentFloor.transform.position.x, moveSpeed * Time.deltaTime);
+                    transform.position = new Vector3(newPositonX, transform.position.y, transform.position.z);
 
-                        if (transform.position == currentFloor.transform.position)
-                        {
-                            isMoving = false;
-                        }
+
+                    Debug.Log("newPositonX");
+
+                    if (Vector3.Distance(currentFloor.transform.position, transform.position) <= 0.5)
+                    {
+                        isMoving = false;
                     }
                 }
                 break;
