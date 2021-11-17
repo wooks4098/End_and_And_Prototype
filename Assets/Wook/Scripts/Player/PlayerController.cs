@@ -7,11 +7,19 @@ public enum PlayerType
     FirstPlayer = 0,
     SecondPlayer,
 }
+//플레이어 행동 상태
+public enum PlayerState
+{
+    Walk = 0,
+    ClimbWall,
+    Wait, //대기상태
 
+}
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] PlayerType playerType;
+    [SerializeField] PlayerState playerState = PlayerState.Walk;
 
     [SerializeField] float moveSpeed; //이동속도
     [SerializeField] float rotateSpeed; //회전속도
@@ -22,9 +30,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform CameraTransform;
     [SerializeField] Animator ani;
     [SerializeField] PlayerInput playerInput;
-
     //test
     [SerializeField] GameObject playerCamera;
+
 
     private void Awake()
     {
@@ -51,15 +59,28 @@ public class PlayerController : MonoBehaviour
     }
     void Move(MoveType moveType)
     {
+        switch(playerState)
+        {
+            case PlayerState.Walk:
+                FrontBackWalk(moveType);
+                break;
+            case PlayerState.ClimbWall:
+                Climb(moveType);
+                break;
+        }
+    }
+
+    void FrontBackWalk(MoveType moveType)
+    {
         if (moveType == MoveType.Front)
         {
-            moveDirection = GetDirection(InputDir.front);
+            moveDirection = GetDirection(InputDir.front, PlayerState.Walk);
             ani.SetBool("WalkFront", true);
             ani.SetBool("WalkBack", false);
         }
         else if (moveType == MoveType.Back)
         {
-            moveDirection = GetDirection(InputDir.back);
+            moveDirection = GetDirection(InputDir.back, PlayerState.Walk);
             ani.SetBool("WalkFront", false);
             ani.SetBool("WalkBack", true);
             isRun = false;
@@ -71,11 +92,41 @@ public class PlayerController : MonoBehaviour
             ani.SetBool("WalkBack", false);
             isRun = false;
         }
-        ani.SetBool("Run", isRun);
+    }
+
+    void Climb(MoveType moveType)
+    {
+        if (moveType == MoveType.Front)
+        {
+            moveSpeed = 1;
+            moveDirection = -GetDirection(InputDir.front, PlayerState.ClimbWall);
+            ani.SetBool("IsClimb", true);
+
+            //var cameraFowardDirection = CameraTransform.forward;
+            //Vector3 directionToMoveIn = Vector3.Scale(cameraFowardDirection, (Vector3.right + Vector3.up));
+            //moveDirection = directionToMoveIn*-1;
+            //moveDirection = GetDirection(InputDir.front);
+            //moveDirection = Vector3.Cross(moveDirection, Vector3.);
+
+        }
+        else if (moveType == MoveType.Back)
+        {
+            moveSpeed = 1;
+            moveDirection = -GetDirection(InputDir.back, PlayerState.ClimbWall);
+
+        }
+        else
+        {
+            moveDirection = Vector3.zero;
+            
+        }
+        Debug.DrawRay(Camera.main.transform.position, moveDirection * 10, Color.blue);
     }
 
     void Rotation(MoveType moveType)
     {
+        if (playerState == PlayerState.ClimbWall)
+            return;
         // ani.SetBool("Run", isRun);
         if (moveType == MoveType.LeftTurn)
         {
@@ -89,6 +140,8 @@ public class PlayerController : MonoBehaviour
 
     void Run(bool _isRun)
     {
+        if (playerState == PlayerState.ClimbWall)
+            return;
         if (_isRun)
             isRun = _isRun;
         else
@@ -96,12 +149,22 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    Vector3 GetDirection(InputDir _inputDir)
+    Vector3 GetDirection(InputDir _inputDir, PlayerState _playerState)
     {
+        Vector3 MoveDir = Vector3.zero; //이동방향
+        switch (_playerState)
+        {
+            case PlayerState.Walk:
+                MoveDir = Vector3.forward;
+                break;
+            case PlayerState.ClimbWall:
+                MoveDir = Vector3.up;
+                break;
+        }
         var cameraFowardDirection = CameraTransform.forward;
-        Vector3 directionToMoveIn = Vector3.Scale(cameraFowardDirection, (Vector3.right + Vector3.forward));
-        Debug.DrawRay(Camera.main.transform.position, cameraFowardDirection * 10, Color.red);
-        Debug.DrawRay(Camera.main.transform.position, directionToMoveIn * 10, Color.blue);
+        Vector3 directionToMoveIn = Vector3.Scale(cameraFowardDirection, (Vector3.right + MoveDir));
+        //Debug.DrawRay(Camera.main.transform.position, cameraFowardDirection * 10, Color.red);
+        //Debug.DrawRay(Camera.main.transform.position, directionToMoveIn * 10, Color.blue);
 
         if (_inputDir == InputDir.front)
         {
@@ -119,6 +182,11 @@ public class PlayerController : MonoBehaviour
         playerInput.CanMoveChange(CanMove);
 
 
+    }
+
+    public void PlayerStateChange(PlayerState _playerState)
+    {
+        playerState = _playerState;
     }
 
 }

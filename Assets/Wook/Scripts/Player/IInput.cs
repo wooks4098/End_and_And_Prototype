@@ -11,6 +11,8 @@ public enum MoveType
     Run,
 }
 
+
+
 public interface IInput
 {
     Action<MoveType> OnMove { get; set; }

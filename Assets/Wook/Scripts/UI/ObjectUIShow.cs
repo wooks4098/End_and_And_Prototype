@@ -9,29 +9,34 @@ public class ObjectUIShow : MonoBehaviour
 
     [SerializeField] PlayerType playerType;
     [SerializeField] Transform ObjectUiPos;
+    [SerializeField] bool CanUse = false;// 오브젝트 사용가능한지
     //testd용 UI매니저를 만들어 요청하는것으로 수정해야함
-    [SerializeField] ObjectUI objectui1;
-    [SerializeField] ObjectUI objectui2;
 
-    [SerializeField] bool P1CanUse = false;
-    [SerializeField] bool P2CanUse = false;
+
+    public bool GetCanUse()
+    {
+        return CanUse;
+    }
+
+    public PlayerType GetPlayerType()
+    {
+        return playerType;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
 
         if(other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
         {
-            UIManager.Instance.ObjectUIShow(PlayerType.FirstPlayer);
-            //objectui1.Show();
-            P1CanUse = true;
+            CanUse = true;
+            GameManager.Instance.PlayerObjectHitin(PlayerType.FirstPlayer);
+            //UIManager.Instance.ObjectUIShow(PlayerType.FirstPlayer);
         }
 
         if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
         {
-            UIManager.Instance.ObjectUIShow(PlayerType.SecondPlayer);
-
-            //objectui2.Show();
-            P2CanUse = true;
+            CanUse = true;
+            GameManager.Instance.PlayerObjectHitin(PlayerType.SecondPlayer);
         }
     }
 
@@ -39,15 +44,14 @@ public class ObjectUIShow : MonoBehaviour
     {
         if (other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
         {
-            UIManager.Instance.ObjectUIMove(PlayerType.FirstPlayer, ObjectUiPos.position);
+            GameManager.Instance.ObjectUiMove(PlayerType.FirstPlayer, ObjectUiPos.position);
 
-            //objectui1.Move();
         }
 
         if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
         {
-            UIManager.Instance.ObjectUIMove(PlayerType.SecondPlayer, ObjectUiPos.position);
-            //objectui2.Move();
+            GameManager.Instance.ObjectUiMove(PlayerType.SecondPlayer, ObjectUiPos.position);
+
 
         }
     }
@@ -56,16 +60,16 @@ public class ObjectUIShow : MonoBehaviour
     {
         if (other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
         {
-            UIManager.Instance.ObjectUIHide(PlayerType.FirstPlayer);
-            //objectui1.hide();
-            P1CanUse = false;
+            CanUse = false;
+            GameManager.Instance.PlayerObjectHitout(PlayerType.FirstPlayer);
+
         }
 
         if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
         {
-            UIManager.Instance.ObjectUIHide(PlayerType.SecondPlayer);
-            //objectui2.hide();
-            P1CanUse = false;
+            CanUse = false;
+            GameManager.Instance.PlayerObjectHitout(PlayerType.SecondPlayer);
+
         }
     }
 

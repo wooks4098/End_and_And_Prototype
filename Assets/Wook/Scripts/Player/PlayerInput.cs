@@ -2,6 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+/// <summary>
+/// 플레이어 인풋 관련 클래스
+/// 지금은 각각의 플레이어가 가지고 있지만 
+/// InputManager로 변경후 하나의 InputManager가 인풋을 받아 플레이어나 오브젝트에 인풋을 주는걸로 수정
+/// </summary>
 
 public class PlayerInput : MonoBehaviour, IInput
 {
@@ -19,7 +24,7 @@ public class PlayerInput : MonoBehaviour, IInput
         RunInput();
         MoveInput();
         RotationInput();
-        UseInput();
+        //UseInput();
     }
 
     public void SetPlayerType(PlayerType _playertype)
