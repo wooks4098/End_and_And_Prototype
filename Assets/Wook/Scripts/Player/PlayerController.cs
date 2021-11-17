@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
             moveSpeed = 1;
             moveDirection = -GetDirection(InputDir.front, PlayerState.ClimbWall);
             ani.SetBool("IsClimb", true);
-
+            ani.SetFloat("ClimbSpeed", 0.75f);
             //var cameraFowardDirection = CameraTransform.forward;
             //Vector3 directionToMoveIn = Vector3.Scale(cameraFowardDirection, (Vector3.right + Vector3.up));
             //moveDirection = directionToMoveIn*-1;
@@ -113,12 +113,12 @@ public class PlayerController : MonoBehaviour
         {
             moveSpeed = 1;
             moveDirection = -GetDirection(InputDir.back, PlayerState.ClimbWall);
-
+            ani.SetFloat("ClimbSpeed", -0.75f);
         }
         else
         {
             moveDirection = Vector3.zero;
-            
+            ani.SetFloat("ClimbSpeed", 0);
         }
         Debug.DrawRay(Camera.main.transform.position, moveDirection * 10, Color.blue);
     }
