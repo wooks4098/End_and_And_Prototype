@@ -6,6 +6,7 @@ public class Inventory : MonoBehaviour
 {
     public bool inventoryActivated = false;
 
+    [SerializeField] PlayerType playerType;
     [SerializeField] GameObject G_InventoryBase;
     [SerializeField] GameObject G_ObjectSlotsParent;
     [SerializeField] GameObject G_UseSlotsParent;
@@ -35,6 +36,7 @@ public class Inventory : MonoBehaviour
             AcquireItem(i2);
         TryOpenInventory();
     }
+
 
     public void SlotSelectColorChange(int SlotNum,Color color)
     {
@@ -104,21 +106,27 @@ public class Inventory : MonoBehaviour
 
     void OpenInventory()
     {
-        
+        //인벤토리 오브젝트 속성 변경
         inventoryActivated = true;
         G_InventoryBase.SetActive(inventoryActivated);
         slotSelect.inventoryActivateChange(inventoryActivated);
+        //인벤토리 선택 색상 초기화
         ObjectItemSlots[0].SelectColor(Color.red);
         for (int i = 1; i<ObjectItemSlots.Length; i++)
         {
             ObjectItemSlots[i].SelectColor(Color.white);
         }
+        //플레이어 상태변경
+        GameManager.Instance.PlayerStateChange(playerType, PlayerState.Inventory);
     }
 
     void CloseInventory()
     {
+        //인벤토리 오브젝트 속성 변경
         inventoryActivated = false;
         G_InventoryBase.SetActive(inventoryActivated);
         slotSelect.inventoryActivateChange(inventoryActivated);
+        //플레이어 상태변경
+        GameManager.Instance.PlayerStateChange(playerType, PlayerState.Walk);
     }
 }

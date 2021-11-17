@@ -29,18 +29,18 @@ public class GameManager : MonoBehaviour
     }
 
     //플레이어 움직임 Move관련 input제어
-    public void PlayerCanMoveChange(PlayerType playerType, bool CanMove)
-    {
-        switch (playerType)
-        {
-            case PlayerType.FirstPlayer:
-                player1.PlayerCanMoveChange(CanMove);
-                break;
-            case PlayerType.SecondPlayer:
-                player2.PlayerCanMoveChange(CanMove);
-                break;
-        }
-    }
+    //public void PlayerCanMoveChange(PlayerType playerType, bool CanMove)
+    //{
+    //    switch (playerType)
+    //    {
+    //        case PlayerType.FirstPlayer:
+    //            player1.PlayerCanMoveChange(CanMove);
+    //            break;
+    //        case PlayerType.SecondPlayer:
+    //            player2.PlayerCanMoveChange(CanMove);
+    //            break;
+    //    }
+    //}
 
     public void PlayerStateChange(PlayerType _playerType, PlayerState _playerState)
     {

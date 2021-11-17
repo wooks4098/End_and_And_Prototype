@@ -6,8 +6,8 @@ public enum MoveType
     Front = 0,
     Back,
     Stay,
-    LeftTurn,
-    RightTrun,
+    Left,
+    Right,
     Run,
 }
 
@@ -15,9 +15,19 @@ public enum MoveType
 
 public interface IInput
 {
-    Action<MoveType> OnMove { get; set; }
-    Action<MoveType> OnRotation { get; set; }
-    Action<bool> OnRun { get; set; }
+    //앞 뒤 움직임
+    Action<MoveType, PlayerState> OnFrontBackPlayer1 { get; set; }//w s
+    Action<MoveType, PlayerState> OnFrontBackPlayer2 { get; set; }//↑↓
 
-    Action OnUse { get; set; }
+    //좌 우 움직임
+    Action<MoveType, PlayerState> OnLeftRightPlayer1 { get; set; }//a d
+    Action<MoveType, PlayerState> OnLeftRightPlayer2 { get; set; }//← →
+
+    //달리기
+    Action<bool> OnRunPlayer1 { get; set; }
+    Action<bool> OnRunPlayer2 { get; set; }
+
+    //사용키
+    Action<PlayerState> OnUsePlayer1 { get; set; } 
+    Action<PlayerState> OnUsePlayer2 { get; set; }
 }

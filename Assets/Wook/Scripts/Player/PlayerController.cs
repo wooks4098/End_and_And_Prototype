@@ -10,9 +10,10 @@ public enum PlayerType
 //플레이어 행동 상태
 public enum PlayerState
 {
-    Walk = 0,
-    ClimbWall,
+    Walk = 0, //걷는중
+    ClimbWall, //벽 오르는중
     Wait, //대기상태
+    Inventory, //인벤토리 오픈
 
 }
 
@@ -24,12 +25,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float moveSpeed; //이동속도
     [SerializeField] float rotateSpeed; //회전속도
     Vector3 moveDirection; //이동방향
-    bool isRun = false;
-
+    [SerializeField] bool isRun = false;
+    
     CharacterController characterController;
     [SerializeField] Transform CameraTransform;
     [SerializeField] Animator ani;
-    [SerializeField] PlayerInput playerInput;
+    //[SerializeField] PlayerInput playerInput;
     //test
     [SerializeField] GameObject playerCamera;
 
@@ -38,26 +39,42 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         ani = GetComponentInChildren<Animator>();
-        playerInput = GetComponent<PlayerInput>();
-        playerInput.SetPlayerType(playerType);
         //input event 등록
-        playerInput.OnMove += Move;
-        playerInput.OnRotation += Rotation;
-        playerInput.OnRun += Run;
-        //playerInput.OnUse += UseObject;
-
+        SetInput();
     }
 
     private void Update()
     {
         MoveTo(moveDirection);
     }
+
+    //input event 등록
+    void SetInput()
+    {
+        switch (playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnFrontBackPlayer1 += Move;
+                InputManager.Instance.OnLeftRightPlayer1 += Rotation;
+                InputManager.Instance.OnRunPlayer1 += Run;
+                //InputManager.Instance.OnUsePlayer1 += 
+                break;
+
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnFrontBackPlayer2 += Move;
+                InputManager.Instance.OnLeftRightPlayer2 += Rotation;
+                InputManager.Instance.OnRunPlayer2 += Run;
+                //InputManager.Instance.OnUsePlayer2 += 
+                break;
+        }
+    }
+
     void MoveTo(Vector3 direction)
     {
         characterController.Move(direction * (isRun == false ? moveSpeed : moveSpeed * 2.3f) * Time.deltaTime);
 
     }
-    void Move(MoveType moveType)
+    void Move(MoveType moveType, PlayerState _playerState)
     {
         switch(playerState)
         {
@@ -72,6 +89,8 @@ public class PlayerController : MonoBehaviour
 
     void FrontBackWalk(MoveType moveType)
     {
+
+
         if (moveType == MoveType.Front)
         {
             moveDirection = GetDirection(InputDir.front, PlayerState.Walk);
@@ -92,6 +111,7 @@ public class PlayerController : MonoBehaviour
             ani.SetBool("WalkBack", false);
             isRun = false;
         }
+        ani.SetBool("Run", isRun);
     }
 
     void Climb(MoveType moveType)
@@ -102,11 +122,6 @@ public class PlayerController : MonoBehaviour
             moveDirection = -GetDirection(InputDir.front, PlayerState.ClimbWall);
             ani.SetBool("IsClimb", true);
             ani.SetFloat("ClimbSpeed", 0.75f);
-            //var cameraFowardDirection = CameraTransform.forward;
-            //Vector3 directionToMoveIn = Vector3.Scale(cameraFowardDirection, (Vector3.right + Vector3.up));
-            //moveDirection = directionToMoveIn*-1;
-            //moveDirection = GetDirection(InputDir.front);
-            //moveDirection = Vector3.Cross(moveDirection, Vector3.);
 
         }
         else if (moveType == MoveType.Back)
@@ -120,19 +135,18 @@ public class PlayerController : MonoBehaviour
             moveDirection = Vector3.zero;
             ani.SetFloat("ClimbSpeed", 0);
         }
-        Debug.DrawRay(Camera.main.transform.position, moveDirection * 10, Color.blue);
     }
 
-    void Rotation(MoveType moveType)
+    void Rotation(MoveType moveType, PlayerState _playerState)
     {
-        if (playerState == PlayerState.ClimbWall)
+        if (playerState != PlayerState.Walk)
             return;
         // ani.SetBool("Run", isRun);
-        if (moveType == MoveType.LeftTurn)
+        if (moveType == MoveType.Left)
         {
             transform.Rotate(new Vector3(0, -rotateSpeed * Time.deltaTime, 0));
         }
-        else if (moveType == MoveType.RightTrun)
+        else if (moveType == MoveType.Right)
         {
             transform.Rotate(new Vector3(0, rotateSpeed * Time.deltaTime, 0));
         }
@@ -140,12 +154,10 @@ public class PlayerController : MonoBehaviour
 
     void Run(bool _isRun)
     {
-        if (playerState == PlayerState.ClimbWall)
+        if (playerState != PlayerState.Walk)
             return;
-        if (_isRun)
-            isRun = _isRun;
-        else
-            isRun = false;
+        isRun = _isRun;
+
     }
 
 
@@ -177,16 +189,14 @@ public class PlayerController : MonoBehaviour
         return directionToMoveIn;
     }
 
-    public void PlayerCanMoveChange(bool CanMove)
-    {
-        playerInput.CanMoveChange(CanMove);
-
-
-    }
-
     public void PlayerStateChange(PlayerState _playerState)
     {
         playerState = _playerState;
     }
+    
 
+    public PlayerState GetPlayerState()
+    {
+        return playerState;
+    }
 }

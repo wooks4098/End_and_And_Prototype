@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class SlotSelect : MonoBehaviour
 {
     bool inventoryActivated = false;
-
+    [SerializeField] PlayerType playerType;
     Item item; //아이템
     [SerializeField] Image itemImage; //아이템 이미지
     [SerializeField] Text itemName; //아이템 이름
@@ -20,7 +20,28 @@ public class SlotSelect : MonoBehaviour
     private void Awake()
     {
         inventory = gameObject.GetComponentInParent<Inventory>();
+        SetInput();
     }
+
+    //input event 등록
+    void SetInput()
+    {
+        switch (playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnFrontBackPlayer1 += OnFrontBack;
+                InputManager.Instance.OnLeftRightPlayer1 += OnLeftRight;
+                break;
+
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnFrontBackPlayer2 += OnFrontBack;
+                InputManager.Instance.OnLeftRightPlayer2 += OnLeftRight;
+
+                break;
+        }
+    }
+
+
     public void inventoryActivateChange(bool Activate)
     {
         inventoryActivated = Activate;
@@ -32,12 +53,64 @@ public class SlotSelect : MonoBehaviour
         }
     }
 
-    private void Update()
+    //private void Update()
+    //{
+    //    if(inventoryActivated)
+    //    {
+    //        if(Input.GetKeyDown(KeyCode.W))
+    //        {
+    //            if (SelectNumber >= 5)
+    //            {
+    //                inventory.SlotSelectColorChange(SelectNumber, Color.white);
+    //                SelectNumber -= 5;
+    //                inventory.SlotSelectColorChange(SelectNumber, Color.red);
+    //                ChangeItemInfo();
+    //            }
+
+    //        }
+    //        else if(Input.GetKeyDown(KeyCode.S))
+    //        {
+    //            if (SelectNumber < 5)
+    //            {
+    //                inventory.SlotSelectColorChange(SelectNumber, Color.white);
+    //                SelectNumber += 5;
+    //                inventory.SlotSelectColorChange(SelectNumber, Color.red);
+    //                ChangeItemInfo();
+    //            }
+    //        }
+    //        else if (Input.GetKeyDown(KeyCode.A))
+    //        {
+    //            if (SelectNumber != 0 )
+    //            {
+    //                inventory.SlotSelectColorChange(SelectNumber, Color.white);
+    //                SelectNumber--;
+    //                inventory.SlotSelectColorChange(SelectNumber, Color.red);
+    //                ChangeItemInfo();
+    //            }
+
+    //        }
+    //        else if (Input.GetKeyDown(KeyCode.D))
+    //        {
+    //            if ( SelectNumber != 9)
+    //            {
+    //                inventory.SlotSelectColorChange(SelectNumber, Color.white);
+    //                SelectNumber++;
+    //                inventory.SlotSelectColorChange(SelectNumber, Color.red);
+    //                ChangeItemInfo();
+    //            }
+
+    //        }
+    //    }
+    //}
+
+    //앞 뒤 인풋
+    void OnFrontBack(MoveType _MoveType, PlayerState _playerState)
     {
-        if(inventoryActivated)
+        if (_playerState != PlayerState.Inventory && inventoryActivated)
+            return;
+        switch(_MoveType)
         {
-            if(Input.GetKeyDown(KeyCode.W))
-            {
+            case MoveType.Front:
                 if (SelectNumber >= 5)
                 {
                     inventory.SlotSelectColorChange(SelectNumber, Color.white);
@@ -45,10 +118,8 @@ public class SlotSelect : MonoBehaviour
                     inventory.SlotSelectColorChange(SelectNumber, Color.red);
                     ChangeItemInfo();
                 }
-
-            }
-            else if(Input.GetKeyDown(KeyCode.S))
-            {
+                break;
+            case MoveType.Back:
                 if (SelectNumber < 5)
                 {
                     inventory.SlotSelectColorChange(SelectNumber, Color.white);
@@ -56,33 +127,39 @@ public class SlotSelect : MonoBehaviour
                     inventory.SlotSelectColorChange(SelectNumber, Color.red);
                     ChangeItemInfo();
                 }
-            }
-            else if (Input.GetKeyDown(KeyCode.A))
-            {
-                if (SelectNumber != 0 )
+                break;
+        }
+    }
+
+    //좌 우 인풋
+    void OnLeftRight(MoveType _MoveType, PlayerState _playerState)
+    {
+        if (_playerState != PlayerState.Inventory && inventoryActivated)
+            return;
+        switch (_MoveType)
+        {
+            case MoveType.Left:
+                if (SelectNumber != 0)
                 {
                     inventory.SlotSelectColorChange(SelectNumber, Color.white);
                     SelectNumber--;
                     inventory.SlotSelectColorChange(SelectNumber, Color.red);
                     ChangeItemInfo();
                 }
-
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                if ( SelectNumber != 9)
+                break;
+            case MoveType.Right:
+                if (SelectNumber != 9)
                 {
                     inventory.SlotSelectColorChange(SelectNumber, Color.white);
                     SelectNumber++;
                     inventory.SlotSelectColorChange(SelectNumber, Color.red);
                     ChangeItemInfo();
                 }
-
-            }
+                break;
         }
-
-       
     }
+
+
     public void ChangeItemInfo()
     {
         item = inventory.GetSlotItem(SelectNumber);
