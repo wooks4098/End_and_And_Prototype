@@ -843,6 +843,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isClimb: 0
+  player1ObjectShow: {fileID: 408169329}
+  player2ObjectShow: {fileID: 1532486202}
 --- !u!1 &408169326
 GameObject:
   m_ObjectHideFlags: 0
@@ -1165,6 +1167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbd66d453f92c2342802737e8386900e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player2Use: 0
   player1: {fileID: 1232732443}
   player2: {fileID: 1336764261}
 --- !u!4 &514492471
@@ -1726,6 +1729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inventoryActivated: 0
+  playerType: 0
   G_InventoryBase: {fileID: 1873782839}
   G_ObjectSlotsParent: {fileID: 802181730}
   G_UseSlotsParent: {fileID: 519991240}
@@ -2060,6 +2064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30cd5222f5202a24f91d62d5397dec8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerType: 0
   itemImage: {fileID: 2061771234}
   itemName: {fileID: 1150375075}
   ItemInfo: {fileID: 284148831}

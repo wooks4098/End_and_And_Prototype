@@ -6,40 +6,65 @@ using UnityEngine;
 /// </summary>
 public class ClimbWall : MonoBehaviour
 {
-    ObjectUIShow objectUIShow;
     bool isPlayergoup;//플레이어가 올라갔는지
     [SerializeField] bool isClimb = false;//오르는중인지
-
-    private void Awake()
+    [SerializeField] ObjectUIShow player1ObjectShow;
+    [SerializeField] ObjectUIShow player2ObjectShow;
+    private void Start()
     {
-        objectUIShow = GetComponentInChildren<ObjectUIShow>();
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E) && objectUIShow.GetCanUse() == true && isClimb == false)
-        {
-            PlayerPanertChange();
-        }
-    }
+        SetInput();
 
+    }
+    //private void Update()
+    //{
+    //    //if (Input.GetKeyDown(KeyCode.E) && objectUIShow.GetCanUse() == true && isClimb == false)
+    //    //{
+    //    //    PlayerPanertChange();
+    //    //}
+    //}
+    void SetInput()
+    {
+        InputManager.Instance.OnUsePlayer1 += PlayerPanertChange;
+        InputManager.Instance.OnUsePlayer2 += PlayerPanertChange;
+        //switch (playerType)
+        //{
+        //    case PlayerType.FirstPlayer:
+        //        InputManager.Instance.OnUsePlayer1 += PlayerPanertChange;
+        //        break;
+
+        //    case PlayerType.SecondPlayer:
+        //        InputManager.Instance.OnUsePlayer2 += PlayerPanertChange;
+
+        //        break;
+        //}
+    }
     //플레이어 Climb시작
-    void PlayerPanertChange()
+    void PlayerPanertChange(PlayerType _playerType, PlayerState _playerState)
     {
-        Transform playerTrans = GameManager.Instance.GetPlayerTrans(objectUIShow.GetPlayerType());
-        Transform playerModelTrans = GameManager.Instance.GetPlayerModelTrans(objectUIShow.GetPlayerType());
+        Transform playerTrans;
+        Transform playerModelTrans;
+        switch (_playerType)
+        {
+            case PlayerType.FirstPlayer:
+                playerTrans = GameManager.Instance.GetPlayerTrans(player1ObjectShow.GetPlayerType());
+                playerModelTrans = GameManager.Instance.GetPlayerModelTrans(player1ObjectShow.GetPlayerType());
+                playerTrans.rotation = Quaternion.Euler(0, 0, 0);
+                playerModelTrans.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
+                isClimb = true;
+                //플레이어 상태 변경
+                GameManager.Instance.PlayerStateChange(player1ObjectShow.GetPlayerType(), PlayerState.ClimbWall);
+                break;
 
-        //Vector3 vec = transform.position - playerTrans.position;
-        //vec = new Vector3(0, vec.y, 0);
-        //Quaternion q = Quaternion.LookRotation(vec.normalized);
-        //q = new Quaternion(0, q.y, 0, q.w);new Quaternion(0, -transform.rotation.y, 0, transform.rotation.w);
-        playerTrans.rotation = Quaternion.Euler(0, 0, 0);
-        playerModelTrans.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
-
-        //플레이어 부모 변경
-        //playerTrans.parent = transform; //player.gameObject.transform.parent.gameObject.transform.parent = transform;
-        isClimb = true;
-        //플레이어 상태 변경
-        GameManager.Instance.PlayerStateChange(objectUIShow.GetPlayerType(), PlayerState.ClimbWall);
-        //플레이어 방향 변경
+            case PlayerType.SecondPlayer:
+                playerTrans = GameManager.Instance.GetPlayerTrans(player2ObjectShow.GetPlayerType());
+                playerModelTrans = GameManager.Instance.GetPlayerModelTrans(player2ObjectShow.GetPlayerType());
+                playerTrans.rotation = Quaternion.Euler(0, 0, 0);
+                playerModelTrans.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
+                isClimb = true;
+                //플레이어 상태 변경
+                GameManager.Instance.PlayerStateChange(player2ObjectShow.GetPlayerType(), PlayerState.ClimbWall);
+                break;
+        }
+        
     }
 }

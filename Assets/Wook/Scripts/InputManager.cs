@@ -19,8 +19,10 @@ public class InputManager : MonoBehaviour, IInput
     public Action<MoveType, PlayerState> OnLeftRightPlayer2 { get; set; }
     public Action<bool> OnRunPlayer1 { get; set; }
     public Action<bool> OnRunPlayer2 { get; set; }
-    public Action<PlayerState> OnUsePlayer1 { get; set; }
-    public Action<PlayerState> OnUsePlayer2 { get; set; }
+    public Action<PlayerType, PlayerState> OnUsePlayer1 { get; set; }
+    public Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }
+
+    public KeyCode player2Use;
 
     [SerializeField] PlayerController player1;
     [SerializeField] PlayerController player2;
@@ -36,8 +38,14 @@ public class InputManager : MonoBehaviour, IInput
         else Destroy(gameObject);
     }
 
+    void start()
+    {
+        player2Use = KeyCode.Keypad2;
+    }
+
     private void Update()
     {
+
         player1State = player1.GetPlayerState();
         player2State = player2.GetPlayerState();
         OnForntBack();
@@ -107,16 +115,16 @@ public class InputManager : MonoBehaviour, IInput
             case PlayerState.ClimbWall:
                 //GetKey
                 if (Input.GetKey(KeyCode.A))
-                    OnLeftRightPlayer1?.Invoke(MoveType.Left, player1.GetPlayerState());
+                    OnLeftRightPlayer1?.Invoke(MoveType.Left, player1State);
                 else if (Input.GetKey(KeyCode.D))
-                    OnLeftRightPlayer1?.Invoke(MoveType.Right, player1.GetPlayerState());
+                    OnLeftRightPlayer1?.Invoke(MoveType.Right, player2State);
                 break;
             case PlayerState.Inventory:
                 //GetKeyDown
                 if (Input.GetKeyDown(KeyCode.A))
-                    OnLeftRightPlayer1?.Invoke(MoveType.Left, player1.GetPlayerState());
+                    OnLeftRightPlayer1?.Invoke(MoveType.Left, player1State);
                 else if (Input.GetKeyDown(KeyCode.D))
-                    OnLeftRightPlayer1?.Invoke(MoveType.Right, player1.GetPlayerState());
+                    OnLeftRightPlayer1?.Invoke(MoveType.Right, player2State);
                 break; 
 
         }
@@ -127,16 +135,16 @@ public class InputManager : MonoBehaviour, IInput
             case PlayerState.ClimbWall:
                 //GetKey
                 if (Input.GetKey(KeyCode.LeftArrow))
-                    OnLeftRightPlayer2?.Invoke(MoveType.Left, player2.GetPlayerState());
+                    OnLeftRightPlayer2?.Invoke(MoveType.Left, player1State);
                 else if (Input.GetKey(KeyCode.RightArrow))
-                    OnLeftRightPlayer2?.Invoke(MoveType.Right, player2.GetPlayerState());
+                    OnLeftRightPlayer2?.Invoke(MoveType.Right, player2State);
                 break;
             case PlayerState.Inventory:
                 //GetKeyDown
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
-                    OnLeftRightPlayer2?.Invoke(MoveType.Left, player1.GetPlayerState());
+                    OnLeftRightPlayer2?.Invoke(MoveType.Left, player1State);
                 else if (Input.GetKeyDown(KeyCode.RightArrow))
-                    OnLeftRightPlayer2?.Invoke(MoveType.Right, player1.GetPlayerState());
+                    OnLeftRightPlayer2?.Invoke(MoveType.Right, player2State);
                 break;
         }
     }
@@ -145,7 +153,6 @@ public class InputManager : MonoBehaviour, IInput
     {
         //플레이어1
         OnRunPlayer1?.Invoke(Input.GetKey(KeyCode.LeftShift));
-        Debug.Log(Input.GetKey(KeyCode.LeftShift));
         //플레이어2
         if (Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.RightShift))
             OnRunPlayer2?.Invoke(true);
@@ -157,10 +164,11 @@ public class InputManager : MonoBehaviour, IInput
     {
         //플레이어1
         if (Input.GetKey(KeyCode.E))
-            OnUsePlayer1?.Invoke(player1.GetPlayerState());
+            OnUsePlayer1?.Invoke(PlayerType.FirstPlayer, player1State);
 
         //플레이어2
-        if (Input.GetKey(KeyCode.Alpha2))
-            OnUsePlayer1?.Invoke(player1.GetPlayerState());
+        if (Input.GetKey(KeyCode.Keypad2))
+            OnUsePlayer2?.Invoke(PlayerType.SecondPlayer, player2State);
+
     }
 }

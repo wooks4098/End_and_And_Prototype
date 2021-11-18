@@ -28,6 +28,6 @@ public interface IInput
     Action<bool> OnRunPlayer2 { get; set; }
 
     //»ç¿ëÅ°
-    Action<PlayerState> OnUsePlayer1 { get; set; } 
-    Action<PlayerState> OnUsePlayer2 { get; set; }
+    Action<PlayerType, PlayerState> OnUsePlayer1 { get; set; } 
+    Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }
 }
