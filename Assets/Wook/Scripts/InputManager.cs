@@ -61,6 +61,7 @@ public class InputManager : MonoBehaviour, IInput
         {
             case PlayerState.Walk:
             case PlayerState.ClimbWall:
+            case PlayerState.ClimbUpWall:
                 //GetKey
                 if (Input.GetKey(KeyCode.W))
                     OnFrontBackPlayer1?.Invoke(MoveType.Front, player1State);
