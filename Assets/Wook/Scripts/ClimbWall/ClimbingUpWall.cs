@@ -4,13 +4,21 @@ using UnityEngine;
 
 public class ClimbingUpWall : MonoBehaviour
 {
-    bool isPlayer1Up = false;
-    bool isPlayer2Up = false;
+    [SerializeField]  bool isPlayer1Up = false;
+    [SerializeField] bool isPlayer2Up = false;
+    [SerializeField] Transform EndPos;
     //플레이어 위치를 벽 위로
-    IEnumerator PlayerPosChange(Animator _animator)
+    IEnumerator PlayerPosChange(Animator _animator, PlayerType _playerType)
     {
-        yield return new WaitForSeconds(3.14f);
-        _animator.SetTrigger("ClimbEnd");
+        yield return new WaitForSeconds(3.15f);
+
+        Transform playerTrans = GameManager.Instance.GetPlayerTrans(_playerType);
+        _animator.Play("Idle");//("ClimbEnd");
+        Debug.Log("애니종료");
+        yield return null;
+        playerTrans.position = new Vector3(playerTrans.position.x, EndPos.position.y, playerTrans.position.z);
+        Debug.Log(playerTrans.position);
+        GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.Walk);
 
     }
     private void OnTriggerEnter(Collider other)
@@ -21,9 +29,8 @@ public class ClimbingUpWall : MonoBehaviour
             isPlayer1Up = true;
             Animator animator = GameManager.Instance.GetPlayerModelTrans(PlayerType.FirstPlayer).GetComponent<Animator>();
             GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.ClimbUpWall);
-            //animator.applyRootMotion = true;
             animator.SetBool("IsClimbinUpWall", true);
-            StartCoroutine(PlayerPosChange(animator));
+            StartCoroutine(PlayerPosChange(animator,PlayerType.FirstPlayer));
 
         }
         if (other.tag == "Player2" && isPlayer2Up == false)

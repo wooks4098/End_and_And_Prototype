@@ -72,6 +72,8 @@ public class PlayerController : MonoBehaviour
 
     void MoveTo(Vector3 direction)
     {
+        if (playerState ==  PlayerState.ClimbUpWall)
+            return;
         characterController.Move(direction * (isRun == false ? moveSpeed : moveSpeed * 2.3f) * Time.deltaTime);
 
     }
@@ -87,7 +89,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.ClimbUpWall:
                 moveDirection = Vector3.zero;
-                ani.SetFloat("ClimbSpeed", 0);
+               
                 break;
         }
     }
@@ -195,7 +197,12 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerStateChange(PlayerState _playerState)
     {
-        switch(_playerState)
+        ani.SetBool("WalkFront", false);
+        ani.SetBool("WalkBack", false);
+        ani.SetBool("Run", false);
+        ani.SetBool("IsClimbinUpWall", false);
+        ani.SetFloat("ClimbSpeed", 0);
+        switch (_playerState)
         {
             case PlayerState.ClimbWall:
                 ani.SetTrigger("ClimbStart");

@@ -46,6 +46,8 @@ public class ClimbWall : MonoBehaviour
         switch (_playerType)
         {
             case PlayerType.FirstPlayer:
+                if (!player1ObjectShow.GetCanUse())
+                    return;
                 playerTrans = GameManager.Instance.GetPlayerTrans(player1ObjectShow.GetPlayerType());
                 playerModelTrans = GameManager.Instance.GetPlayerModelTrans(player1ObjectShow.GetPlayerType());
                 playerTrans.rotation = Quaternion.Euler(0, 0, 0);
@@ -56,6 +58,8 @@ public class ClimbWall : MonoBehaviour
                 break;
 
             case PlayerType.SecondPlayer:
+                if (!player2ObjectShow.GetCanUse())
+                    return;
                 playerTrans = GameManager.Instance.GetPlayerTrans(player2ObjectShow.GetPlayerType());
                 playerModelTrans = GameManager.Instance.GetPlayerModelTrans(player2ObjectShow.GetPlayerType());
                 playerTrans.rotation = Quaternion.Euler(0, 0, 0);
