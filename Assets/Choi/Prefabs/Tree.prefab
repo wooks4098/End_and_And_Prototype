@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5864184337029660828}
   m_Layer: 0
   m_Name: Tree
-  m_TagString: Untagged
+  m_TagString: Thorn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,11 +101,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 178453725402473722}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.176796, y: 5.0538673, z: 1.274271}
-  m_Center: {x: 0.000000029802322, y: 2.5269337, z: 0.018457294}
+  m_Size: {x: 1.176796, y: 4.6651034, z: 1.274271}
+  m_Center: {x: 0, y: 2.3325517, z: 0.018457277}
 --- !u!114 &5864184337029660828
 MonoBehaviour:
   m_ObjectHideFlags: 0

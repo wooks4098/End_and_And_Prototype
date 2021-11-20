@@ -14,6 +14,7 @@ public class Floor : MonoBehaviour
     readonly float triggerTime = 7f;
     readonly float endTime = 5f;
 
+
     private void Awake()
     {
         goParent = this.transform;
@@ -34,10 +35,25 @@ public class Floor : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (gameObject.GetComponentInChildren<Tree>(true) != null)
+        {
+            if (goPlantThorn.activeSelf)
+            {
+                Invoke("HidePlantThorn", 3f);
+            }
+        }
+    }
 
 
     public GameObject GetPlantThorn()
     {
         return goPlantThorn;
+    }
+
+    private void HidePlantThorn()
+    {
+        goPlantThorn.SetActive(false);
     }
 }

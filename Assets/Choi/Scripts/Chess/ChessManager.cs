@@ -28,31 +28,37 @@ public class ChessManager : MonoBehaviour
     
     // 부모로 사용할 transform
     [SerializeField] Transform tParent;
-    //List<bool> checkAvailablefloors;
 
     // ==============================================
+    
     // 텍스처를 바꿀 때 사용할 메시 렌더러
     MeshRenderer mrFloorRenderer;
     // 텍스처를 저장하는 컨테이너
     [SerializeField] List<Texture> texTextureContainer;
 
+    // ==============================================
+    
     // 읽기 전용 상수형 
     readonly int rBasicTextureType = 0;     // 일반 타입 텍스쳐 (이동 불가능)
     readonly int rAvailableTextureType = 1; // 이동 가능 타입 텍스쳐
 
     // 시간
     readonly float triggerTime = 5f;
-    readonly float endTime = 5f;
     // =============================================
+
+    public event Action<int> OnPlantThornEvent;
+    //public event Action<int> ExitWrongFloorEvent;
 
 
     private void OnEnable()
     {
         player.OnWrongFloorEvent += CreatePlantThorn;
+        //ExitWrongFloorEvent += HidePlantThorn;
     }
     private void OnDisable()
     {
         player.OnWrongFloorEvent -= CreatePlantThorn;
+        //ExitWrongFloorEvent -= HidePlantThorn;
     }
 
     void CreatePlantThorn(int _index)
@@ -71,10 +77,10 @@ public class ChessManager : MonoBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        InstantiatePlantThorn(_index);
+        ActivePlantThorn(_index);
     }
 
-    private void InstantiatePlantThorn(int _index)
+    private void ActivePlantThorn(int _index)
     {
         //Debug.Log("Trigger");
         //Debug.Log(_index);
@@ -90,8 +96,21 @@ public class ChessManager : MonoBehaviour
 
         if (!Thorn.activeSelf)
         {
-            Debug.Log("Throw");
+            Debug.Log("Throw.Active");
             Thorn.SetActive(true);
+        }
+
+        //OnPlantThornEvent(thornDamage);
+    }
+
+    private void HidePlantThorn(int _index)
+    {
+        GameObject Thorn = floorObejcts[_index].GetPlantThorn();
+
+        if (Thorn.activeSelf)
+        {
+            Debug.Log("Throw.Hide");
+            Thorn.SetActive(false);
         }
     }
 
@@ -107,7 +126,6 @@ public class ChessManager : MonoBehaviour
         }
 
         floorObejcts = new List<Floor>();
-        //checkAvailablefloors = new List<bool>();
 
         actureOfChessFloor = new int[36];
     }

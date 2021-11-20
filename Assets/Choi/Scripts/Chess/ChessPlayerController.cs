@@ -22,6 +22,7 @@ public class ChessPlayerController : MonoBehaviour
     // 테스트가 끝나면 일부는 감출 것
 
     [SerializeField] ChessManager chessManager;
+    ChessPlayerHp playerHp;
 
     // 방향
     [SerializeField] Direction dir;
@@ -37,6 +38,7 @@ public class ChessPlayerController : MonoBehaviour
 
     int currentFloorIndex = 33;
     [SerializeField] Floor currentFloor;
+    [SerializeField] Floor previousFloor;
 
     //==================================================
 
@@ -48,6 +50,10 @@ public class ChessPlayerController : MonoBehaviour
     public event Action<int> OnWrongFloorEvent;
 
 
+    private void Awake()
+    {
+        playerHp = GetComponent<ChessPlayerHp>();
+    }
 
     private void Start()
     {
@@ -70,6 +76,8 @@ public class ChessPlayerController : MonoBehaviour
         {
             // 계속 이동한다
             MoveToDirection();
+
+            //ExitPreviousFloor(currentFloorIndex);
         }
     }
 
@@ -131,7 +139,7 @@ public class ChessPlayerController : MonoBehaviour
                     //Debug.Log(Vector3.Distance(transform.position, currentFloor.transform.position));
 
                     // 도착하면 플래그를 false로 변경
-                    if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 0.5f)
+                    if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 1.0f)
                     {
                         isMoving = false;
                     }
@@ -145,7 +153,7 @@ public class ChessPlayerController : MonoBehaviour
 
                     //Debug.Log("newPositonX");
 
-                    if (Vector3.Distance(currentFloor.transform.position, transform.position) <= 0.5f)
+                    if (Vector3.Distance(currentFloor.transform.position, transform.position) <= 1.0f)
                     {
                         isMoving = false;
                     }
@@ -164,12 +172,13 @@ public class ChessPlayerController : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    void CheckCurrentFloor(int _index)
+    private void CheckCurrentFloor(int _index)
     {        
         // false이면...
         if (!chessManager.GetFloorChecking(_index))
         {
-            OnWrongFloorEvent?.Invoke(_index);
+            OnWrongFloorEvent(_index);
         }
     }
+    
 }

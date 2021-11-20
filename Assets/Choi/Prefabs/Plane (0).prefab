@@ -110,7 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84800007fa962f04e927257421ebe32a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goPlantThron: {fileID: 178453725402473722, guid: 38bfff29dd448404a9b5855342dd5240, type: 3}
+  goPlantThorn: {fileID: 0}
   goParent: {fileID: 0}
 --- !u!1001 &1355136254992756294
 PrefabInstance:
