@@ -10,9 +10,6 @@ public class Floor : MonoBehaviour
     // 부모
     [SerializeField] Transform goParent;
 
-    // 시간
-    readonly float triggerTime = 7f;
-    readonly float endTime = 5f;
 
 
     private void Awake()

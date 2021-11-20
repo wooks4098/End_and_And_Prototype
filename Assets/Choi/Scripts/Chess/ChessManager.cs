@@ -20,9 +20,7 @@ public class ChessManager : MonoBehaviour
     readonly int FloorWidth = 6; // 가로 개수
     readonly int FloorHeight = 6; // 세로 개수
     readonly int AllOfFloorCount = 36; // 전체 개수
-
-    // floor 한 칸 크기
-    [SerializeField] float floorSize = 5f;
+    
     // floor를 저장할 컨테이너
     [SerializeField] List<Floor> floorObejcts;
     
@@ -42,23 +40,37 @@ public class ChessManager : MonoBehaviour
     readonly int rBasicTextureType = 0;     // 일반 타입 텍스쳐 (이동 불가능)
     readonly int rAvailableTextureType = 1; // 이동 가능 타입 텍스쳐
 
-    // 시간
+    // 상수 - 시간
     readonly float triggerTime = 5f;
+    // 현재 시간
+    float currentTime;
     // =============================================
 
-    public event Action<int> OnPlantThornEvent;
-    public event Action<int> ExitWrongFloorEvent;
+    //public event Action<int> OnPlantThornEvent;
 
+
+    private void Awake()
+    {
+        player = GameObject.Find("Player1").GetComponent<ChessPlayerController>();
+
+        floorInfo = new int[8][];
+        for (int i = 0; i < 8; i++)
+        {
+            floorInfo[i] = new int[8];
+        }
+
+        floorObejcts = new List<Floor>();
+
+        actureOfChessFloor = new int[36];
+    }
 
     private void OnEnable()
     {
         player.OnWrongFloorEvent += CreatePlantThorn;
-        ExitWrongFloorEvent += HidePlantThorn;
     }
     private void OnDisable()
     {
         player.OnWrongFloorEvent -= CreatePlantThorn;
-        ExitWrongFloorEvent -= HidePlantThorn;
     }
 
     void CreatePlantThorn(int _index)
@@ -114,21 +126,6 @@ public class ChessManager : MonoBehaviour
         }
     }
 
-
-    private void Awake()
-    {
-        player = GameObject.Find("Player1").GetComponent<ChessPlayerController>();
-
-        floorInfo = new int[8][];
-        for (int i = 0; i < 8; i++)
-        {
-            floorInfo[i] = new int[8];
-        }
-
-        floorObejcts = new List<Floor>();
-
-        actureOfChessFloor = new int[36];
-    }
 
     private void Start()
     {
