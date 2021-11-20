@@ -47,18 +47,18 @@ public class ChessManager : MonoBehaviour
     // =============================================
 
     public event Action<int> OnPlantThornEvent;
-    //public event Action<int> ExitWrongFloorEvent;
+    public event Action<int> ExitWrongFloorEvent;
 
 
     private void OnEnable()
     {
         player.OnWrongFloorEvent += CreatePlantThorn;
-        //ExitWrongFloorEvent += HidePlantThorn;
+        ExitWrongFloorEvent += HidePlantThorn;
     }
     private void OnDisable()
     {
         player.OnWrongFloorEvent -= CreatePlantThorn;
-        //ExitWrongFloorEvent -= HidePlantThorn;
+        ExitWrongFloorEvent -= HidePlantThorn;
     }
 
     void CreatePlantThorn(int _index)

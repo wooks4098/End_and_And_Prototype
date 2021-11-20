@@ -489,6 +489,7 @@ GameObject:
   - component: {fileID: 148838892}
   - component: {fileID: 148838891}
   - component: {fileID: 148838890}
+  - component: {fileID: 148838893}
   m_Layer: 0
   m_Name: StartPoint
   m_TagString: Untagged
@@ -573,6 +574,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 148838888}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &148838893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148838888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84800007fa962f04e927257421ebe32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goPlantThorn: {fileID: 0}
+  goParent: {fileID: 0}
 --- !u!1 &163852436
 GameObject:
   m_ObjectHideFlags: 0
@@ -2968,7 +2983,7 @@ MonoBehaviour:
   isMoving: 0
   moveSpeed: 4
   currentFloor: {fileID: 0}
-  previousFloor: {fileID: 0}
+  startingFloor: {fileID: 148838893}
 --- !u!114 &1483465392
 MonoBehaviour:
   m_ObjectHideFlags: 0

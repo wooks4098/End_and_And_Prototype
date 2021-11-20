@@ -21,9 +21,13 @@ public class ChessPlayerHp : MonoBehaviour
         ResetPlayerHp();
     }
     
-    void ResetPlayerHp()
+    public void ResetPlayerHp()
     {
         playerHp = 60;
+    }
+    public int GetPlayerHp()
+    {
+        return playerHp;
     }
 
     private void OnEnable()
@@ -48,11 +52,6 @@ public class ChessPlayerHp : MonoBehaviour
     {
         playerHp -= _point;
         Debug.Log("현재 체력: " + playerHp);
-    }
-
-    public int GetPlayerHp()
-    {
-        return playerHp;
     }
 
 
