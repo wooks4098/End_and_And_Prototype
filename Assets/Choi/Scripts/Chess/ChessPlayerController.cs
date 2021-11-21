@@ -44,7 +44,9 @@ public class ChessPlayerController : MonoBehaviour
     // [Access] [Delegate Function Name] [Function Name]
     //public static event EventHandler OnWrongFloorEvent;
 
-    public event Action<int> OnWrongFloorEvent;
+    public event Action<int> OnEnterWrongFloorEvent;
+    public event Action<int> OnStayWrongFloorEvent;
+    public event Action<int> OnExitWrongFloorEvent;
 
     public event Action OnMoveToDirectionEvent;
     public event Action StopMoveToDirectionEvent;
@@ -113,7 +115,11 @@ public class ChessPlayerController : MonoBehaviour
         {
             if (currentFloorIndex > 5 || currentFloorIndex == 0)
             {
+
                 isMoving = true;
+
+                // 인덱스를 계산하기 전에 빠져나가는 이벤트 호출
+                OnExitWrongFloorEvent(currentFloorIndex);
 
                 currentFloorIndex -= 6;
             }            
@@ -124,6 +130,8 @@ public class ChessPlayerController : MonoBehaviour
             {
                 isMoving = true;
 
+                OnExitWrongFloorEvent(currentFloorIndex);
+
                 currentFloorIndex += 6;
             }            
         }
@@ -132,6 +140,8 @@ public class ChessPlayerController : MonoBehaviour
             if (currentFloorIndex % 6 != 0) 
             {
                 isMoving = true;
+
+                OnExitWrongFloorEvent(currentFloorIndex);
 
                 currentFloorIndex -= 1;
             }
@@ -142,10 +152,11 @@ public class ChessPlayerController : MonoBehaviour
             {
                 isMoving = true;
 
+                OnExitWrongFloorEvent(currentFloorIndex);
+
                 currentFloorIndex += 1;
             }            
         }
-
     }
 
     void MoveToDirection()
@@ -167,6 +178,11 @@ public class ChessPlayerController : MonoBehaviour
         if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 1.0f)
         {
             isMoving = false;
+
+            // Active Thorn
+            OnEnterWrongFloorEvent(currentFloorIndex);
+
+            // Active Arrow UI
             StopMoveToDirectionEvent();
         }
     }
@@ -207,7 +223,7 @@ public class ChessPlayerController : MonoBehaviour
         // false이면...
         else if (!chessManager.GetFloorChecking(_index))
         {
-            OnWrongFloorEvent(_index);
+            OnStayWrongFloorEvent(_index);
         }
     }    
 }

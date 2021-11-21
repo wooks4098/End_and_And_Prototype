@@ -46,6 +46,11 @@ public class Floor : MonoBehaviour
 
     public GameObject GetPlantThorn()
     {
+        if (gameObject.GetComponentInChildren<Tree>(true) == null)
+        {
+            return null;
+        }
+
         return goPlantThorn;
     }
 

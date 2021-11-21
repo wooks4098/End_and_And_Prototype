@@ -41,7 +41,7 @@ public class ChessManager : MonoBehaviour
     readonly int rAvailableTextureType = 1; // 이동 가능 타입 텍스쳐
 
     // 상수 - 시간
-    readonly float triggerTime = 5f;
+    readonly float stayTime = 10f;
     // 현재 시간
     float currentTime;
     // =============================================
@@ -66,57 +66,76 @@ public class ChessManager : MonoBehaviour
 
     private void OnEnable()
     {
-        player.OnWrongFloorEvent += CreatePlantThorn;
+        player.OnEnterWrongFloorEvent += ActivePlantThornOnEnterEvent;
+        player.OnStayWrongFloorEvent += CreatePlantThorn;
+        player.OnExitWrongFloorEvent += ResetCreateThornTimeOnExitEvent;
     }
     private void OnDisable()
     {
-        player.OnWrongFloorEvent -= CreatePlantThorn;
+        player.OnEnterWrongFloorEvent -= ActivePlantThornOnEnterEvent;
+        player.OnStayWrongFloorEvent -= CreatePlantThorn;
+        player.OnExitWrongFloorEvent -= ResetCreateThornTimeOnExitEvent;
+    }
+
+    private void Start()
+    {
+        // 할당
+        tParent.GetComponentsInChildren<Floor>(floorObejcts);
+
+        /*
+        for (int i = (FloorHeight + 1); i >= 0; i--)
+        {
+            for (int j = (FloorWidth + 1); j >= 0; j--)
+            {
+                floorInfo[i][j] = chessArray.infoByTwo[i][j];
+            }
+        }
+        */
+
+        // infoByOne으로부터 정보를 받아와서 actureOfChessFloor에 할당 
+        // AllOfFloorCount = 36
+        for (int m = 0; m < AllOfFloorCount; m++)
+        {
+            actureOfChessFloor[m] = chessArray.infoByOne[m];
+        }
     }
 
     void CreatePlantThorn(int _index)
     {
-        StartCoroutine(CreatingTimeCoroutine(triggerTime, _index));
+        StartCoroutine(CreatingTimeCoroutine(stayTime, _index));
     }
 
-    IEnumerator CreatingTimeCoroutine(float _triggerTime, int _index)
+    IEnumerator CreatingTimeCoroutine(float _time, int _index)
     {
-        //yield return triggerTime;
+        currentTime = _time;
 
-        while (_triggerTime > 1.0f)
+        while (currentTime > 1.0f)
         {
-            _triggerTime -= Time.deltaTime;
+            currentTime -= Time.deltaTime;
 
             yield return new WaitForFixedUpdate();
         }
 
-        ActivePlantThorn(_index);
+        while (currentTime <= 1.0f)
+            ActivePlantThorn(_index);
     }
 
     private void ActivePlantThorn(int _index)
     {
-        //Debug.Log("Trigger");
-        //Debug.Log(_index);
-
-        //Debug.Log("Throw");
-        // 프리팹 생성
-        //GameObject go = Instantiate(goPlantThorn, transform.position, Quaternion.identity);
-        //go.transform.parent = goParent.transform;
-
         GameObject Thorn = floorObejcts[_index].GetPlantThorn();
         //Debug.Log(floorObejcts[_index]);
-
 
         if (!Thorn.activeSelf)
         {
             Debug.Log("Throw.Active");
             Thorn.SetActive(true);
         }
-
-        //OnPlantThornEvent(thornDamage);
     }
 
     private void HidePlantThorn(int _index)
     {
+        if (_index > 35 || _index < 0) return;
+
         GameObject Thorn = floorObejcts[_index].GetPlantThorn();
 
         if (Thorn.activeSelf)
@@ -126,27 +145,25 @@ public class ChessManager : MonoBehaviour
         }
     }
 
-
-    private void Start()
+    private void ActivePlantThornOnEnterEvent(int _index)
     {
-        // 할당
-        tParent.GetComponentsInChildren<Floor>(floorObejcts);
+        if (_index > 35 || _index < 0) return;
 
+        Debug.Log("Throw.Active.Enter");
 
-        for (int i = (FloorHeight + 1); i >= 0; i--) 
+        GameObject Thorn = floorObejcts[_index].GetPlantThorn();
+        if (Thorn == null) return;
+
+        if ((!Thorn.activeSelf)) 
         {
-            for (int j = (FloorWidth + 1); j >= 0; j--)
-            {
-                floorInfo[i][j] = chessArray.infoByTwo[i][j];
-            }
+            Thorn.SetActive(true);
         }
+    }
 
-        // infoByOne으로부터 정보를 받아와서 actureOfChessFloor에 할당 
-        // AllOfFloorCount = 36
-        for (int m = 0; m < AllOfFloorCount; m++)
-        {
-            actureOfChessFloor[m] = chessArray.infoByOne[m];
-        }
+    private void ResetCreateThornTimeOnExitEvent(int _index)
+    {
+        Debug.Log("Throw.Exit");
+        currentTime = stayTime;
     }
 
     public Floor GetFloorObjects(int _index)
