@@ -2801,6 +2801,7 @@ GameObject:
   - component: {fileID: 1378518947}
   - component: {fileID: 1378518946}
   - component: {fileID: 1378518945}
+  - component: {fileID: 1378518948}
   m_Layer: 0
   m_Name: GoalPoint
   m_TagString: Untagged
@@ -2885,6 +2886,20 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1378518943}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1378518948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378518943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84800007fa962f04e927257421ebe32a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goPlantThorn: {fileID: 0}
+  goParent: {fileID: 0}
 --- !u!1 &1483465386
 GameObject:
   m_ObjectHideFlags: 0
@@ -2999,9 +3014,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chessManager: {fileID: 1148677693}
   isMoving: 0
-  moveSpeed: 4
   currentFloor: {fileID: 0}
   startingFloor: {fileID: 148838893}
+  endingFloor: {fileID: 1378518948}
 --- !u!114 &1483465392
 MonoBehaviour:
   m_ObjectHideFlags: 0

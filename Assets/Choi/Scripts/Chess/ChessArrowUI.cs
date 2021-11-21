@@ -30,21 +30,6 @@ public class ChessArrowUI : MonoBehaviour
         }
     }
 
-    private void OnEnable()
-    {
-        player.GetComponent<ChessPlayerController>().OnMoveToDirectionEvent += HideArrows;
-        player.GetComponent<ChessPlayerController>().StopMoveToDirectionEvent += ActiveArrows;
-    }
-
-    private void OnDisable()
-    {
-        if(player != null)
-        {
-            player.GetComponent<ChessPlayerController>().OnMoveToDirectionEvent -= HideArrows;
-            player.GetComponent<ChessPlayerController>().StopMoveToDirectionEvent -= ActiveArrows;
-        }
-    }
-
     private void Start()
     {
         SetArrowAlpha(goArrows[upArrowIndex]);
@@ -61,6 +46,15 @@ public class ChessArrowUI : MonoBehaviour
 
         goUIArrowParent.transform.position = new Vector3(x, screenPos.y, goUIArrowParent.transform.position.z);
 
+
+        if(player.GetComponent<ChessPlayerController>().IsMoving)
+        {
+            HideArrows();
+        }
+        else if (!player.GetComponent<ChessPlayerController>().IsMoving)
+        {
+            ActiveArrows();
+        }
     }
 
     /// <summary>
@@ -85,9 +79,9 @@ public class ChessArrowUI : MonoBehaviour
         int tempIndex = player.GetComponent<ChessPlayerController>().GetCurrentFloorIndex();
 
         // 위로 이동 불가
-        if (tempIndex <= 5)
+        if (tempIndex <= 5 && tempIndex != 0)
         {
-            SetArrowAlpha(goArrows[upArrowIndex], 0.3f);
+            SetArrowAlpha(goArrows[upArrowIndex], 0.3f);            
         }
         // 아래로 이동 불가
         else if (tempIndex >= 30)
@@ -105,14 +99,11 @@ public class ChessArrowUI : MonoBehaviour
             SetArrowAlpha(goArrows[rightArrowIndex], 0.3f);
         }
 
-        // 왼쪽 위로 이동 불가
-        if (tempIndex <= 5 && (tempIndex % 6) == 0)
-        {
-            SetArrowAlpha(goArrows[upArrowIndex], 0.3f);
-            SetArrowAlpha(goArrows[leftArrowIndex], 0.3f);
-        }
+        // 왼쪽 위 = 도착지점 직전 = 이동할 수 있어야 함.
+        // => 제외
+
         // 오른쪽 위로 이동 불가
-        else if (tempIndex <= 5 && (tempIndex % 6) == 5)
+        if (tempIndex <= 5 && (tempIndex % 6) == 5)
         {
             SetArrowAlpha(goArrows[upArrowIndex], 0.3f);
             SetArrowAlpha(goArrows[rightArrowIndex], 0.3f);
@@ -127,6 +118,21 @@ public class ChessArrowUI : MonoBehaviour
         else if (tempIndex >= 30 && (tempIndex % 6) == 5)
         {
             SetArrowAlpha(goArrows[downArrowIndex], 0.3f);
+            SetArrowAlpha(goArrows[rightArrowIndex], 0.3f);
+        }
+
+        // 시작지점
+        if(tempIndex > 35)
+        {
+            SetArrowAlpha(goArrows[downArrowIndex], 0.3f);
+            SetArrowAlpha(goArrows[leftArrowIndex], 0.3f);
+            SetArrowAlpha(goArrows[rightArrowIndex], 0.3f);
+        }        
+        // 끝지점
+        else if(tempIndex < 0)
+        {
+            SetArrowAlpha(goArrows[upArrowIndex], 0.3f);
+            SetArrowAlpha(goArrows[leftArrowIndex], 0.3f);
             SetArrowAlpha(goArrows[rightArrowIndex], 0.3f);
         }
     }

@@ -20,6 +20,7 @@ public class ChessPlayerController : MonoBehaviour
 
     // 입력 중인지 구분할 플래그
     [SerializeField] bool isMoving = false;
+    public bool IsMoving { get { return isMoving; } }
 
     // 움직이는 속도, 거리
     float moveSpeed = 4.0f;
@@ -32,6 +33,7 @@ public class ChessPlayerController : MonoBehaviour
     //[SerializeField] Floor previousFloor;
 
     [SerializeField] Floor startingFloor;
+    [SerializeField] Floor endingFloor;
 
     // 상수
     // 위-아래로 한 칸씩 더 둬서
@@ -40,17 +42,14 @@ public class ChessPlayerController : MonoBehaviour
 
     //==================================================
 
-    // [Access] delegate [Type] [Function Name]([Parameters])
-    //public delegate void EventHandler(int _index);
-    // [Access] [Delegate Function Name] [Function Name]
-    //public static event EventHandler OnWrongFloorEvent;
+    // 플레이어가 잘못된 발판을 밟았을 때 호출하는 이벤트
+    public event Action<int> OnEnterWrongFloorEvent; // 잘못된 발판에 들어왔을 때
+    public event Action<int> OnStayWrongFloorEvent; // 잘못된 발판에 머무르고 있을 때
+    public event Action<int> OnExitWrongFloorEvent; // 잘못된 발판을 빠져나갈 때
 
-    public event Action<int> OnEnterWrongFloorEvent;
-    public event Action<int> OnStayWrongFloorEvent;
-    public event Action<int> OnExitWrongFloorEvent;
-
-    public event Action OnMoveToDirectionEvent;
-    public event Action StopMoveToDirectionEvent;
+    // 플레이어가 이동할 때 호출하는 이벤트들
+    public event Action OnMoveToDirectionEvent; // 이동 시작    
+    public event Action StopMoveToDirectionEvent; // 이동 멈춤
 
 
     private void Awake()
@@ -71,26 +70,14 @@ public class ChessPlayerController : MonoBehaviour
         // isMoving == false 이면 (움직이는 중이 아니면)
         if (!isMoving)
         {
-            if(Input.anyKeyDown)
-            {
-                // key 입력을 받는다
-                InputDirectionKey();
-            }
-
-            if(currentFloorIndex != startingFloorIndex
-                || currentFloorIndex != endingFloorIndex)
-            {
-                //SelectFloor(currentFloorIndex);
-                //CheckCurrentFloor(currentFloorIndex);               
-            }
+            // key 입력을 받는다
+            InputDirectionKey();
         }
         // isMoving == true 이면 (움직이는 중이면)
         else if (isMoving)
         {
             // 계속 이동한다
             MoveToDirection();
-
-            //ExitPreviousFloor(currentFloorIndex);
         }
 
         if(playerHp.GetPlayerHp() <= 0)
@@ -103,12 +90,12 @@ public class ChessPlayerController : MonoBehaviour
     {
         currentFloor = startingFloor.GetComponent<Floor>();
         currentFloorIndex = startingFloorIndex;
+
+        // 이동 중에는 콜라이더 끄기
+        this.GetComponent<BoxCollider>().enabled = false;
         playerHp.ResetPlayerHp();
 
         isMoving = true;
-
-        // Stop Active Thorn Coroutine
-        OnExitWrongFloorEvent(currentFloorIndex);
     }
 
     public Floor GetCurrentFloor()
@@ -124,7 +111,7 @@ public class ChessPlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if (currentFloorIndex > 5)
+            if (currentFloorIndex > 5 || currentFloorIndex == 0)
             {
                 isMoving = true;
                 animator.SetTrigger("MoveToDirection");
@@ -181,14 +168,28 @@ public class ChessPlayerController : MonoBehaviour
         if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 1.0f)
         {
             isMoving = false;
+
+            if(!this.GetComponent<BoxCollider>().enabled)
+            {
+                this.GetComponent<BoxCollider>().enabled = true;
+            }
         }
     }
 
     void SelectFloor(int _index)
     {
-        if (_index > 35) return;
-
-        currentFloor = chessManager.GetFloorObjects(_index).GetComponent<Floor>();
+        if (_index == startingFloorIndex)
+        {
+            currentFloor = startingFloor.GetComponent<Floor>();
+        }
+        else if (_index == endingFloorIndex)
+        {
+            currentFloor = endingFloor.GetComponent<Floor>();
+        }
+        else
+        {
+            currentFloor = chessManager.GetFloorObjects(_index).GetComponent<Floor>();
+        }
     }
 
     /// <summary>
@@ -196,30 +197,48 @@ public class ChessPlayerController : MonoBehaviour
     /// </summary>
     private void CheckCurrentFloor(int _index)
     {
-        if (currentFloorIndex > 35) return;
+        if (currentFloorIndex == startingFloorIndex)
+        {
+            Debug.Log("Start");
+            return;
+        }
+        else if (currentFloorIndex == endingFloorIndex)
+        {
+            Debug.Log("End");
+            OnMoveToDirectionEvent();
+            return;
+        }
 
         // false이면...
-        if (!chessManager.GetFloorChecking(_index))
+        else if (!chessManager.GetFloorChecking(_index))
         {
             // Active Thorn Coroutine
             OnStayWrongFloorEvent(_index);
         }
-    }   
-    
+    }
+
+    /// <summary>
+    /// 플레이어가 움직일 때 호출.
+    /// 애니메이션 이벤트로 호출된다.
+    /// </summary>
     public void OnMoveToDirection()
     {
         // Hide Arrow UI
-        OnMoveToDirectionEvent();
+        //OnMoveToDirectionEvent();
 
         // Stop Active Thorn Coroutine
         OnExitWrongFloorEvent(currentFloorIndex);
 
         SelectFloor(currentFloorIndex);
     }
+    /// <summary>
+    /// 플레이어가 움직임을 멈출 때 호출.
+    /// 애니메이션 이벤트로 호출된다.
+    /// </summary>
     public void StopMoveToDirection()
     {
         // Active Arrow UI
-        StopMoveToDirectionEvent();
+        //StopMoveToDirectionEvent();
         Debug.Log("StopMoveToDirection");
 
         // Active Thorn
