@@ -15,6 +15,8 @@ public class ChessPlayerController : MonoBehaviour
     [SerializeField] ChessManager chessManager;
     ChessPlayerHp playerHp;
 
+    Animator animator;
+
 
     // 입력 중인지 구분할 플래그
     [SerializeField] bool isMoving = false;
@@ -54,6 +56,7 @@ public class ChessPlayerController : MonoBehaviour
     private void Awake()
     {
         playerHp = GetComponent<ChessPlayerHp>();
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -68,16 +71,22 @@ public class ChessPlayerController : MonoBehaviour
         // isMoving == false 이면 (움직이는 중이 아니면)
         if (!isMoving)
         {
-            // key 입력을 받는다
-            InputDirectionKey();
+            if(Input.anyKeyDown)
+            {
+                // key 입력을 받는다
+                InputDirectionKey();
+            }
 
-            SelectFloor(currentFloorIndex);
-            CheckCurrentFloor(currentFloorIndex);
+            if(currentFloorIndex != startingFloorIndex
+                || currentFloorIndex != endingFloorIndex)
+            {
+                SelectFloor(currentFloorIndex);
+                CheckCurrentFloor(currentFloorIndex);
+            }
         }
         // isMoving == true 이면 (움직이는 중이면)
         else if (isMoving)
         {
-
             // 계속 이동한다
             MoveToDirection();
 
@@ -114,11 +123,8 @@ public class ChessPlayerController : MonoBehaviour
         {
             if (currentFloorIndex > 5)
             {
-
                 isMoving = true;
-
-                // 인덱스를 계산하기 전에 빠져나가는 이벤트 호출
-                OnExitWrongFloorEvent(currentFloorIndex);
+                animator.SetTrigger("MoveToDirection");
 
                 currentFloorIndex -= 6;
             }            
@@ -128,8 +134,7 @@ public class ChessPlayerController : MonoBehaviour
             if(currentFloorIndex < 30 && currentFloorIndex != startingFloorIndex)
             {
                 isMoving = true;
-
-                OnExitWrongFloorEvent(currentFloorIndex);
+                animator.SetTrigger("MoveToDirection");
 
                 currentFloorIndex += 6;
             }            
@@ -139,8 +144,7 @@ public class ChessPlayerController : MonoBehaviour
             if (currentFloorIndex % 6 != 0) 
             {
                 isMoving = true;
-
-                OnExitWrongFloorEvent(currentFloorIndex);
+                animator.SetTrigger("MoveToDirection");
 
                 currentFloorIndex -= 1;
             }
@@ -150,8 +154,7 @@ public class ChessPlayerController : MonoBehaviour
             if ((currentFloorIndex % 6) < 5)
             {
                 isMoving = true;
-
-                OnExitWrongFloorEvent(currentFloorIndex);
+                animator.SetTrigger("MoveToDirection");
 
                 currentFloorIndex += 1;
             }            
@@ -160,8 +163,6 @@ public class ChessPlayerController : MonoBehaviour
 
     void MoveToDirection()
     {
-        OnMoveToDirectionEvent();
-
         // 부드러운 이동을 위해 Mathf.MoveTowrads를 사용 
         // 이것은 지금은 앞과 뒤로 이동할 때 실행되므로 z값을 계산한다.
         // 큐브가 currentFloor (= 현재 지정된 바닥)을 타겟으로 이동한다. - 속도는 moveSpeed * time.deltaTime만큼
@@ -177,12 +178,6 @@ public class ChessPlayerController : MonoBehaviour
         if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 1.0f)
         {
             isMoving = false;
-
-            // Active Thorn
-            OnEnterWrongFloorEvent(currentFloorIndex);
-
-            // Active Arrow UI
-            StopMoveToDirectionEvent();
         }
     }
 
@@ -203,7 +198,23 @@ public class ChessPlayerController : MonoBehaviour
         // false이면...
         if (!chessManager.GetFloorChecking(_index))
         {
-            OnStayWrongFloorEvent(_index);
+            //OnStayWrongFloorEvent(_index);
         }
-    }    
+    }   
+    
+    public void OnMoveToDirection()
+    {
+        OnMoveToDirectionEvent();
+
+        //
+        //OnExitWrongFloorEvent(currentFloorIndex);
+    }
+    public void StopMoveToDirection()
+    {
+        // Active Arrow UI
+        StopMoveToDirectionEvent();
+
+        // Active Thorn
+        //OnEnterWrongFloorEvent(currentFloorIndex);
+    }
 }

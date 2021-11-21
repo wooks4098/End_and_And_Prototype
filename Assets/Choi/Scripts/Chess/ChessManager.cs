@@ -132,18 +132,6 @@ public class ChessManager : MonoBehaviour
         }
     }
 
-    private void HidePlantThorn(int _index)
-    {
-        if (_index > 35 || _index < 0) return;
-
-        GameObject Thorn = floorObejcts[_index].GetPlantThorn();
-
-        if (Thorn.activeSelf)
-        {
-            Debug.Log("Throw.Hide");
-            Thorn.SetActive(false);
-        }
-    }
 
     private void ActivePlantThornOnEnterEvent(int _index)
     {
@@ -152,7 +140,6 @@ public class ChessManager : MonoBehaviour
         Debug.Log("Throw.Active.Enter");
 
         GameObject Thorn = floorObejcts[_index].GetPlantThorn();
-        if (Thorn == null) return;
 
         if ((!Thorn.activeSelf)) 
         {
