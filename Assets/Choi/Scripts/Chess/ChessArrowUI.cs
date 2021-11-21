@@ -38,8 +38,11 @@ public class ChessArrowUI : MonoBehaviour
 
     private void OnDisable()
     {
-        player.GetComponent<ChessPlayerController>().OnMoveToDirectionEvent -= HideArrows;
-        player.GetComponent<ChessPlayerController>().StopMoveToDirectionEvent -= ActiveArrows;
+        if(player != null)
+        {
+            player.GetComponent<ChessPlayerController>().OnMoveToDirectionEvent -= HideArrows;
+            player.GetComponent<ChessPlayerController>().StopMoveToDirectionEvent -= ActiveArrows;
+        }
     }
 
     private void Start()
@@ -77,7 +80,7 @@ public class ChessArrowUI : MonoBehaviour
     /// <summary>
     /// 현재 인덱스를 판별 -> 이를 기반으로 ui 조절
     /// </summary>
-    private void CheckCurrentFloorIndex()
+    private void CheckCurrentFloorIndexForArrowUI()
     {
         int tempIndex = player.GetComponent<ChessPlayerController>().GetCurrentFloorIndex();
 
@@ -130,18 +133,24 @@ public class ChessArrowUI : MonoBehaviour
 
     private void HideArrows()
     {
+        // alpha값을 전부 1로 변경하고
         SetArrowAlpha(goArrows[upArrowIndex]);
         SetArrowAlpha(goArrows[leftArrowIndex]);
         SetArrowAlpha(goArrows[downArrowIndex]);
         SetArrowAlpha(goArrows[rightArrowIndex]);
 
+        // 끈다
         goUIArrowParent.SetActive(false);
     }
 
     private void ActiveArrows()
     {
-        CheckCurrentFloorIndex();
+        Debug.Log("ActiveArrows");
 
+        // 켠다
         goUIArrowParent.SetActive(true);
+
+        // 인덱스를 판별해서 UI alpha 값 조절
+        CheckCurrentFloorIndexForArrowUI();
     }
 }

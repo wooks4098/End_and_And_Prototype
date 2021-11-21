@@ -22,7 +22,7 @@ public class ChessPlayerController : MonoBehaviour
     [SerializeField] bool isMoving = false;
 
     // 움직이는 속도, 거리
-    [SerializeField] float moveSpeed = 4.0f;
+    float moveSpeed = 4.0f;
     //[SerializeField] float moveDistance = 5.0f;
 
     Vector3 v3CurrentPosition;
@@ -80,8 +80,8 @@ public class ChessPlayerController : MonoBehaviour
             if(currentFloorIndex != startingFloorIndex
                 || currentFloorIndex != endingFloorIndex)
             {
-                SelectFloor(currentFloorIndex);
-                CheckCurrentFloor(currentFloorIndex);
+                //SelectFloor(currentFloorIndex);
+                //CheckCurrentFloor(currentFloorIndex);               
             }
         }
         // isMoving == true 이면 (움직이는 중이면)
@@ -106,6 +106,9 @@ public class ChessPlayerController : MonoBehaviour
         playerHp.ResetPlayerHp();
 
         isMoving = true;
+
+        // Stop Active Thorn Coroutine
+        OnExitWrongFloorEvent(currentFloorIndex);
     }
 
     public Floor GetCurrentFloor()
@@ -198,23 +201,30 @@ public class ChessPlayerController : MonoBehaviour
         // false이면...
         if (!chessManager.GetFloorChecking(_index))
         {
-            //OnStayWrongFloorEvent(_index);
+            // Active Thorn Coroutine
+            OnStayWrongFloorEvent(_index);
         }
     }   
     
     public void OnMoveToDirection()
     {
+        // Hide Arrow UI
         OnMoveToDirectionEvent();
 
-        //
-        //OnExitWrongFloorEvent(currentFloorIndex);
+        // Stop Active Thorn Coroutine
+        OnExitWrongFloorEvent(currentFloorIndex);
+
+        SelectFloor(currentFloorIndex);
     }
     public void StopMoveToDirection()
     {
         // Active Arrow UI
         StopMoveToDirectionEvent();
+        Debug.Log("StopMoveToDirection");
 
         // Active Thorn
-        //OnEnterWrongFloorEvent(currentFloorIndex);
+        OnEnterWrongFloorEvent(currentFloorIndex);
+
+        CheckCurrentFloor(currentFloorIndex);
     }
 }

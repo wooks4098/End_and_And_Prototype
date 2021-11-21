@@ -6,58 +6,55 @@ using UnityEngine;
 
 public class ChessManager : MonoBehaviour
 {
-    [SerializeField] ChessPlayerController player;
+    [SerializeField] private ChessPlayerController player;
 
     // 체스 정보
-    [SerializeField] ChessArrayInfo chessArray;
+    [SerializeField] private ChessArrayInfo chessArray;
     // 바닥 정보를 저장할 1차원 배열
-    [SerializeField] int[] actureOfChessFloor;
+    [SerializeField] private int[] actureOfChessFloor;
 
-    // 바닥 정보를 저장할 2차원 배열
-    int[][] floorInfo;
 
     // 읽기 전용 상수
-    readonly int FloorWidth = 6; // 가로 개수
-    readonly int FloorHeight = 6; // 세로 개수
-    readonly int AllOfFloorCount = 36; // 전체 개수
+    // private readonly int FloorWidth = 6; // 가로 개수
+    // private readonly int FloorHeight = 6; // 세로 개수
+    private readonly int AllOfFloorCount = 36; // 전체 개수
     
     // floor를 저장할 컨테이너
-    [SerializeField] List<Floor> floorObejcts;
+    [SerializeField] private List<Floor> floorObejcts;
     
     // 부모로 사용할 transform
-    [SerializeField] Transform tParent;
+    [SerializeField] private Transform tParent;
 
     // ==============================================
-    
+
     // 텍스처를 바꿀 때 사용할 메시 렌더러
-    MeshRenderer mrFloorRenderer;
+    private MeshRenderer mrFloorRenderer;
     // 텍스처를 저장하는 컨테이너
-    [SerializeField] List<Texture> texTextureContainer;
+    [SerializeField] private List<Texture> texTextureContainer;
 
     // ==============================================
-    
+
     // 읽기 전용 상수형 
-    readonly int rBasicTextureType = 0;     // 일반 타입 텍스쳐 (이동 불가능)
-    readonly int rAvailableTextureType = 1; // 이동 가능 타입 텍스쳐
+    private readonly int rBasicTextureType = 0;     // 일반 타입 텍스쳐 (이동 불가능)
+    private readonly int rAvailableTextureType = 1; // 이동 가능 타입 텍스쳐
 
     // 상수 - 시간
-    readonly float stayTime = 10f;
+    private readonly float stayTime = 10f;
     // 현재 시간
-    float currentTime;
+    private float currentTime;
     // =============================================
 
-    //public event Action<int> OnPlantThornEvent;
+    // 코루틴을 저장할 변수
+    private Coroutine coroutine;
+    // 코루틴이 실행중인가? 를 판별
+    private bool isCoroutineRunning = false;
+    public bool IsCoroutineRunning { get { return isCoroutineRunning; } }
+
 
 
     private void Awake()
     {
         player = GameObject.Find("Player1").GetComponent<ChessPlayerController>();
-
-        floorInfo = new int[8][];
-        for (int i = 0; i < 8; i++)
-        {
-            floorInfo[i] = new int[8];
-        }
 
         floorObejcts = new List<Floor>();
 
@@ -66,31 +63,21 @@ public class ChessManager : MonoBehaviour
 
     private void OnEnable()
     {
-        player.OnEnterWrongFloorEvent += ActivePlantThornOnEnterEvent;
+        player.OnEnterWrongFloorEvent += ActivePlantThorn;
         player.OnStayWrongFloorEvent += CreatePlantThorn;
-        player.OnExitWrongFloorEvent += ResetCreateThornTimeOnExitEvent;
+        player.OnExitWrongFloorEvent += StopTimeCountCoroutine;
     }
     private void OnDisable()
     {
-        player.OnEnterWrongFloorEvent -= ActivePlantThornOnEnterEvent;
+        player.OnEnterWrongFloorEvent -= ActivePlantThorn;
         player.OnStayWrongFloorEvent -= CreatePlantThorn;
-        player.OnExitWrongFloorEvent -= ResetCreateThornTimeOnExitEvent;
+        player.OnExitWrongFloorEvent -= StopTimeCountCoroutine;
     }
 
     private void Start()
     {
         // 할당
         tParent.GetComponentsInChildren<Floor>(floorObejcts);
-
-        /*
-        for (int i = (FloorHeight + 1); i >= 0; i--)
-        {
-            for (int j = (FloorWidth + 1); j >= 0; j--)
-            {
-                floorInfo[i][j] = chessArray.infoByTwo[i][j];
-            }
-        }
-        */
 
         // infoByOne으로부터 정보를 받아와서 actureOfChessFloor에 할당 
         // AllOfFloorCount = 36
@@ -102,67 +89,56 @@ public class ChessManager : MonoBehaviour
 
     void CreatePlantThorn(int _index)
     {
-        StartCoroutine(CreatingTimeCoroutine(stayTime, _index));
-    }
+        Debug.Log("CreatePlantThorn");
 
-    IEnumerator CreatingTimeCoroutine(float _time, int _index)
-    {
-        currentTime = _time;
-
-        while (currentTime > 1.0f)
+        if(coroutine != null)
         {
-            currentTime -= Time.deltaTime;
-
-            yield return new WaitForFixedUpdate();
+            StopCoroutine(coroutine);
         }
 
-        while (currentTime <= 1.0f)
+        coroutine = StartCoroutine(CreatingTimeCountCoroutine(stayTime, _index)); 
+    }
+
+    IEnumerator CreatingTimeCountCoroutine(float _time, int _index)
+    {
+        Debug.Log("CreatingTimeCountCoroutine");
+
+        isCoroutineRunning = true;
+
+
+        while (true)
+        {
             ActivePlantThorn(_index);
+
+            yield return new WaitForSeconds(10f);
+        }                 
     }
 
     private void ActivePlantThorn(int _index)
     {
-        GameObject Thorn = floorObejcts[_index].GetPlantThorn();
-        //Debug.Log(floorObejcts[_index]);
-
-        if (!Thorn.activeSelf)
-        {
-            Debug.Log("Throw.Active");
-            Thorn.SetActive(true);
-        }
-    }
-
-
-    private void ActivePlantThornOnEnterEvent(int _index)
-    {
         if (_index > 35 || _index < 0) return;
 
-        Debug.Log("Throw.Active.Enter");
+        GameObject thorn = floorObejcts[_index].GetPlantThorn();
+        if (!thorn) return;
 
-        GameObject Thorn = floorObejcts[_index].GetPlantThorn();
-
-        if ((!Thorn.activeSelf)) 
+        if (!thorn.activeSelf)
         {
-            Thorn.SetActive(true);
+            thorn.SetActive(true);
         }
     }
 
-    private void ResetCreateThornTimeOnExitEvent(int _index)
+    private void StopTimeCountCoroutine(int _index)
     {
-        Debug.Log("Throw.Exit");
-        currentTime = stayTime;
+        if(isCoroutineRunning)
+        {
+            Debug.Log("StopCoroutine");
+            StopCoroutine(coroutine);
+        }
     }
 
     public Floor GetFloorObjects(int _index)
     {
         return floorObejcts[_index];
-    }
-
-    public int GetIndexOfFloorObjects(Floor _floor)
-    {
-        int temp = floorObejcts.BinarySearch(_floor);
-
-        return temp;
     }
 
 

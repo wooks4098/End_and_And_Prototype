@@ -14,7 +14,6 @@ public class ChessPlayerHp : MonoBehaviour
 
     private void Awake()
     {
-        //chessManager = GetComponent<ChessManager>();
     }
     private void Start()
     {
@@ -28,16 +27,6 @@ public class ChessPlayerHp : MonoBehaviour
     public int GetPlayerHp()
     {
         return playerHp;
-    }
-
-    private void OnEnable()
-    {
-        //chessManager.OnPlantThornEvent += LoseHp;
-    }
-
-    private void OnDisable()
-    {
-        //chessManager.OnPlantThornEvent -= LoseHp;
     }
 
     private void OnTriggerEnter(Collider other)
