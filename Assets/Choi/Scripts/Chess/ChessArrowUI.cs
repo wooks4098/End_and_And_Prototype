@@ -126,14 +126,6 @@ public class ChessArrowUI : MonoBehaviour
             SetArrowAlpha(goArrows[downArrowIndex], 0.3f);
             SetArrowAlpha(goArrows[rightArrowIndex], 0.3f);
         }
-
-        if(tempIndex == 39)
-        {
-            SetArrowAlpha(goArrows[rightArrowIndex], 0.3f);
-            SetArrowAlpha(goArrows[leftArrowIndex], 0.3f);
-            SetArrowAlpha(goArrows[downArrowIndex], 0.3f);
-            SetArrowAlpha(goArrows[rightArrowIndex], 0.3f);
-        }
     }
 
     private void HideArrows()
