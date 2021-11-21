@@ -30,6 +30,7 @@ public class ChessPlayerController : MonoBehaviour
     //[SerializeField] Floor previousFloor;
 
     [SerializeField] Floor startingFloor;
+    [SerializeField] Floor endingFloor;
 
     // 상수
     // 위-아래로 한 칸씩 더 둬서
@@ -110,7 +111,7 @@ public class ChessPlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if (currentFloorIndex > 5)
+            if (currentFloorIndex > 5 || currentFloorIndex == 0)
             {
                 isMoving = true;
 
@@ -172,9 +173,18 @@ public class ChessPlayerController : MonoBehaviour
 
     void SelectFloor(int _index)
     {
-        if (_index > 35) return;
-
-        currentFloor = chessManager.GetFloorObjects(_index).GetComponent<Floor>();
+        if (_index == startingFloorIndex)
+        {
+            currentFloor = startingFloor.GetComponent<Floor>();
+        }
+        else if (_index == endingFloorIndex)
+        {
+            currentFloor = endingFloor.GetComponent<Floor>();
+        }
+        else 
+        {
+            currentFloor = chessManager.GetFloorObjects(_index).GetComponent<Floor>();
+        }        
     }
 
     /// <summary>
@@ -182,10 +192,20 @@ public class ChessPlayerController : MonoBehaviour
     /// </summary>
     private void CheckCurrentFloor(int _index)
     {
-        if (currentFloorIndex > 35) return;
+        if (currentFloorIndex == startingFloorIndex)
+        {
+            Debug.Log("Start");
+            return;
+        }
+        else if (currentFloorIndex == endingFloorIndex)
+        {
+            Debug.Log("End");
+            OnMoveToDirectionEvent();
+            return;
+        }
 
         // false이면...
-        if (!chessManager.GetFloorChecking(_index))
+        else if (!chessManager.GetFloorChecking(_index))
         {
             OnWrongFloorEvent(_index);
         }
