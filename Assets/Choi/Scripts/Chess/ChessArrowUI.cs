@@ -46,13 +46,16 @@ public class ChessArrowUI : MonoBehaviour
 
         goUIArrowParent.transform.position = new Vector3(x, screenPos.y, goUIArrowParent.transform.position.z);
 
-
-        if(player.GetComponent<ChessPlayerController>().IsMoving)
+        // ChessPlayerController.isMoving == true 이면, (움직이고 있으면)
+        if (player.GetComponent<ChessPlayerController>().IsMoving)
         {
+            // 화살표를 숨긴다
             HideArrows();
         }
+        // ChessPlayerController.isMoving == false 이면, (움직이고 있지 않으면)
         else if (!player.GetComponent<ChessPlayerController>().IsMoving)
         {
+            // 화살표를 표시한다
             ActiveArrows();
         }
     }
@@ -151,7 +154,7 @@ public class ChessArrowUI : MonoBehaviour
 
     private void ActiveArrows()
     {
-        Debug.Log("ActiveArrows");
+        //Debug.Log("ActiveArrows");
 
         // 켠다
         goUIArrowParent.SetActive(true);

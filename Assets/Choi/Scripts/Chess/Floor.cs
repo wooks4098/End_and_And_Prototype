@@ -11,7 +11,6 @@ public class Floor : MonoBehaviour
     [SerializeField] Transform goParent;
 
 
-
     private void Awake()
     {
         goParent = this.transform;
@@ -31,18 +30,6 @@ public class Floor : MonoBehaviour
         }
     }
 
-    private void Update()
-    {        
-        if (gameObject.GetComponentInChildren<Tree>(true) != null)
-        {
-            // 식물 가시가 켜져 있으면 끈다
-            if (goPlantThorn.activeSelf)
-            {
-                Invoke("HidePlantThorn", 3f);
-            }
-        }
-    }
-
 
     public GameObject GetPlantThorn()
     {
@@ -52,14 +39,5 @@ public class Floor : MonoBehaviour
         }
 
         return goPlantThorn;
-    }
-
-    /// <summary>
-    /// Update() 메서드에서 Invoke로 참조,
-    /// 식물 가시가 켜져있으면 주기적으로 끔
-    /// </summary>
-    private void HidePlantThorn()
-    {
-        goPlantThorn.SetActive(false);
     }
 }

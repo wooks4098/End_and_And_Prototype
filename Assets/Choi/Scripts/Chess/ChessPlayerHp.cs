@@ -6,7 +6,7 @@ public class ChessPlayerHp : MonoBehaviour
 {
     [SerializeField] ChessManager chessManager;
 
-    [HideInInspector] public int playerHp;
+    public int playerHp;
 
     // µ¥¹ÌÁö
     readonly int thornDamage = 20;
