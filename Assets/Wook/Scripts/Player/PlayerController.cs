@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] float moveSpeed; //이동속도
     [SerializeField] float rotateSpeed; //회전속도
+    [SerializeField] float gravity; //중력
     Vector3 moveDirection; //이동방향
     [SerializeField] bool isRun = false;
     
@@ -46,7 +47,24 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        //캐릭터 중력 적용
+        SetGravity();
+        //캐릭터 움직임
         MoveTo(moveDirection);
+    }
+
+    // 캐릭터 중력 적용
+    void SetGravity()
+    {
+        switch (playerState)
+        {
+            case PlayerState.Walk:
+                moveDirection.y -= gravity * Time.deltaTime;
+                break;
+          
+        }
+
+
     }
 
     //input event 등록

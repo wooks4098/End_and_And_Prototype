@@ -10,20 +10,31 @@ public class ClimbingUpWall : MonoBehaviour
     //플레이어 위치를 벽 위로
     IEnumerator PlayerPosChange(Animator _animator, PlayerType _playerType)
     {
-        yield return new WaitForSeconds(3.15f);
-
         Transform playerTrans = GameManager.Instance.GetPlayerTrans(_playerType);
-        _animator.Play("Idle");//("ClimbEnd");
+        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.3f, playerTrans.position.z);
+        yield return new WaitForSeconds(0.25f);
+
+        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.3f, playerTrans.position.z);
+        yield return new WaitForSeconds(0.25f);
+
+        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.3f, playerTrans.position.z + 0.1f);
+        yield return new WaitForSeconds(0.25f);
+
+        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.3f, playerTrans.position.z + 0.1f);
+
+        yield return new WaitForSeconds(0.25f);
+
+        //_animator.Play("Idle");
+        _animator.SetTrigger("ClimbEnd");
         Debug.Log("애니종료");
         yield return null;
-        playerTrans.position = new Vector3(playerTrans.position.x, EndPos.position.y, playerTrans.position.z);
+        playerTrans.position = new Vector3(playerTrans.position.x, EndPos.position.y, EndPos.position.z);
         Debug.Log(playerTrans.position);
         GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.Walk);
 
     }
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.transform.name);
         if (other.tag == "Player1" && isPlayer1Up == false)
         {
             isPlayer1Up = true;

@@ -13,6 +13,7 @@ public class InputManager : MonoBehaviour, IInput
 {
     private static InputManager instance;
     public static InputManager Instance { get { return instance; } }
+    //Input Action 필요한 객체가 연결하여 인풋을 받음
     public Action<MoveType, PlayerState> OnFrontBackPlayer1 { get; set; }
     public Action<MoveType, PlayerState> OnFrontBackPlayer2 { get; set; }
     public Action<MoveType, PlayerState> OnLeftRightPlayer1 { get; set; }
@@ -23,9 +24,10 @@ public class InputManager : MonoBehaviour, IInput
     public Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }
 
     public KeyCode player2Use;
-
+    //플레이어 컨트롤러
     [SerializeField] PlayerController player1;
     [SerializeField] PlayerController player2;
+    //플레이어 상태
     PlayerState player1State;
     PlayerState player2State;
     private void Awake()
@@ -45,7 +47,6 @@ public class InputManager : MonoBehaviour, IInput
 
     private void Update()
     {
-
         player1State = player1.GetPlayerState();
         player2State = player2.GetPlayerState();
         OnForntBack();
@@ -107,7 +108,7 @@ public class InputManager : MonoBehaviour, IInput
         }
     }
 
-        void OnLeftRight()
+    void OnLeftRight()
     {
         //플레이어1
         switch (player1State)
