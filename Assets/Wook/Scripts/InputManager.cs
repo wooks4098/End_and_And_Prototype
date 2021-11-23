@@ -13,6 +13,8 @@ public class InputManager : MonoBehaviour, IInput
 {
     private static InputManager instance;
     public static InputManager Instance { get { return instance; } }
+
+    #region InputAction
     //Input Action 필요한 객체가 연결하여 인풋을 받음
     public Action<MoveType, PlayerState> OnFrontBackPlayer1 { get; set; }
     public Action<MoveType, PlayerState> OnFrontBackPlayer2 { get; set; }
@@ -22,8 +24,10 @@ public class InputManager : MonoBehaviour, IInput
     public Action<bool> OnRunPlayer2 { get; set; }
     public Action<PlayerType, PlayerState> OnUsePlayer1 { get; set; }
     public Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }
+    public Action OnInventoryOpenPlayer1 { get; set; }
+    public Action OnInventoryOpenPlayer2 { get; set; }
+    #endregion
 
-    public KeyCode player2Use;
     //플레이어 컨트롤러
     [SerializeField] PlayerController player1;
     [SerializeField] PlayerController player2;
@@ -40,19 +44,18 @@ public class InputManager : MonoBehaviour, IInput
         else Destroy(gameObject);
     }
 
-    void start()
-    {
-        player2Use = KeyCode.Keypad2;
-    }
 
     private void Update()
     {
+        //플레이어 상태 얻기
         player1State = player1.GetPlayerState();
         player2State = player2.GetPlayerState();
+        //Input
         OnForntBack();
         OnLeftRight();
         OnRun();
         OnUse();
+        OnOpenInventory();
     }
 
     void OnForntBack()
@@ -134,17 +137,15 @@ public class InputManager : MonoBehaviour, IInput
         }
         //플레이어2
         switch (player2State)
-        {
+        {   //GetKey
             case PlayerState.Walk:
-            //case PlayerState.ClimbWall:
-                //GetKey
                 if (Input.GetKey(KeyCode.LeftArrow))
                     OnLeftRightPlayer2?.Invoke(MoveType.Left, player2State);
                 else if (Input.GetKey(KeyCode.RightArrow))
                     OnLeftRightPlayer2?.Invoke(MoveType.Right, player2State);
                 break;
-            case PlayerState.Inventory:
-                //GetKeyDown
+            //GetKeyDown
+            case PlayerState.Inventory:                
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                     OnLeftRightPlayer2?.Invoke(MoveType.Left, player2State);
                 else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -174,5 +175,16 @@ public class InputManager : MonoBehaviour, IInput
         if (Input.GetKey(KeyCode.Keypad2))
             OnUsePlayer2?.Invoke(PlayerType.SecondPlayer, player2State);
 
+    }
+
+    void OnOpenInventory()
+    {
+        //플레이어1
+        if (Input.GetKeyDown(KeyCode.I))
+            OnInventoryOpenPlayer1?.Invoke();
+
+        //플레이어2
+        if (Input.GetKeyDown(KeyCode.Keypad4))
+            OnInventoryOpenPlayer2?.Invoke();
     }
 }

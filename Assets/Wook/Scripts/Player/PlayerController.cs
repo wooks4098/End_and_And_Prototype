@@ -43,6 +43,10 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         ani = GetComponentInChildren<Animator>();
+        
+    }
+    private void Start()
+    {
         //input event µî·Ï
         SetInput();
     }

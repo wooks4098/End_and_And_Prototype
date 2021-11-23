@@ -53,56 +53,6 @@ public class SlotSelect : MonoBehaviour
         }
     }
 
-    //private void Update()
-    //{
-    //    if(inventoryActivated)
-    //    {
-    //        if(Input.GetKeyDown(KeyCode.W))
-    //        {
-    //            if (SelectNumber >= 5)
-    //            {
-    //                inventory.SlotSelectColorChange(SelectNumber, Color.white);
-    //                SelectNumber -= 5;
-    //                inventory.SlotSelectColorChange(SelectNumber, Color.red);
-    //                ChangeItemInfo();
-    //            }
-
-    //        }
-    //        else if(Input.GetKeyDown(KeyCode.S))
-    //        {
-    //            if (SelectNumber < 5)
-    //            {
-    //                inventory.SlotSelectColorChange(SelectNumber, Color.white);
-    //                SelectNumber += 5;
-    //                inventory.SlotSelectColorChange(SelectNumber, Color.red);
-    //                ChangeItemInfo();
-    //            }
-    //        }
-    //        else if (Input.GetKeyDown(KeyCode.A))
-    //        {
-    //            if (SelectNumber != 0 )
-    //            {
-    //                inventory.SlotSelectColorChange(SelectNumber, Color.white);
-    //                SelectNumber--;
-    //                inventory.SlotSelectColorChange(SelectNumber, Color.red);
-    //                ChangeItemInfo();
-    //            }
-
-    //        }
-    //        else if (Input.GetKeyDown(KeyCode.D))
-    //        {
-    //            if ( SelectNumber != 9)
-    //            {
-    //                inventory.SlotSelectColorChange(SelectNumber, Color.white);
-    //                SelectNumber++;
-    //                inventory.SlotSelectColorChange(SelectNumber, Color.red);
-    //                ChangeItemInfo();
-    //            }
-
-    //        }
-    //    }
-    //}
-
     //¾Õ µÚ ÀÎÇ²
     void OnFrontBack(MoveType _MoveType, PlayerState _playerState)
     {

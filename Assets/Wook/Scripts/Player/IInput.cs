@@ -30,4 +30,9 @@ public interface IInput
     //사용키
     Action<PlayerType, PlayerState> OnUsePlayer1 { get; set; } 
     Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }
+
+    //인벤토리 오픈
+    Action OnInventoryOpenPlayer1 { get; set; } 
+    Action OnInventoryOpenPlayer2 { get; set; } 
+
 }

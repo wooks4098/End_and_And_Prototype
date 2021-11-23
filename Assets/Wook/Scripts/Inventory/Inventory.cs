@@ -25,11 +25,26 @@ public class Inventory : MonoBehaviour
         ObjectItemSlots = G_ObjectSlotsParent.GetComponentsInChildren<Slot>();
         UseItemSlots = G_UseSlotsParent.GetComponentsInChildren<Slot>();
         itemget = GetComponent<ItemGet>();
+        //input 연결
+        SetInput();
         //test Item추가
         AcquireItem(i2);
 
     }
 
+    void SetInput()
+    {
+        switch(playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnInventoryOpenPlayer1 += TryOpenInventory;
+                break;
+
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnInventoryOpenPlayer2 += TryOpenInventory;
+                break;
+        }
+    }
 
 
     private void Update()
@@ -37,7 +52,7 @@ public class Inventory : MonoBehaviour
         //테스트 아이템 획득키
         if(Input.GetKeyDown(KeyCode.Q))
             AcquireItem(i);
-        TryOpenInventory();
+
     }
 
     //인벤토리 아이템 선택 색상 변경
@@ -120,15 +135,11 @@ public class Inventory : MonoBehaviour
 
     public void TryOpenInventory()
     {
-        //PlayerInput과 연동해야함
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            inventoryActivated = !inventoryActivated;
-            if (inventoryActivated)
-                OpenInventory();
-            else
-                CloseInventory();
-        }
+        inventoryActivated = !inventoryActivated;
+        if (inventoryActivated)
+            OpenInventory();
+        else
+            CloseInventory();
     }
     void OpenInventory()
     {
