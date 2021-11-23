@@ -9,64 +9,81 @@ public class ObjectUIShow : MonoBehaviour
 
     [SerializeField] PlayerType playerType;
     [SerializeField] Transform ObjectUiPos;
+    [SerializeField] bool CanUse = false;// 오브젝트 사용가능한지
     //testd용 UI매니저를 만들어 요청하는것으로 수정해야함
-    [SerializeField] ObjectUI objectui1;
-    [SerializeField] ObjectUI objectui2;
 
-    [SerializeField] bool P1CanUse = false;
-    [SerializeField] bool P2CanUse = false;
+
+    public bool GetCanUse()
+    {
+        return CanUse;
+    }
+
+    public PlayerType GetPlayerType()
+    {
+        return playerType;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-
-        if(other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
+        switch(playerType)
         {
-            UIManager.Instance.ObjectUIShow(PlayerType.FirstPlayer);
-            //objectui1.Show();
-            P1CanUse = true;
+            case PlayerType.FirstPlayer:
+                if (other.tag == "Player1")
+                {
+                    CanUse = true;
+                    GameManager.Instance.PlayerObjectHitin(PlayerType.FirstPlayer);
+                    //UIManager.Instance.ObjectUIShow(PlayerType.FirstPlayer);
+                }
+                break;
+            case PlayerType.SecondPlayer:
+                if (other.tag == "Player2")
+                {
+                    CanUse = true;
+                    GameManager.Instance.PlayerObjectHitin(PlayerType.SecondPlayer);
+                }
+                break;
         }
+        
 
-        if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
-        {
-            UIManager.Instance.ObjectUIShow(PlayerType.SecondPlayer);
-
-            //objectui2.Show();
-            P2CanUse = true;
-        }
+        
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
+        switch (playerType)
         {
-            UIManager.Instance.ObjectUIMove(PlayerType.FirstPlayer, ObjectUiPos.position);
-
-            //objectui1.Move();
+            case PlayerType.FirstPlayer:
+                if (other.tag == "Player1")
+                    GameManager.Instance.ObjectUiMove(PlayerType.FirstPlayer, ObjectUiPos.position);
+                break;
+            case PlayerType.SecondPlayer:
+                if (other.tag == "Player2")
+                    GameManager.Instance.ObjectUiMove(PlayerType.SecondPlayer, ObjectUiPos.position);
+                break;
         }
-
-        if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
-        {
-            UIManager.Instance.ObjectUIMove(PlayerType.SecondPlayer, ObjectUiPos.position);
-            //objectui2.Move();
-
-        }
+                
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
+        switch (playerType)
         {
-            UIManager.Instance.ObjectUIHide(PlayerType.FirstPlayer);
-            //objectui1.hide();
-            P1CanUse = false;
+            case PlayerType.FirstPlayer:
+                if (other.tag == "Player1")
+                {
+                    CanUse = false;
+                    GameManager.Instance.PlayerObjectHitout(PlayerType.FirstPlayer);
+                }
+                    break;
+            case PlayerType.SecondPlayer:
+                if (other.tag == "Player2")
+                {
+                    CanUse = false;
+                    GameManager.Instance.PlayerObjectHitout(PlayerType.SecondPlayer);
+                }
+                    break;
         }
-
-        if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
-        {
-            UIManager.Instance.ObjectUIHide(PlayerType.SecondPlayer);
-            //objectui2.hide();
-            P1CanUse = false;
-        }
+       
     }
 
 }
