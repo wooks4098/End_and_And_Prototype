@@ -45,7 +45,7 @@ public class ClimbingUpWall : MonoBehaviour
             isPlayer1Up = true;
             Animator animator = GameManager.Instance.GetPlayerModelTrans(PlayerType.FirstPlayer).GetComponent<Animator>();
             GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.ClimbUpWall);
-            animator.SetBool("IsClimbinUpWall", true);
+            animator.SetTrigger("IsClimbinUpWall");
             StartCoroutine(PlayerPosChange(animator,PlayerType.FirstPlayer));
 
         }
@@ -54,25 +54,10 @@ public class ClimbingUpWall : MonoBehaviour
             isPlayer2Up = true;
             Animator animator = GameManager.Instance.GetPlayerModelTrans(PlayerType.SecondPlayer).GetComponent<Animator>();
             GameManager.Instance.PlayerStateChange(PlayerType.SecondPlayer, PlayerState.ClimbUpWall);
-            animator.SetBool("IsClimbinUpWall", true);
+            animator.SetTrigger("IsClimbinUpWall");
             StartCoroutine(PlayerPosChange(animator, PlayerType.SecondPlayer));
         }
     }
 
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    Debug.Log(collision.transform.name);
-    //    if(collision.transform.tag == "Player1")
-    //    {
-    //        GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.Wait);
-    //        GameManager.Instance.GetPlayerModelTrans(PlayerType.FirstPlayer).GetComponent<Animator>().SetBool("IsClimbinUpWall", true);
-    //    }
-    //    if (collision.transform.tag == "Player2")
-    //    {
-    //        GameManager.Instance.PlayerStateChange(PlayerType.SecondPlayer, PlayerState.Wait);
-    //        GameManager.Instance.GetPlayerModelTrans(PlayerType.SecondPlayer).GetComponent<Animator>().SetBool("IsClimbinUpWall", true);
-
-    //    }
-    //}
 }
