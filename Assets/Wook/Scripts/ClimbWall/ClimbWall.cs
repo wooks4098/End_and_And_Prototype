@@ -6,69 +6,154 @@ using UnityEngine;
 /// </summary>
 public class ClimbWall : MonoBehaviour
 {
-    bool isPlayergoup;//플레이어가 올라갔는지
-    [SerializeField] bool isClimb = false;//오르는중인지
-    [SerializeField] ObjectUIShow player1ObjectShow;
-    [SerializeField] ObjectUIShow player2ObjectShow;
+
+    //플레이어가 벽을 올라갔는지(한번만 오르기 가능)
+    [SerializeField] bool isPlayer1Climb = false;
+    [SerializeField] bool isPlayer2Climb = false;
+
+    //플레이어가 로프를 올라갔는지(한번만 오르기 가능)
+    [SerializeField] bool isPlayer1ClimbRope = false;
+    [SerializeField] bool isPlayer2ClimbRope = false;
+
+    //로프가 내려갔는지
+    [SerializeField] bool isRope;
+
+    //벽타기 상호작용 가능 여부
+    [SerializeField] ObjectUIShow ClimbObjectShowP1;
+    [SerializeField] ObjectUIShow ClimbObjectShowP2;
+    //로프 타기 상호작용 가능 여부
+    [SerializeField] ObjectUIShow RopeObjectShowP1;
+    [SerializeField] ObjectUIShow RopeObjectShowP2;
+    //로프 내리기 상호작용 가능 여부
+    [SerializeField] ObjectUIShow RopeDownObjectShowP1;
+    [SerializeField] ObjectUIShow RopeDownObjectShowP2;
+
+    //로프
+    [SerializeField] GameObject gRope;
     private void Start()
     {
         SetInput();
 
     }
-    //private void Update()
-    //{
-    //    //if (Input.GetKeyDown(KeyCode.E) && objectUIShow.GetCanUse() == true && isClimb == false)
-    //    //{
-    //    //    PlayerPanertChange();
-    //    //}
-    //}
+
     void SetInput()
     {
-        InputManager.Instance.OnUsePlayer1 += PlayerPanertChange;
-        InputManager.Instance.OnUsePlayer2 += PlayerPanertChange;
-        //switch (playerType)
-        //{
-        //    case PlayerType.FirstPlayer:
-        //        InputManager.Instance.OnUsePlayer1 += PlayerPanertChange;
-        //        break;
-
-        //    case PlayerType.SecondPlayer:
-        //        InputManager.Instance.OnUsePlayer2 += PlayerPanertChange;
-
-        //        break;
-        //}
+        InputManager.Instance.OnUsePlayer1 += UseObject;
+        InputManager.Instance.OnUsePlayer2 += UseObject;
     }
-    //플레이어 Climb시작
-    void PlayerPanertChange(PlayerType _playerType, PlayerState _playerState)
+    //플레이어 Climb와 상호작용 체크
+    void UseObject(PlayerType _playerType, PlayerState _playerState)
+    {
+        if(isRope)
+        {
+            switch(_playerType)
+            {
+                case PlayerType.FirstPlayer:
+                     if (isPlayer1Climb)
+                        return;
+                    break;
+                case PlayerType.SecondPlayer:
+                    if (isPlayer2Climb)
+                        return;
+                    break;
+            }
+        }
+        //로프내리기
+        if (isRope == false &&(RopeDownObjectShowP1.GetCanUse() || RopeDownObjectShowP2.GetCanUse()))
+        {
+            gRope.SetActive(true);
+            isRope = true;
+            return;
+        }
+
+        //벽타기 or 로프타기
+        if (isRope == false)
+            Climbwall(_playerType);
+        else
+            RopeClimb(_playerType);
+
+
+    }
+
+    void RopeClimb(PlayerType _playerType)
+    {
+
+        switch(_playerType)
+        {
+            case PlayerType.FirstPlayer:
+                if (isPlayer1ClimbRope)
+                    return;
+
+                isPlayer1ClimbRope = true;
+                PlayerStateChange(RopeObjectShowP1, PlayerState.ClimbRope);
+
+                break;
+            case PlayerType.SecondPlayer:
+                if (isPlayer2ClimbRope)
+                    return;
+
+                isPlayer2ClimbRope = true;
+                PlayerStateChange(RopeObjectShowP2, PlayerState.ClimbRope);
+                break;
+        }
+    }
+
+    #region 벽타기
+    //벽타기 시작
+    void Climbwall(PlayerType _playerType)
     {
         Transform playerTrans;
         Transform playerModelTrans;
         switch (_playerType)
         {
             case PlayerType.FirstPlayer:
-                if (!player1ObjectShow.GetCanUse())
+                //플레이어가 해당 오브젝트를 사용가능한 상태인지
+                if (!ClimbObjectShowP1.GetCanUse())
                     return;
-                playerTrans = GameManager.Instance.GetPlayerTrans(player1ObjectShow.GetPlayerType());
-                playerModelTrans = GameManager.Instance.GetPlayerModelTrans(player1ObjectShow.GetPlayerType());
-                playerTrans.rotation = Quaternion.Euler(0, 0, 0);
-                playerModelTrans.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
-                isClimb = true;
+                if (isPlayer1Climb == true)
+                    return;
+                //플레이어가 장갑 아이템을 가지고있는지 확인
+                if (!GameManager.Instance.IsHaveItem(PlayerType.FirstPlayer, "Glove"))
+                    return;
+
+                isPlayer1Climb = true;
                 //플레이어 상태 변경
-                GameManager.Instance.PlayerStateChange(player1ObjectShow.GetPlayerType(), PlayerState.ClimbWall);
+                PlayerStateChange(ClimbObjectShowP1, PlayerState.ClimbWall);
                 break;
 
             case PlayerType.SecondPlayer:
-                if (!player2ObjectShow.GetCanUse())
+                //플레이어가 해당 오브젝트를 사용가능한 상태인지
+                if (!ClimbObjectShowP2.GetCanUse())
                     return;
-                playerTrans = GameManager.Instance.GetPlayerTrans(player2ObjectShow.GetPlayerType());
-                playerModelTrans = GameManager.Instance.GetPlayerModelTrans(player2ObjectShow.GetPlayerType());
-                playerTrans.rotation = Quaternion.Euler(0, 0, 0);
-                playerModelTrans.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
-                isClimb = true;
+                if (isPlayer2Climb == true)
+                    return;
+                //플레이어가 장갑 아이템을 가지고있는지 확인
+                if (!GameManager.Instance.IsHaveItem(PlayerType.SecondPlayer, "Glove"))
+                    return;
+
+                isPlayer2Climb = true;
                 //플레이어 상태 변경
-                GameManager.Instance.PlayerStateChange(player2ObjectShow.GetPlayerType(), PlayerState.ClimbWall);
+                PlayerStateChange(ClimbObjectShowP2, PlayerState.ClimbWall);
                 break;
         }
-        
     }
+
+    //플레이어 상태 변경 -> Climb로
+    void PlayerStateChange(ObjectUIShow _objectUIShow, PlayerState _playerState)
+    {
+        PlayerType playerType = _objectUIShow.GetPlayerType();
+        Transform playerTrans = GameManager.Instance.GetPlayerTrans(playerType);
+        Transform playerModelTrans = GameManager.Instance.GetPlayerModelTrans(playerType);
+        //플레이어 rotation변경
+        playerTrans.rotation = Quaternion.Euler(0, 0, 0);
+        //모델의 rotation을 벽과 같게 변경
+        playerModelTrans.rotation = new Quaternion(0, transform.rotation.y, 0, transform.rotation.w);
+        //플레이어 상태 변경
+        GameManager.Instance.PlayerStateChange(playerType, _playerState);
+
+        //플레이어가 벽타기를 했으므로 player1ObjectShow,player2ObjectShow gameobject 숨기기
+        ClimbObjectShowP1.gameObject.SetActive(false);
+        ClimbObjectShowP2.gameObject.SetActive(false);
+    }
+    #endregion
 }

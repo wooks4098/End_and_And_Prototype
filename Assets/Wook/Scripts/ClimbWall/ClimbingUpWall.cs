@@ -10,27 +10,32 @@ public class ClimbingUpWall : MonoBehaviour
     //플레이어 위치를 벽 위로
     IEnumerator PlayerPosChange(Animator _animator, PlayerType _playerType)
     {
+        //벽 위로 위치 변경
         Transform playerTrans = GameManager.Instance.GetPlayerTrans(_playerType);
-        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.3f, playerTrans.position.z);
+        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.4f, playerTrans.position.z);
         yield return new WaitForSeconds(0.25f);
 
-        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.3f, playerTrans.position.z);
+        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.4f, playerTrans.position.z);
         yield return new WaitForSeconds(0.25f);
 
-        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.3f, playerTrans.position.z + 0.1f);
+        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.4f, playerTrans.position.z + 0.1f);
         yield return new WaitForSeconds(0.25f);
 
-        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.3f, playerTrans.position.z + 0.1f);
+        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y+0.4f, playerTrans.position.z + 0.1f);
 
         yield return new WaitForSeconds(0.25f);
+        //playerTrans.position = new Vector3(playerTrans.position.x, EndPos.position.y, EndPos.position.z);
+        playerTrans.position = new Vector3(playerTrans.position.x, playerTrans.position.y + 0.8f, playerTrans.position.z + 0.4f);
 
-        //_animator.Play("Idle");
+        //플레이어 모델, 부모 Rotation되돌리기
+        Transform playerModelTrans = GameManager.Instance.GetPlayerModelTrans(_playerType);
+        playerTrans.rotation = Quaternion.Euler(0, 0, 0);
+        playerModelTrans.rotation = Quaternion.Euler(0, 0, 0);
+        //애니메이션 변경
         _animator.SetTrigger("ClimbEnd");
-        Debug.Log("애니종료");
         yield return null;
-        playerTrans.position = new Vector3(playerTrans.position.x, EndPos.position.y, EndPos.position.z);
-        Debug.Log(playerTrans.position);
-        GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.Walk);
+        //플레이어 상태변경
+        GameManager.Instance.PlayerStateChange(_playerType, PlayerState.Walk);
 
     }
     private void OnTriggerEnter(Collider other)
@@ -49,11 +54,8 @@ public class ClimbingUpWall : MonoBehaviour
             isPlayer2Up = true;
             Animator animator = GameManager.Instance.GetPlayerModelTrans(PlayerType.SecondPlayer).GetComponent<Animator>();
             GameManager.Instance.PlayerStateChange(PlayerType.SecondPlayer, PlayerState.ClimbUpWall);
-            animator.applyRootMotion = true;
             animator.SetBool("IsClimbinUpWall", true);
-            //StartCoroutine(PlayerPosChange(animator));
-
-
+            StartCoroutine(PlayerPosChange(animator, PlayerType.SecondPlayer));
         }
     }
 

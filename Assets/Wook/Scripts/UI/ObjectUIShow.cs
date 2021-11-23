@@ -25,52 +25,65 @@ public class ObjectUIShow : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
-        if(other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
+        switch(playerType)
         {
-            CanUse = true;
-            GameManager.Instance.PlayerObjectHitin(PlayerType.FirstPlayer);
-            //UIManager.Instance.ObjectUIShow(PlayerType.FirstPlayer);
+            case PlayerType.FirstPlayer:
+                if (other.tag == "Player1")
+                {
+                    CanUse = true;
+                    GameManager.Instance.PlayerObjectHitin(PlayerType.FirstPlayer);
+                    //UIManager.Instance.ObjectUIShow(PlayerType.FirstPlayer);
+                }
+                break;
+            case PlayerType.SecondPlayer:
+                if (other.tag == "Player2")
+                {
+                    CanUse = true;
+                    GameManager.Instance.PlayerObjectHitin(PlayerType.SecondPlayer);
+                }
+                break;
         }
+        
 
-        if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
-        {
-            CanUse = true;
-            GameManager.Instance.PlayerObjectHitin(PlayerType.SecondPlayer);
-        }
+        
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
+        switch (playerType)
         {
-            GameManager.Instance.ObjectUiMove(PlayerType.FirstPlayer, ObjectUiPos.position);
-
+            case PlayerType.FirstPlayer:
+                if (other.tag == "Player1")
+                    GameManager.Instance.ObjectUiMove(PlayerType.FirstPlayer, ObjectUiPos.position);
+                break;
+            case PlayerType.SecondPlayer:
+                if (other.tag == "Player2")
+                    GameManager.Instance.ObjectUiMove(PlayerType.SecondPlayer, ObjectUiPos.position);
+                break;
         }
-
-        if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
-        {
-            GameManager.Instance.ObjectUiMove(PlayerType.SecondPlayer, ObjectUiPos.position);
-
-
-        }
+                
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player1" && playerType == PlayerType.FirstPlayer)
+        switch (playerType)
         {
-            CanUse = false;
-            GameManager.Instance.PlayerObjectHitout(PlayerType.FirstPlayer);
-
+            case PlayerType.FirstPlayer:
+                if (other.tag == "Player1")
+                {
+                    CanUse = false;
+                    GameManager.Instance.PlayerObjectHitout(PlayerType.FirstPlayer);
+                }
+                    break;
+            case PlayerType.SecondPlayer:
+                if (other.tag == "Player2")
+                {
+                    CanUse = false;
+                    GameManager.Instance.PlayerObjectHitout(PlayerType.SecondPlayer);
+                }
+                    break;
         }
-
-        if (other.tag == "Player2" && playerType == PlayerType.SecondPlayer)
-        {
-            CanUse = false;
-            GameManager.Instance.PlayerObjectHitout(PlayerType.SecondPlayer);
-
-        }
+       
     }
 
 }

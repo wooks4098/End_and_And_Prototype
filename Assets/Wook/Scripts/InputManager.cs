@@ -62,7 +62,8 @@ public class InputManager : MonoBehaviour, IInput
         {
             case PlayerState.Walk:
             case PlayerState.ClimbWall:
-            case PlayerState.ClimbUpWall:
+            //case PlayerState.ClimbUpWall:
+            case PlayerState.ClimbRope:
                 //GetKey
                 if (Input.GetKey(KeyCode.W))
                     OnFrontBackPlayer1?.Invoke(MoveType.Front, player1State);
@@ -88,6 +89,7 @@ public class InputManager : MonoBehaviour, IInput
         {
             case PlayerState.Walk:
             case PlayerState.ClimbWall:
+            case PlayerState.ClimbRope:
                 //GetKey
                 if (Input.GetKey(KeyCode.UpArrow))
                     OnFrontBackPlayer2?.Invoke(MoveType.Front, player2State);
@@ -114,37 +116,37 @@ public class InputManager : MonoBehaviour, IInput
         switch (player1State)
         {
             case PlayerState.Walk:
-            case PlayerState.ClimbWall:
+            //case PlayerState.ClimbWall:
                 //GetKey
                 if (Input.GetKey(KeyCode.A))
                     OnLeftRightPlayer1?.Invoke(MoveType.Left, player1State);
                 else if (Input.GetKey(KeyCode.D))
-                    OnLeftRightPlayer1?.Invoke(MoveType.Right, player2State);
+                    OnLeftRightPlayer1?.Invoke(MoveType.Right, player1State);
                 break;
             case PlayerState.Inventory:
                 //GetKeyDown
                 if (Input.GetKeyDown(KeyCode.A))
                     OnLeftRightPlayer1?.Invoke(MoveType.Left, player1State);
                 else if (Input.GetKeyDown(KeyCode.D))
-                    OnLeftRightPlayer1?.Invoke(MoveType.Right, player2State);
+                    OnLeftRightPlayer1?.Invoke(MoveType.Right, player1State);
                 break; 
 
         }
         //플레이어2
-        switch (player1State)
+        switch (player2State)
         {
             case PlayerState.Walk:
-            case PlayerState.ClimbWall:
+            //case PlayerState.ClimbWall:
                 //GetKey
                 if (Input.GetKey(KeyCode.LeftArrow))
-                    OnLeftRightPlayer2?.Invoke(MoveType.Left, player1State);
+                    OnLeftRightPlayer2?.Invoke(MoveType.Left, player2State);
                 else if (Input.GetKey(KeyCode.RightArrow))
                     OnLeftRightPlayer2?.Invoke(MoveType.Right, player2State);
                 break;
             case PlayerState.Inventory:
                 //GetKeyDown
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
-                    OnLeftRightPlayer2?.Invoke(MoveType.Left, player1State);
+                    OnLeftRightPlayer2?.Invoke(MoveType.Left, player2State);
                 else if (Input.GetKeyDown(KeyCode.RightArrow))
                     OnLeftRightPlayer2?.Invoke(MoveType.Right, player2State);
                 break;

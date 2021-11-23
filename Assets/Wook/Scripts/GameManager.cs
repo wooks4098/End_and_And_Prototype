@@ -6,9 +6,12 @@ public class GameManager : MonoBehaviour
 {
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
+    //플레이어 컨트롤러
     PlayerController player1;
     PlayerController player2;
-
+    //인벤토리
+    [SerializeField] Inventory inventoryP1;
+    [SerializeField] Inventory inventoryP2;
     GameObject gPlayer1;
     GameObject gPlayer2;
 
@@ -28,20 +31,8 @@ public class GameManager : MonoBehaviour
         gPlayer2 = player2.GetComponent<GameObject>();
     }
 
-    //플레이어 움직임 Move관련 input제어
-    //public void PlayerCanMoveChange(PlayerType playerType, bool CanMove)
-    //{
-    //    switch (playerType)
-    //    {
-    //        case PlayerType.FirstPlayer:
-    //            player1.PlayerCanMoveChange(CanMove);
-    //            break;
-    //        case PlayerType.SecondPlayer:
-    //            player2.PlayerCanMoveChange(CanMove);
-    //            break;
-    //    }
-    //}
 
+    //플레이어 상태 변경
     public void PlayerStateChange(PlayerType _playerType, PlayerState _playerState)
     {
         switch (_playerType)
@@ -76,7 +67,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-
+    //플레이어 transform리턴
     public Transform GetPlayerTrans(PlayerType _playerType)
     {
         switch (_playerType)
@@ -89,7 +80,7 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
-
+    //플레이어 모델 transform리턴
     public Transform GetPlayerModelTrans(PlayerType _playerType)
     {
         switch (_playerType)
@@ -101,5 +92,18 @@ public class GameManager : MonoBehaviour
 
         }
         return null;
+    }
+
+    //플레이어가 아이템을 가지고 있는지 확인하는 함수
+    public bool IsHaveItem(PlayerType _playertype, string _ItemName)
+    {
+        switch(_playertype)
+        {
+            case PlayerType.FirstPlayer:
+                return inventoryP1.IsHaveItem(_ItemName);
+            case PlayerType.SecondPlayer:
+                return inventoryP2.IsHaveItem(_ItemName);
+        }
+        return false;
     }
 }

@@ -14,6 +14,8 @@ public enum PlayerState
     ClimbWall, //벽 오르는중(벽타기)
     ClimbUpWall, //벽 올라가기
     Wait, //대기상태
+    ClimbRope,//로프 오르는중
+    ClimbRopeUp,//로프 올라가기
     Inventory, //인벤토리 오픈
 
 }
@@ -103,6 +105,7 @@ public class PlayerController : MonoBehaviour
                 FrontBackWalk(moveType);
                 break;
             case PlayerState.ClimbWall:
+            case PlayerState.ClimbRope:
                 Climb(moveType);
                 break;
             case PlayerState.ClimbUpWall:
@@ -145,14 +148,14 @@ public class PlayerController : MonoBehaviour
         {
             moveSpeed = 3;
             moveDirection = -GetDirection(InputDir.front, PlayerState.ClimbWall);
-            ani.SetFloat("ClimbSpeed", 0.75f);
+            ani.SetFloat("ClimbSpeed", 1f);
 
         }
         else if (moveType == MoveType.Back)
         {
             moveSpeed = 3;
             moveDirection = -GetDirection(InputDir.back, PlayerState.ClimbWall);
-            ani.SetFloat("ClimbSpeed", -0.75f);
+            ani.SetFloat("ClimbSpeed", -1f);
         }
         else
         {
@@ -220,13 +223,18 @@ public class PlayerController : MonoBehaviour
         ani.SetBool("Run", false);
         ani.SetBool("IsClimbinUpWall", false);
         ani.SetFloat("ClimbSpeed", 0);
+        playerState = _playerState;
         switch (_playerState)
         {
             case PlayerState.ClimbWall:
                 ani.SetTrigger("ClimbStart");
                 break;
+            case PlayerState.ClimbRope:
+                ani.SetTrigger("RopeClimbStart");
+                break;
+
         }
-        playerState = _playerState;
+
     }
     
 

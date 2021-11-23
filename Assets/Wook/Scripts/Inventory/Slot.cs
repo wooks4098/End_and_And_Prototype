@@ -50,6 +50,14 @@ public class Slot : MonoBehaviour
             ClearSlot();
     }
 
+    public bool IsHaveItem(string _itemName)
+    {
+        if (item.ItemName == _itemName)
+            return true;
+        else
+            return false;
+    }
+
     //ΩΩ∑‘ √ ±‚»≠
     void ClearSlot()
     {

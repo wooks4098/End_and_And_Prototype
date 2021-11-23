@@ -26,7 +26,7 @@ public class Inventory : MonoBehaviour
         UseItemSlots = G_UseSlotsParent.GetComponentsInChildren<Slot>();
         itemget = GetComponent<ItemGet>();
         //test Item추가
-        AcquireItem(i);
+        AcquireItem(i2);
 
     }
 
@@ -34,35 +34,44 @@ public class Inventory : MonoBehaviour
 
     private void Update()
     {
+        //테스트 아이템 획득키
         if(Input.GetKeyDown(KeyCode.Q))
-            AcquireItem(i2);
+            AcquireItem(i);
         TryOpenInventory();
     }
 
-
+    //인벤토리 아이템 선택 색상 변경
     public void SlotSelectColorChange(int SlotNum,Color color)
     {
         ObjectItemSlots[SlotNum].SelectColor(color);
     }
 
-    public void TryOpenInventory()
+    public bool IsHaveItem(string _ItemName)
     {
-        //PlayerInput과 연동해야함
-        if(Input.GetKeyDown(KeyCode.I))
+        //오브젝트 아이템 가지고 있는지 확인
+        for (int i = 0; i < ObjectItemSlots.Length; i++)
         {
-            inventoryActivated = !inventoryActivated;
-            if (inventoryActivated)
-                OpenInventory();
-            else
-                CloseInventory();
+            if (ObjectItemSlots[i].item != null)
+            {
+                if (ObjectItemSlots[i].IsHaveItem(_ItemName) == true)
+                    return true;
+            }
         }
+
+        //사용 아이템 가지고 있는지 확인
+        for (int i = 0; i < UseItemSlots.Length; i++)
+        {
+            if (UseItemSlots[i].item != null)
+            {
+                if (UseItemSlots[i].IsHaveItem(_ItemName) == true)
+                    return true;
+            }
+        }
+        return false;
     }
 
-    public Item GetSlotItem(int SlotNum)
-    {
-        return ObjectItemSlots[SlotNum].item;
-    }
-
+    #region 아이템 획득
+    //아이템 획득
     public void AcquireItem(Item _item, int _Count = 1)
     {
         itemget.ShowItemGetUI(_item);
@@ -80,7 +89,7 @@ public class Inventory : MonoBehaviour
         }
         
     }
-
+    //획득한 아이템 슬롯에 추가
     void AddItemToSlot(Slot[] slots, Item _item, int _Count = 1)
     {
         //해당 아이템이 있는 경우
@@ -105,7 +114,22 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region 인벤토리 Open Close
+
+    public void TryOpenInventory()
+    {
+        //PlayerInput과 연동해야함
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            inventoryActivated = !inventoryActivated;
+            if (inventoryActivated)
+                OpenInventory();
+            else
+                CloseInventory();
+        }
+    }
     void OpenInventory()
     {
         //인벤토리 오브젝트 속성 변경
@@ -130,5 +154,12 @@ public class Inventory : MonoBehaviour
         slotSelect.inventoryActivateChange(inventoryActivated);
         //플레이어 상태변경
         GameManager.Instance.PlayerStateChange(playerType, PlayerState.Walk);
+    }
+    #endregion
+
+
+    public Item GetSlotItem(int SlotNum)
+    {
+        return ObjectItemSlots[SlotNum].item;
     }
 }
