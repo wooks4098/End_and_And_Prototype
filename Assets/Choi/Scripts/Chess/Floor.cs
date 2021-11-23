@@ -31,6 +31,10 @@ public class Floor : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 현재 식물 가시 정보에 접근
+    /// </summary>
+    /// <returns></returns>
     public GameObject GetPlantThorn()
     {
         if (gameObject.GetComponentInChildren<Tree>(true) == null)

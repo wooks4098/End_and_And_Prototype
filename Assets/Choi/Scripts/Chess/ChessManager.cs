@@ -61,6 +61,7 @@ public class ChessManager : MonoBehaviour
         actureOfChessFloor = new int[36];
     }
 
+    // 이벤트 할당, 해제
     private void OnEnable()
     {
         player.OnEnterWrongFloorEvent += ActivePlantThorn;
@@ -87,6 +88,7 @@ public class ChessManager : MonoBehaviour
         }
     }
 
+    // 식물 가시 호출(생성)
     void CreatePlantThorn(int _index)
     {
         Debug.Log("CreatePlantThorn");
@@ -99,43 +101,61 @@ public class ChessManager : MonoBehaviour
         coroutine = StartCoroutine(CreatingTimeCountCoroutine(stayTime, _index)); 
     }
 
+    // 실제로 식물 가시를 생성하는 코루틴 
     IEnumerator CreatingTimeCountCoroutine(float _time, int _index)
     {
-        Debug.Log("CreatingTimeCountCoroutine");
+        //Debug.Log("CreatingTimeCountCoroutine");
 
+        // 현재 코루틴이 돌아가는지 체크
         isCoroutineRunning = true;
 
-
+        // 무한루프
         while (true)
         {
+            // 식물 가시를 생성한 후에
             ActivePlantThorn(_index);
 
+            // 10초를 기다리게 한다
             yield return new WaitForSeconds(10f);
         }                 
     }
 
+    /// <summary>
+    /// 식물 가시 생성
+    /// </summary>
+    /// <param name="_index"></param>
     private void ActivePlantThorn(int _index)
     {
+        // 인덱스가 범위를 벗어나면 빠져나간다
         if (_index > 35 || _index < 0) return;
 
+        // 식물 가시의 정보를 현재 바닥으로부터 받아온다.
         GameObject thorn = floorObejcts[_index].GetPlantThorn();
         if (!thorn) return;
 
+        // 꺼져있으면 켠다.
         if (!thorn.activeSelf)
         {
             thorn.SetActive(true);
         }
     }
 
+    /// <summary>
+    /// 식물 가시 생성 코루틴을 강제로 멈추게한다.
+    /// </summary>
+    /// <param name="_index"></param>
     private void StopTimeCountCoroutine(int _index)
     {
+        // 만약 코루틴이 실행되고 있으면 
         if(isCoroutineRunning)
         {
+            // 코루틴을 강제로 멈춘다.
             Debug.Log("StopCoroutine");
             StopCoroutine(coroutine);
         }
     }
 
+    // 현재 바닥 정보에 접근
     public Floor GetFloorObjects(int _index)
     {
         return floorObejcts[_index];

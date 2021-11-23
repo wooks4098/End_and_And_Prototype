@@ -29,6 +29,7 @@ public class ChessPlayerController : MonoBehaviour
 
     private Vector3 v3CurrentPosition;
 
+    // 현재 체스(바닥)의 인덱스
     private int currentFloorIndex;
     [SerializeField] private Floor currentFloor;
     //[SerializeField] Floor previousFloor;
@@ -93,26 +94,35 @@ public class ChessPlayerController : MonoBehaviour
         // 체력이 없는 경우는 리스폰
         else if (playerHp.GetPlayerHp() <= 0)
         {
+            // isMoving을 true로 전환하여 움직이지 못하게 함
             isMoving = true;
+            // 리스폰
             PlayerRespawn();
         }
     }
 
     private void PlayerRespawn()
     {
-        if(cRespawnCoroutine != null)
+        // Coroutine cRespawnCoroutine이 비어있지 않으면 리턴
+        // 코루틴이 여러번 시작되는 걸 막기 위함
+        if (cRespawnCoroutine != null)
         {
             return;
         }
         cRespawnCoroutine = StartCoroutine(PlayerRespawnCoroutine());
     }
 
+    /// <summary>
+    /// 플레이어 리스폰 코루틴
+    /// 아래 문장들이 순서대로 진행됨
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator PlayerRespawnCoroutine()
     {
         // 원래 있던 블록을 빠져나감 = 원래 있던 블록의 코루틴을 멈춤
         OnExitWrongFloorEvent(currentFloorIndex);
 
-        // 페이드 인
+        // 페이드 인 코루틴이 진행될 때까지 기다린다
         yield return fader.FadeInCoroutine(fadeInTime);
 
         // Move To Start Floor OnRespawn
@@ -126,34 +136,51 @@ public class ChessPlayerController : MonoBehaviour
         // 플레이어 체력 회복 
         playerHp.ResetPlayerHp();
 
-        // 페이드 아웃
+        // 페이드 아웃 코루틴이 진행될 때까지 기다린다
         yield return fader.FadeOutCoroutine(fadeOutTime);
 
         // 코루틴 비우기
         cRespawnCoroutine = null;
     }
 
+    // 현재 체스판 바닥을 받아오는 메서드
+    // 지금은 안 쓰는듯?
     public Floor GetCurrentFloor()
     {
         return currentFloor;
     }
+    // 현재 체스판 바닥 인덱스를 받아오는 메서드
     public int GetCurrentFloorIndex()
     {
         return currentFloorIndex;
     }
 
+    /// <summary>
+    /// 방향키를 받는 메서드
+    /// </summary>
     private void InputDirectionKey()
     {
+        // 앞
         if (Input.GetKeyDown(KeyCode.W))
         {
+            // (이하 모든 비교문이 비슷한 역할을 함)
+            // 1. 현재 인덱스를 비교. 앞을 향하는 것이기 때문에 가장 윗줄 이동을 막음.
+            // 하지만 0번 바닥일 때는 골인을 향해 가야하기 때문에? 이동을 막지 않음.
             if (currentFloorIndex > 5 || currentFloorIndex == 0)
             {
+                // 입력을 받으면 isMoving = true로 설정하여 입력을 막음
                 isMoving = true;
+                // 애니메이션 이벤트를 실행하기 위한 애니메이션을 만들었고
+                // 그 애니메이션을 실행하기 위한 이벤트 트리거
                 animator.SetTrigger("MoveToDirection");
 
+                // 인덱스를 변경한다
+                // 인덱스가 감소하면 -> 앞쪽과 왼쪽,
+                // 인덱스가 증가하면 -> 뒤쪽과 오른쪽
                 currentFloorIndex -= 6;
             }            
         }
+        // 뒤
         else if (Input.GetKeyDown(KeyCode.S))
         {
             if(currentFloorIndex < 30 && currentFloorIndex != startingFloorIndex)
@@ -164,6 +191,7 @@ public class ChessPlayerController : MonoBehaviour
                 currentFloorIndex += 6;
             }            
         }
+        // 왼
         else if (Input.GetKeyDown(KeyCode.A) && currentFloorIndex != startingFloorIndex)
         {
             if (currentFloorIndex % 6 != 0) 
@@ -174,6 +202,7 @@ public class ChessPlayerController : MonoBehaviour
                 currentFloorIndex -= 1;
             }
         }
+        // 오
         else if (Input.GetKeyDown(KeyCode.D) && currentFloorIndex != startingFloorIndex)
         {
             if ((currentFloorIndex % 6) < 5)
@@ -186,6 +215,9 @@ public class ChessPlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 입력 받은 방향으로 나아가도록 하는 메서드
+    /// </summary>
     void MoveToDirection()
     {
         // 부드러운 이동을 위해 Mathf.MoveTowrads를 사용 
@@ -202,6 +234,8 @@ public class ChessPlayerController : MonoBehaviour
         // 도착하면 플래그를 false로 변경
         if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 1.0f)
         {
+            // 플레이어 체력이 0보다 클 때만 움직임을 푼다.
+            // 리스폰 시 움직임이 입력되는 문제 때문에 막아둠
             if(playerHp.GetPlayerHp() > 0)
             {
                 isMoving = false;
@@ -209,18 +243,26 @@ public class ChessPlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// currentFloor에 할당될 체스판 바닥을 선택하는 메서드
+    /// </summary>
+    /// <param name="_index">선택할 때 사용할 바닥의 index가 필요하다.</param>
     void SelectFloor(int _index)
     {
+        // 시작지점일 때
         if (_index == startingFloorIndex)
         {
             currentFloor = startingFloor.GetComponent<Floor>();
         }
+        // 골인지점일 때
         else if (_index == endingFloorIndex)
         {
             currentFloor = endingFloor.GetComponent<Floor>();
         }
+        // 시작지점도, 골인지점도 아니면 받은 index정보를 기반으로 currentFloor를 선택한다.
         else
         {
+            // 현재 바닥정보를 가져온다.
             currentFloor = chessManager.GetFloorObjects(_index).GetComponent<Floor>();
         }
     }
@@ -230,6 +272,8 @@ public class ChessPlayerController : MonoBehaviour
     /// </summary>
     private void CheckCurrentFloor(int _index)
     {
+        // 시작지점과 골인지점은 체스판 바닥 정보를 저장한 리스트에 포함되어있지 않기 때문에
+        // 인덱스를 비교해 리스트 밖을 벗어난 값이면 반환한다.
         if (currentFloorIndex == startingFloorIndex)
         {
             Debug.Log("Start");
