@@ -31,6 +31,7 @@ public class ClimbingUpWall : MonoBehaviour
         Transform playerModelTrans = GameManager.Instance.GetPlayerModelTrans(_playerType);
         playerTrans.rotation = Quaternion.Euler(0, 0, 0);
         playerModelTrans.rotation = Quaternion.Euler(0, 0, 0);
+        playerModelTrans.localPosition = Vector3.zero;
         //애니메이션 변경
         _animator.SetTrigger("ClimbEnd");
         yield return null;
