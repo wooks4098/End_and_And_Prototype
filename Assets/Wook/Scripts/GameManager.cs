@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
         gPlayer2 = player2.GetComponent<GameObject>();
     }
 
+    #region 플레이어 관련
 
     //플레이어 상태 변경
     public void PlayerStateChange(PlayerType _playerType, PlayerState _playerState)
@@ -46,26 +47,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 플레이어가 오브젝트 근처에 간 경우
-    /// UI를 보여주고, 어떤 플레이어(1P, 2P)인지 오브젝트에 전달
-    /// </summary>
-    public void PlayerObjectHitin(PlayerType _playerType)
+    public void PlayerCameraOnOFF(PlayerType _playerType, bool _state)
     {
-        UIManager.Instance.ObjectUIShow(_playerType);
-
+        switch (_playerType)
+        {
+            case PlayerType.FirstPlayer:
+                player1.PlayerCameraOnOFF(_state);
+                break;
+            case PlayerType.SecondPlayer:
+                player2.PlayerCameraOnOFF(_state);
+                break;
+        }
     }
 
-    public void ObjectUiMove(PlayerType _playerType, Vector3 _UiPos)
-    {
-        UIManager.Instance.ObjectUIMove(_playerType, _UiPos);
-    }
-
-    public void PlayerObjectHitout(PlayerType _playerType)
-    {
-        UIManager.Instance.ObjectUIHide(_playerType);
-
-    }
 
     //플레이어 transform리턴
     public Transform GetPlayerTrans(PlayerType _playerType)
@@ -106,4 +100,32 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
+
+    #endregion
+
+
+
+    #region UI관련
+    /// <summary>
+    /// 플레이어가 오브젝트 근처에 간 경우
+    /// UI를 보여주고, 어떤 플레이어(1P, 2P)인지 오브젝트에 전달
+    /// </summary>
+    public void PlayerObjectHitin(PlayerType _playerType)
+    {
+        UIManager.Instance.ObjectUIShow(_playerType);
+
+    }
+
+    public void ObjectUiMove(PlayerType _playerType, Vector3 _UiPos)
+    {
+        UIManager.Instance.ObjectUIMove(_playerType, _UiPos);
+    }
+
+    public void PlayerObjectHitout(PlayerType _playerType)
+    {
+        UIManager.Instance.ObjectUIHide(_playerType);
+
+    }
+
+    #endregion
 }

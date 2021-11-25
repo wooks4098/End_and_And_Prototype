@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 1875302299224825061}
   - component: {fileID: 1875302299224825082}
   - component: {fileID: 1875302299224825063}
-  - component: {fileID: 1875302299224825060}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player1
@@ -149,23 +148,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerType: 0
+  playerState: 0
   moveSpeed: 5
   rotateSpeed: 100
+  gravity: 0
+  isRun: 0
   CameraTransform: {fileID: 1875302297691712447}
   ani: {fileID: 0}
-  playerInput: {fileID: 0}
---- !u!114 &1875302299224825060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875302299224825080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19e449df364828a4ba95ba44c3dbccd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 0}
 --- !u!1001 &1875302297743065641
 PrefabInstance:
   m_ObjectHideFlags: 0

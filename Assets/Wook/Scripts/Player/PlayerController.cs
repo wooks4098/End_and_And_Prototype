@@ -82,17 +82,17 @@ public class PlayerController : MonoBehaviour
                 InputManager.Instance.OnFrontBackPlayer1 += Move;
                 InputManager.Instance.OnLeftRightPlayer1 += Rotation;
                 InputManager.Instance.OnRunPlayer1 += Run;
-                //InputManager.Instance.OnUsePlayer1 += 
                 break;
 
             case PlayerType.SecondPlayer:
                 InputManager.Instance.OnFrontBackPlayer2 += Move;
                 InputManager.Instance.OnLeftRightPlayer2 += Rotation;
                 InputManager.Instance.OnRunPlayer2 += Run;
-                //InputManager.Instance.OnUsePlayer2 += 
                 break;
         }
     }
+
+    #region 움직임 관련
 
     void MoveTo(Vector3 direction)
     {
@@ -219,6 +219,8 @@ public class PlayerController : MonoBehaviour
         }
         return directionToMoveIn;
     }
+    #endregion
+
 
     public void PlayerStateChange(PlayerState _playerState)
     {
@@ -240,10 +242,16 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-    
 
+    public void PlayerCameraOnOFF(bool _State)
+    {
+        playerCamera.SetActive(_State);
+    }
+
+    #region Get
     public PlayerState GetPlayerState()
     {
         return playerState;
     }
+    #endregion
 }

@@ -168,7 +168,7 @@ public class InputManager : MonoBehaviour, IInput
     void OnUse()
     {
         //플레이어1
-        if (Input.GetKey(KeyCode.E))
+        if (Input.GetKey(KeyCode.K))
             OnUsePlayer1?.Invoke(PlayerType.FirstPlayer, player1State);
 
         //플레이어2
