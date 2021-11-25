@@ -127,6 +127,7 @@ public class InputManager : MonoBehaviour, IInput
                     OnLeftRightPlayer1?.Invoke(MoveType.Right, player1State);
                 break;
             case PlayerState.Inventory:
+            case PlayerState.SafeBox:
                 //GetKeyDown
                 if (Input.GetKeyDown(KeyCode.A))
                     OnLeftRightPlayer1?.Invoke(MoveType.Left, player1State);
@@ -146,6 +147,7 @@ public class InputManager : MonoBehaviour, IInput
                 break;
             //GetKeyDown
             case PlayerState.Inventory:                
+            case PlayerState.SafeBox:                
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
                     OnLeftRightPlayer2?.Invoke(MoveType.Left, player2State);
                 else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -168,11 +170,11 @@ public class InputManager : MonoBehaviour, IInput
     void OnUse()
     {
         //플레이어1
-        if (Input.GetKey(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
             OnUsePlayer1?.Invoke(PlayerType.FirstPlayer, player1State);
 
         //플레이어2
-        if (Input.GetKey(KeyCode.Keypad2))
+        if (Input.GetKeyDown(KeyCode.Keypad2))
             OnUsePlayer2?.Invoke(PlayerType.SecondPlayer, player2State);
 
     }

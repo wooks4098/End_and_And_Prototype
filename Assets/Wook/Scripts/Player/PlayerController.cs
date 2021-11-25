@@ -17,6 +17,7 @@ public enum PlayerState
     ClimbRope,//로프 오르는중
     ClimbRopeUp,//로프 올라가기
     Inventory, //인벤토리 오픈
+    SafeBox,//금고 사용중
 
 }
 
@@ -37,7 +38,7 @@ public class PlayerController : MonoBehaviour
     //[SerializeField] PlayerInput playerInput;
     //test
     [SerializeField] GameObject playerCamera;
-
+    [SerializeField] SkinnedMeshRenderer meshRenderer;
 
     private void Awake()
     {
@@ -247,6 +248,12 @@ public class PlayerController : MonoBehaviour
     {
         playerCamera.SetActive(_State);
     }
+
+    public void PlayerMeshRendererOnOFF(bool _State)
+    {
+        meshRenderer.enabled = _State;
+    }
+    
 
     #region Get
     public PlayerState GetPlayerState()

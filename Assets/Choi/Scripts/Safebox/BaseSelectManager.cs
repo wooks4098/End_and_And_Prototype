@@ -18,7 +18,7 @@ public abstract class BaseSelectManager : MonoBehaviour
     [SerializeField] Camera zoomInCamera;
     // 활성화 체크
     [SerializeField] protected bool isActive = false;
-
+    [SerializeField] protected ObjectUIShow objectUiShow;
 
     protected void Awake()
     {
@@ -39,33 +39,52 @@ public abstract class BaseSelectManager : MonoBehaviour
         {
             zoomInCamera.gameObject.SetActive(false);
         }
+
+        //inputManger 등록
+        SetInputKey();
     }
 
     private void Update()
     {
         // isActive == false이면 
-        if (!isActive)
-        {
-            // 활성화키 (금고 실행 전 확인키) 입력을 받는 메서드
-            InputActiveKey();
+        //if (!isActive)
+        //{
+        //    // 활성화키 (금고 실행 전 확인키) 입력을 받는 메서드
+        //    //InputActiveKey();
 
-            if (zoomInCamera.gameObject.activeSelf == true)
-            {
-                zoomInCamera.gameObject.SetActive(false);
-            }                
-            // 입력 받지 않고 빠져나감
-            return;
-        }
-        else if (isActive)
-        {
-            if (zoomInCamera.gameObject.activeSelf == false)
-            {
-                zoomInCamera.gameObject.SetActive(true);
-            }
-        }
+        //    if (zoomInCamera.gameObject.activeSelf == true)
+        //    {
+        //        zoomInCamera.gameObject.SetActive(false);
+        //    }                
+        //    // 입력 받지 않고 빠져나감
+        //    return;
+        //}
+        //else if (isActive)
+        //{
+        //    if (zoomInCamera.gameObject.activeSelf == false)
+        //    {
+        //        zoomInCamera.gameObject.SetActive(true);
+        //    }
+        //}
 
-        InputMoveKey();
-        InputSelectKey();        
+        //InputMoveKey();
+        //InputSelectKey();        
+    }
+
+    protected void OpenSafeBox()
+    {
+        if (zoomInCamera.gameObject.activeSelf == false)
+        {
+            zoomInCamera.gameObject.SetActive(true);
+        }
+    }
+
+    protected void CloseSafeBox()
+    {
+        if (zoomInCamera.gameObject.activeSelf == true)
+        {
+            zoomInCamera.gameObject.SetActive(false);
+        }
     }
 
     public void SetStartIndex()
@@ -74,7 +93,7 @@ public abstract class BaseSelectManager : MonoBehaviour
     }
 
     public abstract void CheckAvailable();
-    protected abstract void InputMoveKey();
+    protected abstract void InputMoveKey(MoveType _moveType, PlayerState _playerState);
 
     protected void MoveOnPrev()
     {
@@ -116,7 +135,7 @@ public abstract class BaseSelectManager : MonoBehaviour
         currentPiece.GetComponent<Outline>().enabled = true;
     }
 
-    protected abstract void InputSelectKey();
+    protected abstract void InputSelectKey(PlayerType _playerType, PlayerState _playerState);
 
     protected void CalculateMoveOnPrev()
     {
@@ -155,5 +174,8 @@ public abstract class BaseSelectManager : MonoBehaviour
     }
 
 
-    protected abstract void InputActiveKey();
+    protected abstract void InputActiveKey(PlayerType _playerType, PlayerState _playerState);
+
+    //inputManager에 등록
+    protected abstract void SetInputKey();
 }

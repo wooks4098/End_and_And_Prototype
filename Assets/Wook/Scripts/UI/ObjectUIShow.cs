@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
 /// 해당 오브젝트에 플레이어가 다가온 경우 UI매니저에게 요청
+/// 해당 오브젝트를 사용할 수 있는 상태인지 확인
 /// </summary>
 public class ObjectUIShow : MonoBehaviour
 {
@@ -10,7 +11,6 @@ public class ObjectUIShow : MonoBehaviour
     [SerializeField] PlayerType playerType;
     [SerializeField] Transform ObjectUiPos;
     [SerializeField] bool CanUse = false;// 오브젝트 사용가능한지
-    //testd용 UI매니저를 만들어 요청하는것으로 수정해야함
 
 
     public bool GetCanUse()

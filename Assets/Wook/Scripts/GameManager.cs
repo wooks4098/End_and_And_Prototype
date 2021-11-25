@@ -60,6 +60,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void PlayerMeshRendererOnOFF(PlayerType _playerType, bool _state)
+    {
+        switch (_playerType)
+        {
+            case PlayerType.FirstPlayer:
+                player1.PlayerMeshRendererOnOFF(_state);
+                break;
+            case PlayerType.SecondPlayer:
+                player2.PlayerMeshRendererOnOFF(_state);
+                break;
+        }
+    }
+    
+
 
     //플레이어 transform리턴
     public Transform GetPlayerTrans(PlayerType _playerType)

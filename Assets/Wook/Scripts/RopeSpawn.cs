@@ -33,7 +33,9 @@ public class RopeSpawn : MonoBehaviour
 
     private void Spawn()
     {
+        //길이만큼 로프 생성개수 정하기
         int count = (int)(length / ropeDistance);
+
         for (int x = 0; x < count; x++)
         {
             GameObject tmp;
@@ -41,15 +43,15 @@ public class RopeSpawn : MonoBehaviour
             tmp.transform.eulerAngles = new Vector3(0, 0, 0);
             tmp.name = parentObject.transform.childCount.ToString();
             if (x == 0)
-            {
+            {//첫번째 인경우 HingeJoint제거
                 Destroy(tmp.GetComponent<HingeJoint>());
                 if(snapFirst)
-                {
+                {//고정
                     tmp.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
                 }
             }
             else
-            {
+            {//위에 있는 Rope의 Rigidbody를 HingeJoint에 연결
                 tmp.GetComponent<HingeJoint>().connectedBody =
                     parentObject.transform.Find((parentObject.transform.childCount - 1).ToString()).GetComponent<Rigidbody>();
             }
@@ -57,7 +59,7 @@ public class RopeSpawn : MonoBehaviour
         }
 
         if(snapLast)
-        {
+        {//고정
             parentObject.transform.Find((parentObject.transform.childCount).ToString()).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
     }
