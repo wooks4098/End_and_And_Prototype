@@ -149,11 +149,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerType: 1
+  playerState: 0
   moveSpeed: 5
   rotateSpeed: 100
+  gravity: 0
+  isRun: 0
   CameraTransform: {fileID: 667544955514284087}
   ani: {fileID: 0}
-  playerInput: {fileID: 0}
+  playerCamera: {fileID: 667544955514284086}
+  meshRenderer: {fileID: 8167713005165399495}
 --- !u!114 &667544955709222234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,5 +234,10 @@ PrefabInstance:
 --- !u!4 &8167713005177396383 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8654250720420943610, guid: 34115fd4eff069845a47d22ce756724e, type: 3}
+  m_PrefabInstance: {fileID: 667544955886242405}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &8167713005165399495 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8654250720407373730, guid: 34115fd4eff069845a47d22ce756724e, type: 3}
   m_PrefabInstance: {fileID: 667544955886242405}
   m_PrefabAsset: {fileID: 0}
