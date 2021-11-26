@@ -1454,9 +1454,10 @@ GameObject:
   - component: {fileID: 364637022}
   - component: {fileID: 364637021}
   - component: {fileID: 364637025}
+  - component: {fileID: 364637026}
   m_Layer: 0
   m_Name: ClimbWall
-  m_TagString: Untagged
+  m_TagString: ClimbWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1568,6 +1569,22 @@ MonoBehaviour:
   RopeDownObjectShowP1: {fileID: 1603068770}
   RopeDownObjectShowP2: {fileID: 50429532}
   gRope: {fileID: 482805983}
+--- !u!54 &364637026
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364637020}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &408169326
 GameObject:
   m_ObjectHideFlags: 0
@@ -2068,7 +2085,7 @@ GameObject:
   - component: {fileID: 482805984}
   m_Layer: 0
   m_Name: Rope
-  m_TagString: Untagged
+  m_TagString: ClimbWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2081,7 +2098,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 482805983}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -5842,8 +5859,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.7180148, y: 1, z: 1.2854501}
-  m_Center: {x: 0.007772221, y: 0, z: -0.14272515}
+  m_Size: {x: 0.7180148, y: 0.16280746, z: 2.0099964}
+  m_Center: {x: 0.0077722208, y: -0.41859627, z: -0.50499845}
 --- !u!224 &1423052922 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 710945516720179764, guid: eee97c7d65c2ed64595ab591a384e36f, type: 3}
@@ -5952,8 +5969,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.7180148, y: 1, z: 2.0319963}
-  m_Center: {x: 0.007772221, y: 0, z: -0.51599836}
+  m_Size: {x: 0.7180148, y: 0.2278388, z: 2.0319963}
+  m_Center: {x: 0.0077722208, y: -0.38608083, z: -0.51599836}
 --- !u!1 &1464305820
 GameObject:
   m_ObjectHideFlags: 0
@@ -6749,8 +6766,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1652953703}
   - component: {fileID: 1652953702}
-  - component: {fileID: 1652953704}
   - component: {fileID: 1652953705}
+  - component: {fileID: 1652953704}
   m_Layer: 0
   m_Name: ClimbUpWall
   m_TagString: Untagged
@@ -6800,6 +6817,8 @@ MonoBehaviour:
   isPlayer1Up: 0
   isPlayer2Up: 0
   EndPos: {fileID: 1080874275}
+  upSpeed: 5
+  frontSpeed: 3
 --- !u!54 &1652953705
 Rigidbody:
   m_ObjectHideFlags: 0

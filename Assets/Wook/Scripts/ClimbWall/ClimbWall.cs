@@ -67,10 +67,37 @@ public class ClimbWall : MonoBehaviour
         }
 
         //벽타기 or 로프타기
-        if (isRope == false)
-            Climbwall(_playerType);
-        else
-            RopeClimb(_playerType);
+        switch(_playerType)
+        {
+            case PlayerType.FirstPlayer:
+                if (isRope == false)
+                {
+                    if (ClimbObjectShowP1.GetCanUse())
+                        Climbwall(_playerType);
+                }                
+                else
+                {
+                    if (RopeObjectShowP1.GetCanUse())
+                        RopeClimb(_playerType);
+                }                    
+                break;
+
+
+            case PlayerType.SecondPlayer:
+                if (isRope == false)
+                {
+                    if (ClimbObjectShowP2.GetCanUse())
+                        Climbwall(_playerType);
+                }
+
+                else
+                {
+                    if (RopeObjectShowP2.GetCanUse())
+                        RopeClimb(_playerType);
+                }
+                break;
+        }
+       
 
 
     }
