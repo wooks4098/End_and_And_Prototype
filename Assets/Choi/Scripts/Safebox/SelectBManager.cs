@@ -79,7 +79,7 @@ public class SelectBManager : BaseSelectManager
         // SetMaterial() ¿ª »£√‚
         safeboxManager.SetMaterial();
 
-        safeboxManager.CheckAllCorrect(safeboxManager.SafeboxB);
+        safeboxManager.CheckAllCorrect(false, safeboxManager.SafeboxB);
 
 
         //if (Input.GetKeyDown(KeyCode.Keypad2))

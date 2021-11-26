@@ -27,6 +27,9 @@ public class SafeboxManager : MonoBehaviour
     [SerializeField] GameObject safeboxObjectB; // 금고 B의 부모 오브젝트
     public GameObject SafeboxObjectB { get { return safeboxObjectB; } }
 
+    //각 플레이어 금고 맞췄는지 확인
+    [SerializeField] bool isPlayer1;
+    [SerializeField] bool isPlayer2;
 
     private void Awake()
     {
@@ -190,7 +193,7 @@ public class SafeboxManager : MonoBehaviour
     }
 
 
-    public bool CheckAllCorrect(List<int> list)
+    public bool CheckAllCorrect(bool isAbox, List<int> list)
     {
         bool same;
 
@@ -206,7 +209,18 @@ public class SafeboxManager : MonoBehaviour
             }
         }
         same = true;
-        Debug.Log(same);
+        if (isAbox)
+        {
+            isPlayer1 = true;
+            Debug.Log("1P 금고 맞춤");
+
+        }
+        else
+        {
+            isPlayer2 = true;
+            Debug.Log("2P 금고 맞춤");
+        }
+
 
         return same;
     }

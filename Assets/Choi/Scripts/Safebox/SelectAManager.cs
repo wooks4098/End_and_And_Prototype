@@ -76,7 +76,7 @@ public class SelectAManager : BaseSelectManager
         // SetMaterial() ¿ª »£√‚
         safeboxManager.SetMaterial();
 
-        safeboxManager.CheckAllCorrect(safeboxManager.SafeboxA);
+        safeboxManager.CheckAllCorrect(true,safeboxManager.SafeboxA);
 
         //if (Input.GetKeyDown(KeyCode.K))
         //{
