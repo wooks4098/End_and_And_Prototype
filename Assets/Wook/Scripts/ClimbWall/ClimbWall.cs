@@ -171,9 +171,10 @@ public class ClimbWall : MonoBehaviour
         PlayerType playerType = _objectUIShow.GetPlayerType();
         Transform playerTrans = GameManager.Instance.GetPlayerTrans(playerType);
         Transform playerModelTrans = GameManager.Instance.GetPlayerModelTrans(playerType);
-        
+
         //플레이어 rotation변경
-        playerTrans.rotation = Quaternion.Euler(0,0, 0);
+        //playerTrans.rotation = Quaternion.Euler();
+        playerTrans.rotation = Quaternion.Euler(0, 180, 0);
         //모델의 rotation을 벽과 같게 변경
         playerModelTrans.rotation = Quaternion.Euler(8.2f, transform.rotation.y, 0);
         playerModelTrans.localPosition = new Vector3(0, 0, -0.146f);
