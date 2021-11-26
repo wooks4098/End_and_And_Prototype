@@ -54,7 +54,7 @@ public class ChessManager : MonoBehaviour
 
     private void Awake()
     {
-        player = GameObject.Find("Player1").GetComponent<ChessPlayerController>();
+        player = FindObjectOfType<ChessPlayerController>();
 
         floorObejcts = new List<Floor>();
 

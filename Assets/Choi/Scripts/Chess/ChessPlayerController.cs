@@ -10,11 +10,9 @@ using UnityEngine;
 /// </summary>
 public class ChessPlayerController : MonoBehaviour
 {
-    // 테스트가 끝나면 일부는 감출 것
-
-    [SerializeField] ChessManager chessManager;
-    ChessPlayerHp playerHp;
-    [SerializeField] FadeInOut fader;
+    private ChessManager chessManager;
+    private ChessPlayerHp playerHp;
+    private FadeInOut fader;
 
     Animator animator;
 
@@ -49,6 +47,11 @@ public class ChessPlayerController : MonoBehaviour
     readonly float fadeInTime = 1f;
     readonly float fadeOutTime = 2f;
 
+    // MapTest01 용 변수
+    // 체스에서 움직일 수 있는가?
+    private bool canMovingInChess;
+    public bool CanMovingInChess { get { return canMovingInChess; } set { canMovingInChess = value; } }
+
     //==================================================
 
     // 플레이어가 잘못된 발판을 밟았을 때 호출하는 이벤트
@@ -63,42 +66,52 @@ public class ChessPlayerController : MonoBehaviour
         playerHp = GetComponent<ChessPlayerHp>();
         animator = GetComponent<Animator>();
         fader = FindObjectOfType<FadeInOut>();
+        chessManager = FindObjectOfType<ChessManager>();
     }
 
     private void Start()
     {
         currentFloor = startingFloor.GetComponent<Floor>();
         currentFloorIndex = startingFloorIndex;
+        
         //v3CurrentPosition = transform.position;
     }
 
     private void Update()
     {
-        // 체력이 있을 때만 모든 움직임이 실행된다.
-        if(playerHp.GetPlayerHp() > 0)
-        {
-            // isMoving = false 이면 (움직이는 중이 아니면)
-            if (!isMoving)
-            {
-                // key 입력을 받는다
-                InputDirectionKey();
-            }
-            // isMoving == true 이면 (움직이는 중이면)
-            else if (isMoving)
-            {
-                // 계속 이동한다
-                MoveToDirection();
-            }
-        }
+        Debug.Log(canMovingInChess);
 
-        // 체력이 없는 경우는 리스폰
-        else if (playerHp.GetPlayerHp() <= 0)
+        // canMovingInChess가 true일 때만 모든 움직임이 가능
+        if (canMovingInChess)
         {
-            // isMoving을 true로 전환하여 움직이지 못하게 함
-            isMoving = true;
-            // 리스폰
-            PlayerRespawn();
+            // 체력이 있을 때만 모든 움직임이 실행된다.
+            if (playerHp.GetPlayerHp() > 0)
+            {
+                // isMoving = false 이면 (움직이는 중이 아니면)
+                if (!isMoving)
+                {
+                    // key 입력을 받는다
+                    InputDirectionKey();
+                }
+                // isMoving == true 이면 (움직이는 중이면)
+                else if (isMoving)
+                {
+                    // 계속 이동한다
+                    MoveToDirection();
+                }
+            }
+
+            // 체력이 없는 경우는 리스폰
+            else if (playerHp.GetPlayerHp() <= 0)
+            {
+                // isMoving을 true로 전환하여 움직이지 못하게 함
+                isMoving = true;
+                // 리스폰
+                PlayerRespawn();
+            }
+
         }
+        
     }
 
     private void PlayerRespawn()
@@ -223,13 +236,13 @@ public class ChessPlayerController : MonoBehaviour
         // 부드러운 이동을 위해 Mathf.MoveTowrads를 사용 
         // 이것은 지금은 앞과 뒤로 이동할 때 실행되므로 z값을 계산한다.
         // 큐브가 currentFloor (= 현재 지정된 바닥)을 타겟으로 이동한다. - 속도는 moveSpeed * time.deltaTime만큼
-        float newPositonX = Mathf.MoveTowards(transform.position.x, currentFloor.transform.position.x, moveSpeed * Time.deltaTime);
-        float newPositonZ = Mathf.MoveTowards(transform.position.z, currentFloor.transform.position.z, moveSpeed * Time.deltaTime);
+        //float newPositonX = Mathf.MoveTowards(transform.position.x, currentFloor.transform.position.x, moveSpeed * Time.deltaTime);
+        //float newPositonZ = Mathf.MoveTowards(transform.position.z, currentFloor.transform.position.z, moveSpeed * Time.deltaTime);
 
         // Vector3를 사용하여 새로운 좌표로 업데이트.
-        transform.position = new Vector3(newPositonX, transform.position.y, newPositonZ);
+        transform.position = new Vector3(10f, transform.position.y, 10f);
 
-        //Debug.Log(Vector3.Distance(transform.position, currentFloor.transform.position));
+        Debug.Log(Vector3.Distance(transform.position, currentFloor.transform.position));
 
         // 도착하면 플래그를 false로 변경
         if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 1.0f)

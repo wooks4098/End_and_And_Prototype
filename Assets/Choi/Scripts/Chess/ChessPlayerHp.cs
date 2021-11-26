@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class ChessPlayerHp : MonoBehaviour
 {
-    [SerializeField] ChessManager chessManager;
+    private ChessManager chessManager;
     public int playerHp;
 
     // µ¥¹ÌÁö
     readonly int thornDamage = 20;
+
+    private void Awake()
+    {
+        chessManager = FindObjectOfType<ChessManager>();
+    }
 
     private void Start()
     {
