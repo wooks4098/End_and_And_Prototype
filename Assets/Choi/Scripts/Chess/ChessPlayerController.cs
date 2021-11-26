@@ -30,16 +30,16 @@ public class ChessPlayerController : MonoBehaviour
     [SerializeField] private Floor currentFloor;
     //[SerializeField] Floor previousFloor;
 
-    [SerializeField] private Floor startingFloor;
-    [SerializeField] private Floor endingFloor;
+    [SerializeField] private Floor startFloor;
+    [SerializeField] private Floor goalFloor;
 
     // 코루틴을 저장할 변수
     private Coroutine cRespawnCoroutine;
 
     // 상수
     // 위-아래로 한 칸씩 더 둬서
-    readonly int startingFloorIndex = 39; // 시작지점 인덱스 
-    readonly int endingFloorIndex = -6;   // 도착지점 인덱스
+    readonly int startFloorIndex = 39; // 시작지점 인덱스 
+    readonly int goalFloorIndex = -6;   // 도착지점 인덱스
 
     // 페이드인/아웃 시간
     readonly float fadeInTime = 1f;
@@ -47,8 +47,8 @@ public class ChessPlayerController : MonoBehaviour
 
     // MapTest01 용 변수
     // 체스에서 움직일 수 있는가?
-    private bool canMovingInChess;
-    public bool CanMovingInChess { get { return canMovingInChess; } set { canMovingInChess = value; } }
+    private bool canMoveOnChess;
+    public bool CanMoveOnChess { get { return canMoveOnChess; } set { canMoveOnChess = value; } }
 
     //==================================================
 
@@ -69,18 +69,16 @@ public class ChessPlayerController : MonoBehaviour
 
     private void Start()
     {
-        currentFloor = startingFloor.GetComponent<Floor>();
-        currentFloorIndex = startingFloorIndex;
+        currentFloor = startFloor.GetComponent<Floor>();
+        currentFloorIndex = startFloorIndex;
         
         //v3CurrentPosition = transform.position;
     }
 
     private void Update()
     {
-        Debug.Log(canMovingInChess);
-
         // canMovingInChess가 true일 때만 모든 움직임이 가능
-        if (canMovingInChess)
+        if (canMoveOnChess)
         {
             // 체력이 있을 때만 모든 움직임이 실행된다.
             if (playerHp.GetPlayerHp() > 0)
@@ -138,8 +136,8 @@ public class ChessPlayerController : MonoBehaviour
 
         // Move To Start Floor OnRespawn
         // 빠져 나간 후 인덱스 갱신
-        currentFloorIndex = startingFloorIndex;
-        currentFloor = startingFloor.GetComponent<Floor>();
+        currentFloorIndex = startFloorIndex;
+        currentFloor = startFloor.GetComponent<Floor>();
 
         // StartingFloor 좌표로 이동
         transform.position = new Vector3(currentFloor.transform.position.x, this.transform.position.y, currentFloor.transform.position.z);
@@ -194,7 +192,7 @@ public class ChessPlayerController : MonoBehaviour
         // 뒤
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            if(currentFloorIndex < 30 && currentFloorIndex != startingFloorIndex)
+            if(currentFloorIndex < 30 && currentFloorIndex != startFloorIndex)
             {
                 isMoving = true;
                 animator.SetTrigger("MoveToDirection");
@@ -203,7 +201,7 @@ public class ChessPlayerController : MonoBehaviour
             }            
         }
         // 왼
-        else if (Input.GetKeyDown(KeyCode.A) && currentFloorIndex != startingFloorIndex)
+        else if (Input.GetKeyDown(KeyCode.A) && currentFloorIndex != startFloorIndex)
         {
             if (currentFloorIndex % 6 != 0) 
             {
@@ -214,7 +212,7 @@ public class ChessPlayerController : MonoBehaviour
             }
         }
         // 오
-        else if (Input.GetKeyDown(KeyCode.D) && currentFloorIndex != startingFloorIndex)
+        else if (Input.GetKeyDown(KeyCode.D) && currentFloorIndex != startFloorIndex)
         {
             if ((currentFloorIndex % 6) < 5)
             {
@@ -261,14 +259,14 @@ public class ChessPlayerController : MonoBehaviour
     void SelectFloor(int _index)
     {
         // 시작지점일 때
-        if (_index == startingFloorIndex)
+        if (_index == startFloorIndex)
         {
-            currentFloor = startingFloor.GetComponent<Floor>();
+            currentFloor = startFloor.GetComponent<Floor>();
         }
         // 골인지점일 때
-        else if (_index == endingFloorIndex)
+        else if (_index == goalFloorIndex)
         {
-            currentFloor = endingFloor.GetComponent<Floor>();
+            currentFloor = goalFloor.GetComponent<Floor>();
         }
         // 시작지점도, 골인지점도 아니면 받은 index정보를 기반으로 currentFloor를 선택한다.
         else
@@ -285,14 +283,14 @@ public class ChessPlayerController : MonoBehaviour
     {
         // 시작지점과 골인지점은 체스판 바닥 정보를 저장한 리스트에 포함되어있지 않기 때문에
         // 인덱스를 비교해 리스트 밖을 벗어난 값이면 반환한다.
-        if (currentFloorIndex == startingFloorIndex)
+        if (currentFloorIndex == startFloorIndex)
         {
             Debug.Log("Start");
             return;
         }
-        else if (currentFloorIndex == endingFloorIndex)
+        else if (currentFloorIndex == goalFloorIndex)
         {
-            Debug.Log("End");
+            Debug.Log("Goal");
             return;
         }
 

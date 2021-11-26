@@ -635,7 +635,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca50fdceb790196438b8c7d4752126b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chessPlayerController: {fileID: 0}
   cBasicCamera: {fileID: 0}
   cTopViewCamera: {fileID: 118638894685469413}
   goPlayer1: {fileID: 0}
@@ -1059,7 +1058,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca50fdceb790196438b8c7d4752126b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chessPlayerController: {fileID: 0}
   cBasicCamera: {fileID: 0}
   cTopViewCamera: {fileID: 118638894685469413}
   goPlayer1: {fileID: 0}
@@ -1532,8 +1530,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMoving: 0
   currentFloor: {fileID: 0}
-  startingFloor: {fileID: 118638894286594110}
-  endingFloor: {fileID: 118638894251711882}
+  startFloor: {fileID: 118638894286594110}
+  goalFloor: {fileID: 118638894251711882}
 --- !u!114 &118638894524269707
 MonoBehaviour:
   m_ObjectHideFlags: 0
