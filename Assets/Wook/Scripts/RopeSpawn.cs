@@ -36,31 +36,35 @@ public class RopeSpawn : MonoBehaviour
         //길이만큼 로프 생성개수 정하기
         int count = (int)(length / ropeDistance);
 
+        var parent = parentObject;
         for (int x = 0; x < count; x++)
         {
             GameObject tmp;
-            tmp = Instantiate(ropePrefab, new Vector3(parentObject.transform.position.x, parentObject.transform.position.y - ropeDistance * (x * 1), parentObject.transform.position.z), Quaternion.identity, parentObject.transform);
-            tmp.transform.eulerAngles = new Vector3(0, 0, 0);
+            
+            tmp = Instantiate(ropePrefab, parentObject.transform.position + Vector3.down * ropeDistance * x, Quaternion.identity);
             tmp.name = parentObject.transform.childCount.ToString();
             if (x == 0)
             {//첫번째 인경우 HingeJoint제거
-                Destroy(tmp.GetComponent<HingeJoint>());
+                Destroy(tmp.GetComponent<FixedJoint>());
                 if(snapFirst)
                 {//고정
-                    tmp.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                    //tmp.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+                    tmp.GetComponent<Rigidbody>().isKinematic = true;
+                    parent = tmp;
                 }
             }
             else
             {//위에 있는 Rope의 Rigidbody를 HingeJoint에 연결
-                tmp.GetComponent<HingeJoint>().connectedBody =
-                    parentObject.transform.Find((parentObject.transform.childCount - 1).ToString()).GetComponent<Rigidbody>();
+                tmp.GetComponent<FixedJoint>().connectedBody = parent.GetComponent<Rigidbody>();
+                parent = tmp;
+                //parentObject.transform.Find((parentObject.transform.childCount - 1).ToString()).GetComponent<Rigidbody>();
             }
 
         }
 
         if(snapLast)
         {//고정
-            parentObject.transform.Find((parentObject.transform.childCount).ToString()).GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+            parent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
         }
     }
 
