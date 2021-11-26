@@ -25,8 +25,6 @@ public class ChessPlayerController : MonoBehaviour
     private float moveSpeed = 4.0f;
     //[SerializeField] float moveDistance = 5.0f;
 
-    private Vector3 v3CurrentPosition;
-
     // 현재 체스(바닥)의 인덱스
     private int currentFloorIndex;
     [SerializeField] private Floor currentFloor;
@@ -236,13 +234,13 @@ public class ChessPlayerController : MonoBehaviour
         // 부드러운 이동을 위해 Mathf.MoveTowrads를 사용 
         // 이것은 지금은 앞과 뒤로 이동할 때 실행되므로 z값을 계산한다.
         // 큐브가 currentFloor (= 현재 지정된 바닥)을 타겟으로 이동한다. - 속도는 moveSpeed * time.deltaTime만큼
-        //float newPositonX = Mathf.MoveTowards(transform.position.x, currentFloor.transform.position.x, moveSpeed * Time.deltaTime);
-        //float newPositonZ = Mathf.MoveTowards(transform.position.z, currentFloor.transform.position.z, moveSpeed * Time.deltaTime);
+        float newPositonX = Mathf.MoveTowards(transform.position.x, currentFloor.transform.position.x, moveSpeed * Time.deltaTime);
+        float newPositonZ = Mathf.MoveTowards(transform.position.z, currentFloor.transform.position.z, moveSpeed * Time.deltaTime);
 
         // Vector3를 사용하여 새로운 좌표로 업데이트.
-        transform.position = new Vector3(10f, transform.position.y, 10f);
+        transform.position = new Vector3(newPositonX, transform.position.y, newPositonZ);
 
-        Debug.Log(Vector3.Distance(transform.position, currentFloor.transform.position));
+        //Debug.Log(Vector3.Distance(transform.position, currentFloor.transform.position));
 
         // 도착하면 플래그를 false로 변경
         if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 1.0f)
@@ -323,7 +321,7 @@ public class ChessPlayerController : MonoBehaviour
     /// </summary>
     public void StopMoveToDirection()
     {
-        Debug.Log("StopMoveToDirection");
+        //Debug.Log("StopMoveToDirection");
 
         // Active Thorn
         OnEnterWrongFloorEvent(currentFloorIndex);

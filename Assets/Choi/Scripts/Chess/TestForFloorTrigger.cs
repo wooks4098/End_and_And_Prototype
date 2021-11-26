@@ -75,6 +75,9 @@ public class TestForFloorTrigger : MonoBehaviour
         cTopViewCamera.gameObject.SetActive(false);
         cBasicCamera.gameObject.SetActive(true);
 
+        // 좌표 교체 후 (큐브의 x,z 값 + 사람 캐릭터의 y값)
+        goPlayer1.transform.position = new Vector3(goChessPlayer1.transform.position.x, goPlayer1.transform.position.y, goChessPlayer1.transform.position.z);
+        // 활성화
         goPlayer1.SetActive(true);
         goChessPlayer1.SetActive(false);
 
