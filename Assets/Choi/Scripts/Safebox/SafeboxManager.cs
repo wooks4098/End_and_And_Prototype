@@ -31,6 +31,8 @@ public class SafeboxManager : MonoBehaviour
     [SerializeField] bool isPlayer1;
     [SerializeField] bool isPlayer2;
 
+    //임시 장갑 아이템 획득용
+    [SerializeField] Item Glove;
     private void Awake()
     {
         correct = new List<int>();
@@ -221,6 +223,12 @@ public class SafeboxManager : MonoBehaviour
             Debug.Log("2P 금고 맞춤");
         }
 
+        if (isPlayer1 == true && isPlayer2 == true)//두명의 플레이어가 성공했을 경우
+        {
+            GameManager.Instance.GetItem(PlayerType.FirstPlayer, Glove);
+            GameManager.Instance.PlayerMeshRendererOnOFF(PlayerType.FirstPlayer, true);
+            GameManager.Instance.PlayerMeshRendererOnOFF(PlayerType.SecondPlayer, true);
+        }
 
         return same;
     }

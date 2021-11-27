@@ -30,6 +30,9 @@ public class ClimbWall : MonoBehaviour
 
     //로프
     [SerializeField] GameObject gRope;
+
+    [SerializeField] ClimbingUpWall climbingUpWall;
+
     private void Start()
     {
         SetInput();
@@ -112,7 +115,7 @@ public class ClimbWall : MonoBehaviour
                     return;
 
                 isPlayer1ClimbRope = true;
-                PlayerStateChange(RopeObjectShowP1, PlayerState.ClimbRope);
+                PlayerStateChange(RopeObjectShowP1, PlayerState.ClimbRope, _playerType);
 
                 break;
             case PlayerType.SecondPlayer:
@@ -120,7 +123,7 @@ public class ClimbWall : MonoBehaviour
                     return;
 
                 isPlayer2ClimbRope = true;
-                PlayerStateChange(RopeObjectShowP2, PlayerState.ClimbRope);
+                PlayerStateChange(RopeObjectShowP2, PlayerState.ClimbRope, _playerType);
                 break;
         }
     }
@@ -145,7 +148,7 @@ public class ClimbWall : MonoBehaviour
 
                 isPlayer1Climb = true;
                 //플레이어 상태 변경
-                PlayerStateChange(ClimbObjectShowP1, PlayerState.ClimbWall);
+                PlayerStateChange(ClimbObjectShowP1, PlayerState.ClimbWall, _playerType);
                 break;
 
             case PlayerType.SecondPlayer:
@@ -160,13 +163,13 @@ public class ClimbWall : MonoBehaviour
 
                 isPlayer2Climb = true;
                 //플레이어 상태 변경
-                PlayerStateChange(ClimbObjectShowP2, PlayerState.ClimbWall);
+                PlayerStateChange(ClimbObjectShowP2, PlayerState.ClimbWall, _playerType);
                 break;
         }
     }
 
     //플레이어 상태 변경 -> Climb로
-    void PlayerStateChange(ObjectUIShow _objectUIShow, PlayerState _playerState)
+    void PlayerStateChange(ObjectUIShow _objectUIShow, PlayerState _playerState,PlayerType _playerType)
     {
         PlayerType playerType = _objectUIShow.GetPlayerType();
         Transform playerTrans = GameManager.Instance.GetPlayerTrans(playerType);
@@ -174,9 +177,11 @@ public class ClimbWall : MonoBehaviour
 
         //플레이어 rotation변경
         //playerTrans.rotation = Quaternion.Euler();
-        playerTrans.rotation = Quaternion.Euler(0, 180, 0);
+        float angle = Vector3.Angle(playerTrans.position, transform.position);
+        playerTrans.LookAt(transform.position);
+        playerTrans.rotation = Quaternion.Euler(0, playerTrans.eulerAngles.y, 0);
         //모델의 rotation을 벽과 같게 변경
-        playerModelTrans.rotation = Quaternion.Euler(8.2f, transform.rotation.y, 0);
+        playerModelTrans.localRotation = Quaternion.Euler(8.2f, 0, 0);
         playerModelTrans.localPosition = new Vector3(0, 0, -0.146f);
         //플레이어 상태 변경
         GameManager.Instance.PlayerStateChange(playerType, _playerState);
@@ -184,6 +189,10 @@ public class ClimbWall : MonoBehaviour
         //플레이어가 벽타기를 했으므로 player1ObjectShow,player2ObjectShow gameobject 숨기기
         ClimbObjectShowP1.gameObject.SetActive(false);
         ClimbObjectShowP2.gameObject.SetActive(false);
+
+        //ClimbWallUp End Pos변경
+
+        climbingUpWall.ChangeEndPos(_playerType, playerTrans.position);
     }
     #endregion
 }

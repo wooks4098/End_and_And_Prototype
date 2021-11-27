@@ -102,10 +102,14 @@ public class GameManager : MonoBehaviour
         return null;
     }
 
+    #endregion
+
+    #region 인벤토리 아이템 관련
+
     //플레이어가 아이템을 가지고 있는지 확인하는 함수
     public bool IsHaveItem(PlayerType _playertype, string _ItemName)
     {
-        switch(_playertype)
+        switch (_playertype)
         {
             case PlayerType.FirstPlayer:
                 return inventoryP1.IsHaveItem(_ItemName);
@@ -115,9 +119,20 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public void GetItem(PlayerType _playertype,Item _item)
+    {
+        switch (_playertype)
+        {
+            case PlayerType.FirstPlayer:
+                inventoryP1.AcquireItem(_item);
+                break;
+            case PlayerType.SecondPlayer:
+                inventoryP2.AcquireItem(_item);
+                break;
+        }
+    }
+
     #endregion
-
-
 
     #region UI관련
     /// <summary>

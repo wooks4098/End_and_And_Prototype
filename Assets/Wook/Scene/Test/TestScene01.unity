@@ -899,8 +899,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 170702064}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.001, y: 0.553, z: -0.343}
-  m_LocalScale: {x: 1, y: 1, z: 0.15511571}
+  m_LocalPosition: {x: 0.06, y: 0.5168, z: -0.361}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 648527085}
   m_RootOrder: 4
@@ -2855,6 +2855,7 @@ MonoBehaviour:
   RopeDownObjectShowP1: {fileID: 937947510}
   RopeDownObjectShowP2: {fileID: 508597950}
   gRope: {fileID: 440711588}
+  climbingUpWall: {fileID: 1036104642}
 --- !u!65 &648527082
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2924,8 +2925,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 648527079}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.64, y: 4.61, z: 12.8}
+  m_LocalRotation: {x: -0, y: 0.9252419, z: -0, w: 0.37937787}
+  m_LocalPosition: {x: 4.4517274, y: 4.61, z: -11.788817}
   m_LocalScale: {x: 3, y: 10, z: 6}
   m_Children:
   - {fileID: 1813594453}
@@ -2937,7 +2938,7 @@ Transform:
   - {fileID: 799565399}
   m_Father: {fileID: 0}
   m_RootOrder: 19
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 135.41, z: 0}
 --- !u!1 &652658524
 GameObject:
   m_ObjectHideFlags: 0
@@ -5527,7 +5528,7 @@ MonoBehaviour:
   isPlayer2Up: 0
   EndPos: {fileID: 170702065}
   upSpeed: 5
-  frontSpeed: 3
+  frontSpeed: 10
 --- !u!54 &1036104643
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -152,14 +152,16 @@ public class PlayerController : MonoBehaviour
         if (moveType == MoveType.Front)
         {
             moveSpeed = 3;
-            moveDirection = -GetDirection(InputDir.front, PlayerState.ClimbWall);
+            //moveDirection = -GetDirection(InputDir.front, PlayerState.ClimbWall);
+            moveDirection = Vector3.up;
             ani.SetFloat("ClimbSpeed", 1f);
 
         }
         else if (moveType == MoveType.Back)
         {
             moveSpeed = 3;
-            moveDirection = -GetDirection(InputDir.back, PlayerState.ClimbWall);
+            //moveDirection = -GetDirection(InputDir.back, PlayerState.ClimbWall);
+            moveDirection = Vector3.down;
             ani.SetFloat("ClimbSpeed", -1f);
         }
         else
