@@ -151,7 +151,4 @@ public abstract class BaseSelectManager : MonoBehaviour
 
     //inputManager에 등록
     protected abstract void SetInputKey();
-
-    // InputManager에 해제
-    //public abstract void ClearInputKey();
 }

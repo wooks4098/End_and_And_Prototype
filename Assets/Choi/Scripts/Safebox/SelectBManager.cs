@@ -71,12 +71,4 @@ public class SelectBManager : BaseSelectManager
         InputManager.Instance.OnUsePlayer2 += InputSelectKey;
         InputManager.Instance.OnLeftRightPlayer2 += InputMoveKey;
     }
-
-    //public override void ClearInputKey()
-    //{
-    //    InputManager.Instance.OnUsePlayer2 -= InputActiveKey;
-    //    InputManager.Instance.OnUsePlayer2 -= InputSelectKey;
-    //    InputManager.Instance.OnLeftRightPlayer2 -= InputMoveKey;
-    //}
-
 }
