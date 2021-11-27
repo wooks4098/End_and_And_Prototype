@@ -452,7 +452,6 @@ MonoBehaviour:
   safeboxManager: {fileID: 1051936196}
   availableList: 
   zoomInCamera: {fileID: 1209071637}
-  isActive: 0
   objectUiShow: {fileID: 101650251}
 --- !u!4 &22415927
 Transform:
@@ -3977,7 +3976,6 @@ MonoBehaviour:
   safeboxManager: {fileID: 1051936196}
   availableList: 
   zoomInCamera: {fileID: 386481205}
-  isActive: 0
   objectUiShow: {fileID: 288219660}
 --- !u!4 &411522153
 Transform:
@@ -6904,6 +6902,33 @@ MonoBehaviour:
   isPlayer1: 0
   isPlayer2: 0
   Glove: {fileID: 11400000, guid: 4b48718e3ac896d4d851f70dd8d5d27e, type: 2}
+  OnTriggerExitSafeBox:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 411522152}
+        m_TargetAssemblyTypeName: BaseSelectManager, Assembly-CSharp
+        m_MethodName: CloseSafeBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 22415926}
+        m_TargetAssemblyTypeName: BaseSelectManager, Assembly-CSharp
+        m_MethodName: CloseSafeBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1051936197
 Transform:
   m_ObjectHideFlags: 0

@@ -16,9 +16,9 @@ public abstract class BaseSelectManager : MonoBehaviour
 
     // 줌인 카메라
     [SerializeField] Camera zoomInCamera;
-    // 활성화 체크
-    [SerializeField] protected bool isActive = false;
+
     [SerializeField] protected ObjectUIShow objectUiShow;
+
 
     protected void Awake()
     {
@@ -44,33 +44,6 @@ public abstract class BaseSelectManager : MonoBehaviour
         SetInputKey();
     }
 
-    private void Update()
-    {
-        // isActive == false이면 
-        //if (!isActive)
-        //{
-        //    // 활성화키 (금고 실행 전 확인키) 입력을 받는 메서드
-        //    //InputActiveKey();
-
-        //    if (zoomInCamera.gameObject.activeSelf == true)
-        //    {
-        //        zoomInCamera.gameObject.SetActive(false);
-        //    }                
-        //    // 입력 받지 않고 빠져나감
-        //    return;
-        //}
-        //else if (isActive)
-        //{
-        //    if (zoomInCamera.gameObject.activeSelf == false)
-        //    {
-        //        zoomInCamera.gameObject.SetActive(true);
-        //    }
-        //}
-
-        //InputMoveKey();
-        //InputSelectKey();        
-    }
-
     protected void OpenSafeBox()
     {
         if (zoomInCamera.gameObject.activeSelf == false)
@@ -79,12 +52,13 @@ public abstract class BaseSelectManager : MonoBehaviour
         }
     }
 
-    protected void CloseSafeBox()
+    public void CloseSafeBox()
     {
+        // 카메라 끄기
         if (zoomInCamera.gameObject.activeSelf == true)
         {
             zoomInCamera.gameObject.SetActive(false);
-        }
+        }   
     }
 
     public void SetStartIndex()
@@ -173,9 +147,11 @@ public abstract class BaseSelectManager : MonoBehaviour
         }
     }
 
-
     protected abstract void InputActiveKey(PlayerType _playerType, PlayerState _playerState);
 
     //inputManager에 등록
     protected abstract void SetInputKey();
+
+    // InputManager에 해제
+    //public abstract void ClearInputKey();
 }

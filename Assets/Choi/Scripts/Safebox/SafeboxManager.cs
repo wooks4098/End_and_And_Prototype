@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SafeboxManager : MonoBehaviour
 {
@@ -31,8 +32,14 @@ public class SafeboxManager : MonoBehaviour
     [SerializeField] bool isPlayer1;
     [SerializeField] bool isPlayer2;
 
-    //임시 장갑 아이템 획득용
+    // 임시 장갑 아이템 획득용
     [SerializeField] Item Glove;
+
+    // 임시 실행 이벤트 - 금고를 빠져나갈 때
+    public UnityEvent OnTriggerExitSafeBox;
+
+
+
     private void Awake()
     {
         correct = new List<int>();
@@ -44,13 +51,6 @@ public class SafeboxManager : MonoBehaviour
         SetCorrect();
         SetSafeboxFromCorrect();
         SetMaterial();
-    }
-
-    private void Start()
-    {
-        //SetCorrect();
-        //SetSafeboxFromCorrect();
-        //SetMaterial();
     }
 
     public bool IsMatch(int index, List<int> box)
@@ -223,11 +223,14 @@ public class SafeboxManager : MonoBehaviour
             Debug.Log("2P 금고 맞춤");
         }
 
-        if (isPlayer1 == true && isPlayer2 == true)//두명의 플레이어가 성공했을 경우
+        if (isPlayer1 == true && isPlayer2 == true)  // 두명의 플레이어가 모두 성공했을 경우
         {
             GameManager.Instance.GetItem(PlayerType.FirstPlayer, Glove);
             GameManager.Instance.PlayerMeshRendererOnOFF(PlayerType.FirstPlayer, true);
             GameManager.Instance.PlayerMeshRendererOnOFF(PlayerType.SecondPlayer, true);
+
+            // 금고를 나가는 이벤트 실행
+            OnTriggerExitSafeBox.Invoke();
         }
 
         return same;
