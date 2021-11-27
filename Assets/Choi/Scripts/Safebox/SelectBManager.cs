@@ -71,4 +71,13 @@ public class SelectBManager : BaseSelectManager
         InputManager.Instance.OnUsePlayer2 += InputSelectKey;
         InputManager.Instance.OnLeftRightPlayer2 += InputMoveKey;
     }
+
+    //inputManagerø° «ÿ¡¶
+
+    public void OutInputKey()
+    {
+        InputManager.Instance.OnUsePlayer1 -= InputActiveKey;
+        InputManager.Instance.OnUsePlayer1 -= InputSelectKey;
+        InputManager.Instance.OnLeftRightPlayer1 -= InputMoveKey;
+    }
 }

@@ -97,8 +97,15 @@ public class PlayerController : MonoBehaviour
 
     void MoveTo(Vector3 direction)
     {
-        if (playerState ==  PlayerState.ClimbUpWall)
-            return;
+        switch(playerState)
+        {
+            case PlayerState.ClimbUpWall:
+            case PlayerState.SafeBox:
+            case PlayerState.Inventory:
+                moveDirection = Vector3.zero;
+                return;
+        }
+
         characterController.Move(direction * (isRun == false ? moveSpeed : moveSpeed * 2.3f) * Time.deltaTime);
 
     }

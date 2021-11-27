@@ -225,10 +225,14 @@ public class SafeboxManager : MonoBehaviour
 
         if (isPlayer1 == true && isPlayer2 == true)  // 두명의 플레이어가 모두 성공했을 경우
         {
+            //Test 플레이어1에게 아이템 주기
             GameManager.Instance.GetItem(PlayerType.FirstPlayer, Glove);
+            //플레이어 Mesh켜기
             GameManager.Instance.PlayerMeshRendererOnOFF(PlayerType.FirstPlayer, true);
             GameManager.Instance.PlayerMeshRendererOnOFF(PlayerType.SecondPlayer, true);
-
+            //플레이어 상태 변경
+            GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.Walk);
+            GameManager.Instance.PlayerStateChange(PlayerType.SecondPlayer, PlayerState.Walk);
             // 금고를 나가는 이벤트 실행
             OnTriggerExitSafeBox.Invoke();
         }
