@@ -20,9 +20,15 @@ public class SelectBManager : BaseSelectManager
         {
             //플레이어 상태 변경
             GameManager.Instance.PlayerStateChange(PlayerType.SecondPlayer, PlayerState.SafeBox);
-            //isActive = true;
+                        
+            if (isActive != true)
+            {
+                OpenSafeBox();
+                OnTriggerEnterSafeBox.Invoke();
+            }
+            // isActive = true -> 카메라가 활성화 되어있다는 뜻
+            isActive = true;
 
-            OpenSafeBox();
             //GameManager.Instance.PlayerCameraOnOFF(PlayerType.SecondPlayer, true);
             GameManager.Instance.PlayerMeshRendererOnOFF(PlayerType.SecondPlayer, false);
         }

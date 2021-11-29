@@ -453,6 +453,21 @@ MonoBehaviour:
   availableList: 
   zoomInCamera: {fileID: 1209071637}
   objectUiShow: {fileID: 101650251}
+  OnTriggerEnterSafeBox:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 22415926}
+        m_TargetAssemblyTypeName: BaseSelectManager, Assembly-CSharp
+        m_MethodName: SetStartIndex
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &22415927
 Transform:
   m_ObjectHideFlags: 0
@@ -2750,7 +2765,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 226764947}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
@@ -3977,6 +3992,21 @@ MonoBehaviour:
   availableList: 
   zoomInCamera: {fileID: 386481205}
   objectUiShow: {fileID: 288219660}
+  OnTriggerEnterSafeBox:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 411522152}
+        m_TargetAssemblyTypeName: BaseSelectManager, Assembly-CSharp
+        m_MethodName: SetStartIndex
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &411522153
 Transform:
   m_ObjectHideFlags: 0
@@ -4121,7 +4151,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 426871586}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
   m_Name: 
@@ -6944,6 +6974,18 @@ MonoBehaviour:
       - m_Target: {fileID: 22415926}
         m_TargetAssemblyTypeName: SelectBManager, Assembly-CSharp
         m_MethodName: OutInputKey
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1051936196}
+        m_TargetAssemblyTypeName: SafeboxManager, Assembly-CSharp
+        m_MethodName: DisableSafeboxOutline
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

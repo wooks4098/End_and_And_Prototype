@@ -239,4 +239,22 @@ public class SafeboxManager : MonoBehaviour
 
         return same;
     }
+
+
+    // 금고 아웃라인 끄기
+    public void DisableSafeboxOutline()
+    {
+        // 리스트에 Outline 컴포넌트를 갖고 있는 오브젝트를 찾아서 넣기
+        List<Outline> outlines = new List<Outline>(FindObjectsOfType<Outline>());
+
+        for(int i = 0; i < outlines.Count; i++)
+        {
+            // 태그가 SafeBoxA 혹은 SafeBoxB이면
+            if(outlines[i].CompareTag("SafeBoxA") || outlines[i].CompareTag("SafeBoxB"))
+            {
+                // 끈다
+                outlines[i].enabled = false;
+            }
+        }
+    }
 }

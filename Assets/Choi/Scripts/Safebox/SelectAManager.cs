@@ -19,10 +19,16 @@ public class SelectAManager : BaseSelectManager
         if(objectUiShow.GetCanUse() == true)
         {
             //플레이어 상태 변경
-            GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.SafeBox);
-            //isActive = true;
+            GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.SafeBox);            
 
-            OpenSafeBox();
+            if(isActive != true)
+            {
+                OpenSafeBox();
+                OnTriggerEnterSafeBox.Invoke();
+            }
+            // isActive = true -> 카메라가 활성화 되어있다는 뜻
+            isActive = true;
+
             //GameManager.Instance.PlayerCameraOnOFF(PlayerType.FirstPlayer, false);
             GameManager.Instance.PlayerMeshRendererOnOFF(PlayerType.FirstPlayer, false);
         }

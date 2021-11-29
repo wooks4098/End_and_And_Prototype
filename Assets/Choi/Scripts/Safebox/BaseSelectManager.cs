@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class BaseSelectManager : MonoBehaviour
 {
@@ -17,7 +18,13 @@ public abstract class BaseSelectManager : MonoBehaviour
     // 줌인 카메라
     [SerializeField] Camera zoomInCamera;
 
+    // 보일 ui
     [SerializeField] protected ObjectUIShow objectUiShow;
+
+    // 금고에 입장할 때 실행되는 이벤트
+    public UnityEvent OnTriggerEnterSafeBox;
+
+    protected bool isActive = false;
 
 
     protected void Awake()
@@ -32,7 +39,10 @@ public abstract class BaseSelectManager : MonoBehaviour
 
         // 전처리 1.활성화 2.인덱스할당
         CheckAvailable();
-        SetStartIndex();
+        
+        // 시작할 인덱스를 선택하는 메서드
+        // 아웃라인에 진입할 때 켜기로 했으므로 지금은 끔.
+        // SetStartIndex();
 
         // 줌인 카메라 끄기
         if (zoomInCamera.gameObject.activeSelf == true)
