@@ -33,6 +33,8 @@ public class ClimbWall : MonoBehaviour
 
     [SerializeField] ClimbingUpWall climbingUpWall;
 
+    
+
     private void Start()
     {
         SetInput();
