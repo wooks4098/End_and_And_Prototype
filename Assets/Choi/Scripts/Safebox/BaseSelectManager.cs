@@ -24,7 +24,8 @@ public abstract class BaseSelectManager : MonoBehaviour
     // 금고에 입장할 때 실행되는 이벤트
     public UnityEvent OnTriggerEnterSafeBox;
 
-    protected bool isActive = false;
+    // 카메라가 활성 상태인지 체크
+    protected bool isZoomInCameraActive = false;
 
 
     protected void Awake()

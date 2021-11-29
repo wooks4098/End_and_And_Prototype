@@ -21,13 +21,13 @@ public class SelectAManager : BaseSelectManager
             //플레이어 상태 변경
             GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.SafeBox);            
 
-            if(isActive != true)
+            if(isZoomInCameraActive != true)
             {
                 OpenSafeBox();
                 OnTriggerEnterSafeBox.Invoke();
             }
             // isActive = true -> 카메라가 활성화 되어있다는 뜻
-            isActive = true;
+            isZoomInCameraActive = true;
 
             //GameManager.Instance.PlayerCameraOnOFF(PlayerType.FirstPlayer, false);
             GameManager.Instance.PlayerMeshRendererOnOFF(PlayerType.FirstPlayer, false);

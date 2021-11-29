@@ -21,13 +21,17 @@ public class SelectBManager : BaseSelectManager
             //플레이어 상태 변경
             GameManager.Instance.PlayerStateChange(PlayerType.SecondPlayer, PlayerState.SafeBox);
                         
-            if (isActive != true)
+            // 카메라가 활성되어있지 않을 때만  실행
+            if (isZoomInCameraActive != true)
             {
+                // 줌인 카메라 실행
                 OpenSafeBox();
+                // 금고 기믹 입장 이벤트 실행
                 OnTriggerEnterSafeBox.Invoke();
             }
             // isActive = true -> 카메라가 활성화 되어있다는 뜻
-            isActive = true;
+            // 앞의 두 메서드를 실행시킨 후 bool 변수를 true로 변경한다.
+            isZoomInCameraActive = true;
 
             //GameManager.Instance.PlayerCameraOnOFF(PlayerType.SecondPlayer, true);
             GameManager.Instance.PlayerMeshRendererOnOFF(PlayerType.SecondPlayer, false);
