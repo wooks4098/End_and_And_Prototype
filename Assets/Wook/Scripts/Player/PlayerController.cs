@@ -107,7 +107,6 @@ public class PlayerController : MonoBehaviour
         }
 
         characterController.Move(direction * (isRun == false ? moveSpeed : moveSpeed * 2.3f) * Time.deltaTime);
-
     }
     void Move(MoveType moveType, PlayerState _playerState)
     {
@@ -118,7 +117,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.ClimbWall:
             case PlayerState.ClimbRope:
-                Climb(moveType);
+                //Climb(moveType);
                 break;
             case PlayerState.ClimbUpWall:
                 moveDirection = Vector3.zero;
@@ -129,8 +128,6 @@ public class PlayerController : MonoBehaviour
 
     void FrontBackWalk(MoveType moveType)
     {
-
-
         if (moveType == MoveType.Front)
         {
             moveDirection = GetDirection(InputDir.front, PlayerState.Walk);
@@ -154,6 +151,69 @@ public class PlayerController : MonoBehaviour
         ani.SetBool("Run", isRun);
     }
 
+    #region ClimbWall
+
+    void ClimbWallStart()
+    {
+        switch(playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnUsePlayer1 += ClimbWallCheck;
+                UIManager.Instance.StartClimbWall(playerType);
+                break;
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnUsePlayer2 += ClimbWallCheck;
+                UIManager.Instance.StartClimbWall(playerType);
+                break;
+        }
+    }
+
+    public void ClimbWallEnd()
+    {
+        switch (playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnUsePlayer1 -= ClimbWallCheck;
+                //UIManager.Instance.StartClimbWall(playerType);
+                break;
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnUsePlayer2 -= ClimbWallCheck;
+                //UIManager.Instance.StartClimbWall(playerType);
+                break;
+        }
+    }
+
+    void ClimbWallCheck(PlayerType _playerType, PlayerState _playerState)
+    {
+        if(UIManager.Instance.isSliderTriggerCheck(_playerType))
+        {
+            StartCoroutine(ClimbWallUp());
+        }
+    }
+
+    IEnumerator ClimbWallUp()
+    {
+        float timeCheck = 1f;
+        moveSpeed = 2;
+
+        while (timeCheck >=0)
+        {
+            timeCheck -= Time.deltaTime;
+            moveDirection = Vector3.up;
+            ani.SetFloat("ClimbSpeed", 1f);
+            yield return null;
+        }
+        moveDirection = Vector3.zero;
+        ani.SetFloat("ClimbSpeed", 0);
+        yield return null;
+    }
+    IEnumerator ClimbWallDown()
+    {
+        yield return null;
+    }
+
+
+    #endregion
     void Climb(MoveType moveType)
     {
         if (moveType == MoveType.Front)
@@ -243,10 +303,14 @@ public class PlayerController : MonoBehaviour
         switch (_playerState)
         {
             case PlayerState.ClimbWall:
+                ClimbWallStart();
                 ani.SetTrigger("ClimbStart");
+                moveDirection = Vector3.zero;
                 break;
             case PlayerState.ClimbRope:
+                ClimbWallStart();
                 ani.SetTrigger("RopeClimbStart");
+                moveDirection = Vector3.zero;
                 break;
 
         }

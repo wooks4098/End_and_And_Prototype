@@ -64,6 +64,10 @@ public class ClimbingUpWall : MonoBehaviour
             GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.ClimbUpWall);
             animator.SetTrigger("IsClimbinUpWall");
             StartCoroutine(PlayerPosChange(animator,PlayerType.FirstPlayer));
+            //Climb up Slider 见扁扁
+            UIManager.Instance.EndClimbWall(PlayerType.FirstPlayer);
+            //Player input 秦力
+            GameManager.Instance.GetPlayerController(PlayerType.FirstPlayer).ClimbWallEnd();
 
         }
         if (other.tag == "Player2" && isPlayer2Up == false)
@@ -73,6 +77,10 @@ public class ClimbingUpWall : MonoBehaviour
             GameManager.Instance.PlayerStateChange(PlayerType.SecondPlayer, PlayerState.ClimbUpWall);
             animator.SetTrigger("IsClimbinUpWall");
             StartCoroutine(PlayerPosChange(animator, PlayerType.SecondPlayer));
+            //Climb up Slider 见扁扁
+            UIManager.Instance.EndClimbWall(PlayerType.SecondPlayer);
+            //Player input 秦力
+            GameManager.Instance.GetPlayerController(PlayerType.SecondPlayer).ClimbWallEnd();
         }
     }
 

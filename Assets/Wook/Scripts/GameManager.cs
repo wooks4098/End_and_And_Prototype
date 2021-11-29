@@ -75,7 +75,21 @@ public class GameManager : MonoBehaviour
     
 
 
-    //플레이어 transform리턴
+    //플레이어 리턴
+
+    public PlayerController GetPlayerController(PlayerType _playerType)
+    {
+        switch (_playerType)
+        {
+            case PlayerType.FirstPlayer:
+                return player1;
+            case PlayerType.SecondPlayer:
+                return player2;
+
+        }
+        return null;
+    }
+
     public Transform GetPlayerTrans(PlayerType _playerType)
     {
         switch (_playerType)

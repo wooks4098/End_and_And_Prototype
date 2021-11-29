@@ -22,6 +22,44 @@ public class UIManager : MonoBehaviour
     [SerializeField] UiController P1UI;
     [SerializeField] UiController P2UI;
 
+    public void StartClimbWall(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.StartClimbWall();
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.StartClimbWall();
+                break;
+        }
+    }
+
+    public void EndClimbWall(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.EndClimbWall();
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.EndClimbWall();
+                break;
+        }
+    }
+
+    public bool isSliderTriggerCheck(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                return P1UI.isSliderTriggerCheck();
+            case PlayerType.SecondPlayer:
+               return  P2UI.isSliderTriggerCheck();
+        }
+        return false;
+    }
+
     public void ObjectUIShow(PlayerType PlayerType)
     {
         switch(PlayerType)
