@@ -55,12 +55,10 @@ public class UiController : MonoBehaviour
     {
         if (climbWallSlider.value >= minPos && climbWallSlider.value <= maxPos)
         {
-            Debug.Log("슬라이더 true");
             return true;
         }
         else
         {
-            Debug.Log("슬라이더 false");
             return false;
         }
     }

@@ -16,6 +16,7 @@ public enum PlayerState
     Wait, //대기상태
     ClimbRope,//로프 오르는중
     ClimbRopeUp,//로프 올라가기
+    ClimbWallFall,//벽 타기중 떨어지기
     Inventory, //인벤토리 오픈
     SafeBox,//금고 사용중
 
@@ -40,6 +41,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject playerCamera;
     [SerializeField] SkinnedMeshRenderer meshRenderer;
 
+    [SerializeField] int FallCount;
+    [SerializeField] bool isClimbWallCheck;//벽타기시 클릭 가능한 상태인지
+     Vector3 groundPos;
+    [SerializeField] float toGroundLength; //땅까지의 거리
+    [SerializeField] float fallLength; //벽타기시 떨어질 수 있는 거리
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -155,6 +161,10 @@ public class PlayerController : MonoBehaviour
 
     void ClimbWallStart()
     {
+        FallCount = 3;
+        isClimbWallCheck = true;
+        //바닥 위치 등록
+        groundPos = transform.position;
         switch (playerType)
         {
             case PlayerType.FirstPlayer:
@@ -185,13 +195,32 @@ public class PlayerController : MonoBehaviour
 
     void ClimbWallCheck(PlayerType _playerType, PlayerState _playerState)
     {
+        if (!isClimbWallCheck)
+            return;
         if (UIManager.Instance.isSliderTriggerCheck(_playerType))
         {
             StartCoroutine(ClimbWallUp());
         }
         else
         {
+            FallCount--;
+            if (FallCount <= 0)
+            {
+                toGroundLength = Vector3.Distance(groundPos, transform.position);
+                if(toGroundLength >= fallLength)
+                {
+                    //떨어지기
+                    Debug.Log("Fall down");
+                    PlayerStateChange(PlayerState.ClimbWallFall);
+                    ani.SetTrigger("ClimbupFall");
+                    StartCoroutine(ClimbWallFall());
+                    return;
+                }
+                
+            }
+            //미끄러지기
             StartCoroutine(ClimbWallDown());
+
         }
     }
 
@@ -199,7 +228,7 @@ public class PlayerController : MonoBehaviour
     {
         float timeCheck = 1f;
         moveSpeed = 2;
-
+        isClimbWallCheck = false;
         while (timeCheck >= 0)
         {
             timeCheck -= Time.deltaTime;
@@ -209,13 +238,16 @@ public class PlayerController : MonoBehaviour
         }
         moveDirection = Vector3.zero;
         ani.SetFloat("ClimbSpeed", 0);
+        isClimbWallCheck = true;
         yield return null;
     }
+
+    //미끄러지기
     IEnumerator ClimbWallDown()
     {
         float timeCheck = 0.5f;
         moveSpeed = 5;
-
+        isClimbWallCheck = false;
         while (timeCheck >= 0)
         {
             timeCheck -= Time.deltaTime;
@@ -225,9 +257,26 @@ public class PlayerController : MonoBehaviour
         }
         moveDirection = Vector3.zero;
         ani.SetFloat("ClimbSpeed", 0);
+        isClimbWallCheck = true;
         yield return null;
     }
 
+    IEnumerator ClimbWallFall()
+    {
+        float FalltimeCheck = 0;
+        float Falltime = 2f;
+        float PlayerPosY;
+        float MoveY;
+        yield return new WaitForSeconds(0.3f);
+        while(FalltimeCheck <= 2)
+        {
+            FalltimeCheck += Time.deltaTime / Falltime;
+            MoveY = Mathf.Lerp(transform.position.y, groundPos.y, FalltimeCheck);
+            MoveY = transform.position.y - MoveY;
+            transform.position -= new Vector3(0, MoveY, 0);
+            yield return null;
+        }
+    }
 
     #endregion
     void Climb(MoveType moveType)
