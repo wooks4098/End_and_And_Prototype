@@ -32,7 +32,6 @@ public class ClimbingUpWall : MonoBehaviour
             //플레이어 위치 올리기
             if (Physics.Raycast(playerTrans.position, playerTrans.forward , out hit, 5f))
             {
-                Debug.Log(hit.collider.name);
                 if(hit.collider.tag == "ClimbWall")
                 {
                     playerController.Move(FrontDir * Time.deltaTime * upSpeed);

@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravity; //중력
     Vector3 moveDirection; //이동방향
     [SerializeField] bool isRun = false;
-    
+
     CharacterController characterController;
     [SerializeField] Transform CameraTransform;
     [SerializeField] Animator ani;
@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         ani = GetComponentInChildren<Animator>();
-        
+
     }
     private void Start()
     {
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Walk:
                 moveDirection.y -= gravity * Time.deltaTime;
                 break;
-          
+
         }
 
 
@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
     void MoveTo(Vector3 direction)
     {
-        switch(playerState)
+        switch (playerState)
         {
             case PlayerState.ClimbUpWall:
             case PlayerState.SafeBox:
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
     }
     void Move(MoveType moveType, PlayerState _playerState)
     {
-        switch(playerState)
+        switch (playerState)
         {
             case PlayerState.Walk:
                 FrontBackWalk(moveType);
@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.ClimbUpWall:
                 moveDirection = Vector3.zero;
-               
+
                 break;
         }
     }
@@ -155,7 +155,7 @@ public class PlayerController : MonoBehaviour
 
     void ClimbWallStart()
     {
-        switch(playerType)
+        switch (playerType)
         {
             case PlayerType.FirstPlayer:
                 InputManager.Instance.OnUsePlayer1 += ClimbWallCheck;
@@ -185,9 +185,13 @@ public class PlayerController : MonoBehaviour
 
     void ClimbWallCheck(PlayerType _playerType, PlayerState _playerState)
     {
-        if(UIManager.Instance.isSliderTriggerCheck(_playerType))
+        if (UIManager.Instance.isSliderTriggerCheck(_playerType))
         {
             StartCoroutine(ClimbWallUp());
+        }
+        else
+        {
+            StartCoroutine(ClimbWallDown());
         }
     }
 
@@ -196,7 +200,7 @@ public class PlayerController : MonoBehaviour
         float timeCheck = 1f;
         moveSpeed = 2;
 
-        while (timeCheck >=0)
+        while (timeCheck >= 0)
         {
             timeCheck -= Time.deltaTime;
             moveDirection = Vector3.up;
@@ -209,6 +213,18 @@ public class PlayerController : MonoBehaviour
     }
     IEnumerator ClimbWallDown()
     {
+        float timeCheck = 0.5f;
+        moveSpeed = 5;
+
+        while (timeCheck >= 0)
+        {
+            timeCheck -= Time.deltaTime;
+            moveDirection = Vector3.down;
+            ani.SetFloat("ClimbSpeed", -2.5f);
+            yield return null;
+        }
+        moveDirection = Vector3.zero;
+        ani.SetFloat("ClimbSpeed", 0);
         yield return null;
     }
 
@@ -326,7 +342,7 @@ public class PlayerController : MonoBehaviour
     {
         meshRenderer.enabled = _State;
     }
-    
+
 
     #region Get
     public PlayerState GetPlayerState()
