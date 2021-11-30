@@ -22,6 +22,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] UiController P1UI;
     [SerializeField] UiController P2UI;
 
+    #region ClimbWall
+
     public void StartClimbWall(PlayerType PlayerType)
     {
         switch (PlayerType)
@@ -59,6 +61,50 @@ public class UIManager : MonoBehaviour
         }
         return false;
     }
+
+    #endregion
+
+    #region RopeHold
+    public void StartHoldRope(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.StartHoldRope();
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.StartHoldRope();
+                break;
+        }
+    }
+
+    public void EndHoldRope(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.EndHoldRope();
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.EndHoldRope();
+                break;
+        }
+    }
+
+    public void AddHoldRopeValue(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.AddHoldRopeValue();
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.AddHoldRopeValue();
+                break;
+        }
+    }
+
+    #endregion
 
     public void ObjectUIShow(PlayerType PlayerType)
     {

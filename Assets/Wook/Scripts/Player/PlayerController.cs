@@ -17,6 +17,7 @@ public enum PlayerState
     ClimbRope,//로프 오르는중
     ClimbRopeUp,//로프 올라가기
     ClimbWallFall,//벽 타기중 떨어지기
+    HoldRope,//로프 잡는중
     Inventory, //인벤토리 오픈
     SafeBox,//금고 사용중
 
@@ -265,8 +266,8 @@ public class PlayerController : MonoBehaviour
     {
         float FalltimeCheck = 0;
         float Falltime = 2f;
-        float PlayerPosY;
         float MoveY;
+        UIManager.Instance.EndClimbWall(playerType);
         yield return new WaitForSeconds(0.3f);
         while(FalltimeCheck <= 2)
         {
@@ -356,6 +357,62 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    //로프잡기 시작
+    public void StartHoldRope(Vector3 _ropePos)
+    {
+        //로프를 바라보도록 회전
+        float angle = Vector3.Angle(transform.position, _ropePos);
+        transform.LookAt(_ropePos);
+        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y + 50f, 0);
+        ani.SetBool("HoldingRope", true);
+        switch (playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnUsePlayer1 += AddHoldRopeValue;
+                UIManager.Instance.StartHoldRope(playerType);
+                break;
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnUsePlayer1 += AddHoldRopeValue;
+                UIManager.Instance.StartHoldRope(playerType);
+                break;
+        }    
+    }
+
+    public void EndHoldRope()
+    {
+
+        switch (playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnUsePlayer1 -= AddHoldRopeValue;
+                UIManager.Instance.EndHoldRope(playerType);
+                break;
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnUsePlayer1 -= AddHoldRopeValue;
+                UIManager.Instance.EndHoldRope(playerType);
+                break;
+        }
+    }
+
+
+
+    void AddHoldRopeValue(PlayerType _playertype, PlayerState _playerState)
+    {
+        switch(playerType)
+        {
+            case PlayerType.FirstPlayer:
+                UIManager.Instance.AddHoldRopeValue(playerType);
+                break;
+            case PlayerType.SecondPlayer:
+                UIManager.Instance.AddHoldRopeValue(playerType);
+                break;
+        }
+    }
+    //로프 잡다가 넘어지기
+    public void HoldRopeFall()
+    {
+        ani.SetTrigger("ClimbupFall");
+    }
 
     public void PlayerStateChange(PlayerState _playerState)
     {
@@ -364,6 +421,7 @@ public class PlayerController : MonoBehaviour
         ani.SetBool("Run", false);
         ani.SetBool("IsClimbinUpWall", false);
         ani.SetFloat("ClimbSpeed", 0);
+        ani.SetBool("HoldingRope", false);
         playerState = _playerState;
         switch (_playerState)
         {
@@ -375,6 +433,9 @@ public class PlayerController : MonoBehaviour
             case PlayerState.ClimbRope:
                 ClimbWallStart();
                 ani.SetTrigger("RopeClimbStart");
+                moveDirection = Vector3.zero;
+                break;
+            case PlayerState.HoldRope:
                 moveDirection = Vector3.zero;
                 break;
 

@@ -14,7 +14,7 @@ enum SliderDirection
 }
 public class UiController : MonoBehaviour
 {
-
+    [SerializeField] PlayerType playerType;
     //오브젝트 UI용
     public Camera camera; //플레이어 카메라
     public RectTransform Canvas; //canvas recttransfrom
@@ -23,14 +23,18 @@ public class UiController : MonoBehaviour
     //Climb Wall Move UI
     [Space] [Space]
     [SerializeField] bool isClimbWall = false; //벽타기 중인지
-    [SerializeField] Slider climbWallSlider; //슬라이더
+    [SerializeField] Slider climbWallSlider; //벽타기 슬라이더
     [SerializeField] SliderDirection dir;
 
-    [SerializeField] float sliderSpeed; //슬리아더 속도
+    [SerializeField] float climbWallSliderSpeed; //슬리아더 속도
     [SerializeField] float minPos; //타겟 최소 위치
     [SerializeField] float maxPos; //타겟 최대 위치
     [SerializeField] RectTransform SliderTimingRect; //타겟 Rect
 
+    [SerializeField] bool isHoldRope = false; //로프를 잡고있는 중인지
+    [SerializeField] Slider sliderRopeHold; //로프 슬라이더
+    [SerializeField] float sliderRopeHoldSpeed; //슬라이더 속도
+    [SerializeField] float sliderRopeHoldAddValue; //슬라이더 증가값
 
 
     #region ClimbWall
@@ -43,7 +47,7 @@ public class UiController : MonoBehaviour
         minPos = SliderTimingRect.anchoredPosition.x;
         maxPos = SliderTimingRect.sizeDelta.x + minPos;
 
-        StartCoroutine(SliderMove());
+        StartCoroutine(ClimbWallSliderMove());
     }
     public void EndClimbWall()
     {
@@ -63,19 +67,19 @@ public class UiController : MonoBehaviour
         }
     }
 
-    IEnumerator SliderMove()
+    IEnumerator ClimbWallSliderMove()
     {
         while(isClimbWall == true)
         {
             if (dir == SliderDirection.Right)
             {
-                climbWallSlider.value += sliderSpeed * Time.deltaTime;
+                climbWallSlider.value += climbWallSliderSpeed * Time.deltaTime;
                 if (climbWallSlider.value >= climbWallSlider.maxValue)
                     dir = SliderDirection.Left;
             }
             else if (dir == SliderDirection.Left)
             {
-                climbWallSlider.value -= sliderSpeed * Time.deltaTime;
+                climbWallSlider.value -= climbWallSliderSpeed * Time.deltaTime;
                 if (climbWallSlider.value <= climbWallSlider.minValue)
                     dir = SliderDirection.Right;
             }
@@ -83,6 +87,44 @@ public class UiController : MonoBehaviour
         }
     }
 
+    #endregion
+
+
+    #region Holding Rope
+
+    public void StartHoldRope()
+    {
+        isHoldRope = true;
+        sliderRopeHold.gameObject.SetActive(true);
+        sliderRopeHold.value = sliderRopeHold.maxValue;
+        StartCoroutine(HoldRopeSliderMove());
+    }
+
+    public void EndHoldRope()
+    {
+        isHoldRope = false;
+        sliderRopeHold.gameObject.SetActive(false);
+        GameManager.Instance.PlayerStateChange(playerType,PlayerState.ClimbWallFall);
+        GameManager.Instance.GetPlayerController(playerType).HoldRopeFall();
+    }
+
+    //로프 잡기 슬라이더 움직임
+    IEnumerator HoldRopeSliderMove()
+    {
+        while (isHoldRope == true)
+        {
+            sliderRopeHold.value -= Time.deltaTime * sliderRopeHoldSpeed;
+            if (sliderRopeHold.value <= 0)
+                EndHoldRope();
+            yield return null;
+        }
+    }
+
+    //슬라이더 클릭시 Value 증가
+    public void AddHoldRopeValue()
+    {
+        sliderRopeHold.value += sliderRopeHoldAddValue;
+    }
     #endregion
 
     public void ObjectUIShow( )
