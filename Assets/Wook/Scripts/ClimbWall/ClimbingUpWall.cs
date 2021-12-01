@@ -59,7 +59,23 @@ public class ClimbingUpWall : MonoBehaviour
         if (other.tag == "Player1" && isPlayer1Up == false)
         {
             isPlayer1Up = true;
+            
             Animator animator = GameManager.Instance.GetPlayerModelTrans(PlayerType.FirstPlayer).GetComponent<Animator>();
+
+            //현재플레이어가 로프타기면  로프 잡는 플레이어 로프 잡기 멈추도록
+            if (GameManager.Instance.GetPlayerState(PlayerType.FirstPlayer) == PlayerState.ClimbRope)
+            {
+                GameManager.Instance.GetPlayerController(PlayerType.SecondPlayer).EndHoldRope();
+
+                //Animator otherani = GameManager.Instance.GetPlayerModelTrans(PlayerType.SecondPlayer).GetComponent<Animator>();
+                //otherani.SetTrigger("ClimbupFall");
+                //otherani.SetTrigger("ClimbupFallExit");
+                //otherani.SetBool("HoldingRope",false);
+
+
+
+            }
+
             GameManager.Instance.PlayerStateChange(PlayerType.FirstPlayer, PlayerState.ClimbUpWall);
             animator.SetTrigger("IsClimbinUpWall");
             StartCoroutine(PlayerPosChange(animator,PlayerType.FirstPlayer));
@@ -68,11 +84,26 @@ public class ClimbingUpWall : MonoBehaviour
             //Player input 해제
             GameManager.Instance.GetPlayerController(PlayerType.FirstPlayer).ClimbWallEnd();
 
+
         }
         if (other.tag == "Player2" && isPlayer2Up == false)
         {
             isPlayer2Up = true;
             Animator animator = GameManager.Instance.GetPlayerModelTrans(PlayerType.SecondPlayer).GetComponent<Animator>();
+
+            //현재플레이어가 로프타기면  로프 잡는 플레이어 로프 잡기 멈추도록
+            if (GameManager.Instance.GetPlayerState(PlayerType.SecondPlayer) == PlayerState.ClimbRope)
+            {
+                GameManager.Instance.GetPlayerController(PlayerType.FirstPlayer).EndHoldRope();
+                //Animator otherani = GameManager.Instance.GetPlayerModelTrans(PlayerType.FirstPlayer).GetComponent<Animator>();
+                //otherani.SetTrigger("ClimbupFall");
+                //otherani.SetTrigger("ClimbupFallExit");
+                //otherani.SetBool("HoldingRope", false);
+
+
+
+            }
+
             GameManager.Instance.PlayerStateChange(PlayerType.SecondPlayer, PlayerState.ClimbUpWall);
             animator.SetTrigger("IsClimbinUpWall");
             StartCoroutine(PlayerPosChange(animator, PlayerType.SecondPlayer));
@@ -80,6 +111,7 @@ public class ClimbingUpWall : MonoBehaviour
             UIManager.Instance.EndClimbWall(PlayerType.SecondPlayer);
             //Player input 해제
             GameManager.Instance.GetPlayerController(PlayerType.SecondPlayer).ClimbWallEnd();
+           
         }
     }
 

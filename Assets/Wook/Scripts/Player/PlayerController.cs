@@ -15,12 +15,12 @@ public enum PlayerState
     ClimbUpWall, //벽 올라가기
     Wait, //대기상태
     ClimbRope,//로프 오르는중
-    ClimbRopeUp,//로프 올라가기
+    //ClimbRopeUp,//로프 올라가기
     ClimbWallFall,//벽 타기중 떨어지기
     HoldRope,//로프 잡는중
     Inventory, //인벤토리 오픈
     SafeBox,//금고 사용중
-
+    None, //Null로 사용
 }
 
 public class PlayerController : MonoBehaviour
@@ -212,9 +212,8 @@ public class PlayerController : MonoBehaviour
                 {
                     //떨어지기
                     Debug.Log("Fall down");
-                    PlayerStateChange(PlayerState.ClimbWallFall);
-                    ani.SetTrigger("ClimbupFall");
-                    StartCoroutine(ClimbWallFall());
+                  
+                    StartClimbWallFall();
                     return;
                 }
                 
@@ -262,8 +261,18 @@ public class PlayerController : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator ClimbWallFall()
+    public void StartClimbWallFall(bool isRopeClimbUp = false)//isRopeClimbUp 로프를 타고 올라가 벽을 올라갔는지
     {
+        if (playerState != PlayerState.ClimbRope && playerState != PlayerState.ClimbWall && playerState != PlayerState.HoldRope)
+            return;
+        PlayerStateChange(PlayerState.ClimbWallFall);
+        ani.SetTrigger("ClimbupFall");
+        StartCoroutine(ClimbWallFall(isRopeClimbUp));
+    }
+
+    public IEnumerator ClimbWallFall(bool isRopeClimbUp)
+    {
+ 
         float FalltimeCheck = 0;
         float Falltime = 2f;
         float MoveY;
@@ -276,6 +285,13 @@ public class PlayerController : MonoBehaviour
             MoveY = transform.position.y - MoveY;
             transform.position -= new Vector3(0, MoveY, 0);
             yield return null;
+        }
+
+        //플레이어 idle상태로 변경
+        if(isRopeClimbUp)
+        {
+            yield return new WaitForSeconds(0.3f);
+            ani.SetTrigger("ClimbupFallExit");
         }
     }
 
@@ -386,10 +402,18 @@ public class PlayerController : MonoBehaviour
             case PlayerType.FirstPlayer:
                 InputManager.Instance.OnUsePlayer1 -= AddHoldRopeValue;
                 UIManager.Instance.EndHoldRope(playerType);
+                ani.SetTrigger("ClimbupFall");
+                ani.SetTrigger("ClimbupFallExit");
+                ani.SetBool("HoldingRope", false);
+                PlayerStateChange(PlayerState.Walk);
                 break;
             case PlayerType.SecondPlayer:
                 InputManager.Instance.OnUsePlayer1 -= AddHoldRopeValue;
                 UIManager.Instance.EndHoldRope(playerType);
+                ani.SetTrigger("ClimbupFall");
+                ani.SetTrigger("ClimbupFallExit");
+                ani.SetBool("HoldingRope", false);
+                PlayerStateChange(PlayerState.Walk);
                 break;
         }
     }

@@ -115,9 +115,22 @@ public class UiController : MonoBehaviour
         {
             sliderRopeHold.value -= Time.deltaTime * sliderRopeHoldSpeed;
             if (sliderRopeHold.value <= 0)
+            {//로프잡고있기 실패
                 EndHoldRope();
+                //로프를 타고 올라오는 플레이어 떨어지도록 
+                StartCoroutine(ClimbFallOtherPlayer());
+
+            }
             yield return null;
         }
+    }
+
+    //다른 플레이어 벽에서 떨어지도록
+    IEnumerator ClimbFallOtherPlayer()
+    {
+        yield return new WaitForSeconds(0.3f);
+        GameManager.Instance.GetPlayerController(PlayerType.FirstPlayer == playerType ? PlayerType.SecondPlayer : playerType)
+        .StartClimbWallFall();
     }
 
     //슬라이더 클릭시 Value 증가

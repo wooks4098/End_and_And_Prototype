@@ -7057,7 +7057,7 @@ PrefabInstance:
       objectReference: {fileID: 2131755199}
     - target: {fileID: 4769637262289993587, guid: 7dc830fe794f8ef4a88b1ec05bec1f2e, type: 3}
       propertyPath: sliderRopeHoldSpeed
-      value: 30
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4769637262289993587, guid: 7dc830fe794f8ef4a88b1ec05bec1f2e, type: 3}
       propertyPath: climbWallSliderSpeed

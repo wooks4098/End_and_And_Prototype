@@ -69,11 +69,6 @@ public class ClimbWall : MonoBehaviour
             gRope.SetActive(true);
             isRope = true;
             GameManager.Instance.PlayerStateChange(_playerType, PlayerState.HoldRope);
-            //Transform PlayerTrans = GameManager.Instance.GetPlayerTrans(_playerType);
-            ////플레이어 회전 로프를 바라보도록
-            //float angle = Vector3.Angle(PlayerTrans.position, gRope.transform.position);
-            //PlayerTrans.LookAt(gRope.transform.position);
-            //PlayerTrans.rotation = Quaternion.Euler(0, PlayerTrans.eulerAngles.y, 0);
             GameManager.Instance.GetPlayerController(_playerType).StartHoldRope(gRope.transform.position);
             return;
         }

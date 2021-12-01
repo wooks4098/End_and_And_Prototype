@@ -72,11 +72,23 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    
+
 
 
     //플레이어 리턴
-
+    public PlayerState GetPlayerState(PlayerType _playerType)
+    {
+        switch (_playerType)
+        {
+            case PlayerType.FirstPlayer:
+                return player1.GetPlayerState();
+                
+            case PlayerType.SecondPlayer:
+                return player2.GetPlayerState();
+                
+        }
+        return PlayerState.None;
+    }
     public PlayerController GetPlayerController(PlayerType _playerType)
     {
         switch (_playerType)
