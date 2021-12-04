@@ -150,6 +150,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creature:
     isActive: 0
-    moveRange: 10
-    moveSpeed: 2
+    patrolRange: 10
+    patrolSpeed: 2
+    chaseRange: 4
+    chaseSpeed: 4
+    timeSinceListSawPlayer: 0
     type: 0
+  player: {fileID: 0}
+  createPosition: {x: 0, y: 0, z: 0}
