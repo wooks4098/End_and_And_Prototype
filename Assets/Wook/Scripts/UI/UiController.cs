@@ -69,6 +69,7 @@ public class UiController : MonoBehaviour
 
     IEnumerator ClimbWallSliderMove()
     {
+        //Mathf.PingPong()
         while(isClimbWall == true)
         {
             if (dir == SliderDirection.Right)

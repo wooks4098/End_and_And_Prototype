@@ -21,6 +21,7 @@ public enum PlayerState
     Inventory, //인벤토리 오픈
     SafeBox,//금고 사용중
     None, //Null로 사용
+    Die,//죽음
 }
 
 public class PlayerController : MonoBehaviour
