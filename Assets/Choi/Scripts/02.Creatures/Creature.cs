@@ -16,7 +16,6 @@ public class Creature
     public float trackingSpeed = 4f;
 
     public float attackRange = 20f;
-    public float attackDistance = 20f;
 
     public CreatureType type;
     public CreatureState state;
@@ -29,6 +28,7 @@ public enum CreatureType
 {
     NormalType = 0,
 }
+
 /// <summary>
 /// 크리쳐의 상태
 /// </summary>

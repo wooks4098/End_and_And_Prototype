@@ -24,14 +24,21 @@ public class CreatureMovement : MonoBehaviour
     // 적을 감지할 시야의 기준점 (영역 내에서 감지)
     public Transform eyeTransform;
 
+    // 패트롤 끝난 후 대기 시간
+    [SerializeField] float timeForWaitingPatrol = 5f;
+
     // 마지막으로 패트롤을 멈춘 시간
     [SerializeField] float timeSinceLastPatrol = 0f;
 
     // 마지막으로 플레이어를 본 시간
-    [SerializeField] float timeSinceLastSawPlayer = 0f;
+    private float timeSinceLastSawPlayer = 0f;
+
+    private Coroutine waitNextPatrolCoroutine;
+    private Coroutine timeLastPatrolCoroutine;
 
 
-    #region Gizmos
+
+    #region OnDrawGizmos
 
     private void OnDrawGizmos()
     {
@@ -45,11 +52,11 @@ public class CreatureMovement : MonoBehaviour
 
         // 공격 거리
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, creature.attackDistance);
+        Gizmos.DrawWireSphere(transform.position, creature.attackRange);
 
-        // 공격 거리
+        // 다음 (목표) 위치
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(nextPosition, 5);
+        Gizmos.DrawWireSphere(nextPosition, 3);
     }
 
     #endregion
@@ -66,21 +73,24 @@ public class CreatureMovement : MonoBehaviour
         // agent.stoppingDistance를 이용하면 어느 정도 거리에서 멈출지 설정할 수 있다.
         // agent.stoppingDistance = creature.attackDistance;
 
-        //PatrolBehaviour();
+        timeForWaitingPatrol = 5f;
     }
 
     private void Update()
     {
         if (!isActive) return;
 
+        // 공격 범위에 들어오면
         if(IsInAttackRange())
         {
             AttackBehaviour();
         }
+        // 트래킹 범위에 들어오면
         else if (IsInTrackingRange())
         {
             TrackingBehaviour();
         }
+        // 전부 아니면 패트롤
         else
         {
             PatrolBehaviour();
@@ -97,22 +107,68 @@ public class CreatureMovement : MonoBehaviour
         // 지정한 도착했는지
         if(IsArrive())
         {
-            UpdatePath();
+            // 마지막 패트롤 시간 0으로 초기화
+            timeSinceLastPatrol = 0f;
+
+            if (waitNextPatrolCoroutine == null)
+            {
+                waitNextPatrolCoroutine = StartCoroutine(WaitNextPatrol());
+            }            
         }
         else
         {
+            if(timeLastPatrolCoroutine == null)
+            {
+                timeLastPatrolCoroutine = StartCoroutine(TimeLastPatrol());
+            }            
+        }
+    }
+
+    private IEnumerator TimeLastPatrol()
+    {
+        while(true)
+        {
             // 마지막으로 패트롤한지
             timeSinceLastPatrol += Time.deltaTime;
+
+            yield return new WaitForFixedUpdate();
+
             // 3초를 초과하면
-            if(timeSinceLastPatrol > 7f)
+            if (timeSinceLastPatrol > 10f)
             {
                 // 새로운 좌표를 지정하고
                 UpdatePath();
-
-                // 다시 시간을 0으로
-                timeSinceLastPatrol = 0f;
+                // 빠져나간다
+                break;
             }
         }
+
+        // 다시 시간을 0으로
+        timeSinceLastPatrol = 0f;
+        // 코루틴 비우기
+        timeLastPatrolCoroutine = null;
+    }
+
+    private IEnumerator WaitNextPatrol()
+    {
+        while (true)
+        {
+            timeForWaitingPatrol -= Time.deltaTime;
+
+            yield return new WaitForFixedUpdate();
+
+            if(timeForWaitingPatrol < 0f)
+            {
+                // 새로운 좌표를 지정하고
+                UpdatePath();
+                // 빠져나간다
+                break;
+            }
+        }
+        // 시간을 5로
+        timeForWaitingPatrol = 5f;
+        // 코루틴 비우기
+        waitNextPatrolCoroutine = null;
     }
 
     /// <summary>
@@ -120,9 +176,14 @@ public class CreatureMovement : MonoBehaviour
     /// </summary>
     private void UpdatePath()
     {
+        // 현재 좌표를 목표 좌표로 갱신
+        currentPosition = nextPosition;
+
         // 랜덤 X, Z 좌표 생성 - CreatePosition을 중심으로
-        float randomX = UnityEngine.Random.Range(0, createPosition.x);
-        float randomZ = UnityEngine.Random.Range(0, createPosition.z);
+        // createPosition - creature.patrolRange => (생성 포지션 - 크리쳐 패트롤 범위)
+        // 
+        float randomX = UnityEngine.Random.Range(createPosition.x - creature.patrolRange, createPosition.x + creature.patrolRange);
+        float randomZ = UnityEngine.Random.Range(createPosition.z - creature.patrolRange, createPosition.z + creature.patrolRange);
         // 움직일 포지션 지정
         Vector3 movePosition = new Vector3(randomX, createPosition.y, randomZ);
 
@@ -138,26 +199,11 @@ public class CreatureMovement : MonoBehaviour
         agent.destination = nextPosition;
         agent.speed = creature.patrolSpeed;
     }
-
-    /// <summary>
-    /// 도착했는지 판별하는 메서드
-    /// </summary>
-    private bool IsArrive()
-    {
-        // 다음 포지션과 크리쳐의 거리 계산
-        float distanceToWaypoint = Vector3.Distance(transform.position, nextPosition);
-        // Debug.Log(distanceToWaypoint);
-
-        return distanceToWaypoint < 1f;
-    }
-
     private void TrackingBehaviour()
     {
         // 다음 목표 좌표를 플레이어로 설정
         nextPosition = player.transform.position;
 
-        // agent.stoppingDistance를 이용하면 어느 정도 거리에서 멈출지 설정할 수 있다.
-        agent.stoppingDistance = creature.attackDistance;
         // 다음 목표로 이동
         agent.destination = nextPosition;
         // 트래킹 속도로 전환
@@ -171,6 +217,8 @@ public class CreatureMovement : MonoBehaviour
     {
         // 플레이어를 바라보고
         transform.LookAt(player.transform);
+        agent.velocity = Vector3.zero;
+
         // 공격한다
         Debug.Log("AttackBehaviour()");
     }
@@ -195,9 +243,21 @@ public class CreatureMovement : MonoBehaviour
     {
         // 플레이어와 크리처의 거리 계산
         float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
-        //Debug.Log(distanceToPlayer);
+        // Debug.Log(distanceToPlayer);
 
         // 비교한 값이 tracking 범위보다 적으면 true
         return distanceToPlayer < creature.trackingRange;
+    }
+
+    /// <summary>
+    /// 도착했는지 판별하는 메서드
+    /// </summary>
+    private bool IsArrive()
+    {
+        // 다음 포지션과 크리쳐의 거리 계산
+        float distanceToWaypoint = Vector3.Distance(transform.position, nextPosition);
+        // Debug.Log(distanceToWaypoint);
+
+        return distanceToWaypoint < 1f;
     }
 }
