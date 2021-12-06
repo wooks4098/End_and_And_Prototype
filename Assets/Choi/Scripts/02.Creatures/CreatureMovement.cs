@@ -17,9 +17,8 @@ public class CreatureMovement : MonoBehaviour
 
     [SerializeField] CreaturePlayer player;
 
-    [SerializeField] Vector3 createPosition;
-    private Vector3 currentPosition;
-    private Vector3 nextPosition;
+    [SerializeField] Transform createPosition;
+    private Vector3 targetPosition;
 
     // 적을 감지할 시야의 기준점 (영역 내에서 감지)
     public Transform eyeTransform;
@@ -36,7 +35,9 @@ public class CreatureMovement : MonoBehaviour
     private Coroutine waitNextPatrolCoroutine;
     private Coroutine timeLastPatrolCoroutine;
 
-
+    // path
+    NavMeshPath path;
+    private NavMeshHit hit;
 
     #region OnDrawGizmos
 
@@ -44,7 +45,7 @@ public class CreatureMovement : MonoBehaviour
     {
         // 패트롤 범위
         Gizmos.color = Color.blue;        
-        Gizmos.DrawWireSphere(createPosition, creature.patrolRange);
+        Gizmos.DrawWireSphere(createPosition.position, creature.patrolRange);
 
         // 인식 시야 범위
         Gizmos.color = Color.yellow;        
@@ -55,8 +56,8 @@ public class CreatureMovement : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, creature.attackRange);
 
         // 다음 (목표) 위치
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(nextPosition, 3);
+        // Gizmos.color = Color.cyan;
+        // Gizmos.DrawWireSphere(targetPosition.position, 3);
     }
 
     #endregion
@@ -64,11 +65,11 @@ public class CreatureMovement : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        path = new NavMeshPath();
     }
     private void Start()
     {
-        currentPosition = createPosition;
-        nextPosition = currentPosition;
+        targetPosition = createPosition.position;
 
         // agent.stoppingDistance를 이용하면 어느 정도 거리에서 멈출지 설정할 수 있다.
         // agent.stoppingDistance = creature.attackDistance;
@@ -78,25 +79,41 @@ public class CreatureMovement : MonoBehaviour
 
     private void Update()
     {
-        if (!isActive) return;
-
         // 공격 범위에 들어오면
-        if(IsInAttackRange())
+        if (IsInAttackRange())
         {
-            AttackBehaviour();
+            creature.state = CreatureState.Attack;
         }
         // 트래킹 범위에 들어오면
         else if (IsInTrackingRange())
         {
-            TrackingBehaviour();
+            creature.state = CreatureState.Tracking;
         }
-        // 전부 아니면 패트롤
         else
         {
-            PatrolBehaviour();
+            creature.state = CreatureState.Patrol;
         }
 
-        // UpdateTimers();
+        DecisionBehaviour(creature.state);
+    }
+
+    private void DecisionBehaviour(CreatureState _state)
+    {
+        switch (_state)
+        {
+            case CreatureState.Patrol:
+                PatrolBehaviour();
+                break;
+            case CreatureState.Tracking:
+                TrackingBehaviour();
+                break;
+            case CreatureState.Attack:
+                AttackBehaviour();
+                break;
+            default:
+                PatrolBehaviour();
+                break;
+        }
     }
 
     /// <summary>
@@ -105,28 +122,22 @@ public class CreatureMovement : MonoBehaviour
     private void PatrolBehaviour()
     {
         // 지정한 도착했는지
-        if(IsArrive())
+        if (IsArrive())
         {
             // 마지막 패트롤 시간 0으로 초기화
             timeSinceLastPatrol = 0f;
 
             if (waitNextPatrolCoroutine == null)
             {
+                
                 waitNextPatrolCoroutine = StartCoroutine(WaitNextPatrol());
-            }            
-        }
-        else
-        {
-            if(timeLastPatrolCoroutine == null)
-            {
-                timeLastPatrolCoroutine = StartCoroutine(TimeLastPatrol());
-            }            
+            }
         }
     }
 
     private IEnumerator TimeLastPatrol()
     {
-        while(true)
+        while (true)
         {
             // 마지막으로 패트롤한지
             timeSinceLastPatrol += Time.deltaTime;
@@ -157,7 +168,7 @@ public class CreatureMovement : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
 
-            if(timeForWaitingPatrol < 0f)
+            if (timeForWaitingPatrol < 0f)
             {
                 // 새로운 좌표를 지정하고
                 UpdatePath();
@@ -166,7 +177,7 @@ public class CreatureMovement : MonoBehaviour
             }
         }
         // 시간을 5로
-        timeForWaitingPatrol = 5f;
+        timeForWaitingPatrol = 1f;
         // 코루틴 비우기
         waitNextPatrolCoroutine = null;
     }
@@ -176,36 +187,42 @@ public class CreatureMovement : MonoBehaviour
     /// </summary>
     private void UpdatePath()
     {
-        // 현재 좌표를 목표 좌표로 갱신
-        currentPosition = nextPosition;
 
         // 랜덤 X, Z 좌표 생성 - CreatePosition을 중심으로
-        // createPosition - creature.patrolRange => (생성 포지션 - 크리쳐 패트롤 범위)
-        // 
-        float randomX = UnityEngine.Random.Range(createPosition.x - creature.patrolRange, createPosition.x + creature.patrolRange);
-        float randomZ = UnityEngine.Random.Range(createPosition.z - creature.patrolRange, createPosition.z + creature.patrolRange);
-        // 움직일 포지션 지정
-        Vector3 movePosition = new Vector3(randomX, createPosition.y, randomZ);
+        // createPosition - creature.patrolRange => (생성 포지션 - 크리쳐 패트롤 범위)        
+        float randomX = UnityEngine.Random.Range(createPosition.position.x - creature.patrolRange, createPosition.position.x + creature.patrolRange);
+        float randomZ = UnityEngine.Random.Range(createPosition.position.z - creature.patrolRange, createPosition.position.z + creature.patrolRange);
 
-        // 다음 목표 좌표를 movePosition으로 할당
-        nextPosition = movePosition;
-        // 자동 멈춤 거리가 0으로 지정되어있지 않은 경우
-        if(agent.stoppingDistance != 0f)
+        // 다음으로 움직일 포지션 지정
+        targetPosition = new Vector3(randomX, 2.5f, randomZ);
+
+        // 좌표를 미리 계산해보고 hit로 반환
+        // ((주의)) 매개변수 maxDistance 부분이 작아질 수록 연산량이 많아짐 -> 스택 오버플로우!! 
+        // 이를 방지하기 위해 NavMash를 좀 두껍게 처리함... (ㅠㅠ)
+        NavMesh.SamplePosition(targetPosition, out hit, 5f, 1);
+
+        // 디버그 찍었을 때 bake 된 영역이 아니면 x,y,z 좌표 전부 Infinity가 뜸!!!
+        Debug.Log("Hit = " + hit + " myNavHit.position = " + hit.position + " target = " + targetPosition);
+        // bake 된 영역 바깥이면 
+        if(hit.position.x == Mathf.Infinity || hit.position.z == Mathf.Infinity)
         {
-            // 0으로 초기화 해준다.
-            agent.stoppingDistance = 0f;
+            // 좌표를 새로 갱신 
+            UpdatePath();
         }
-        // 움직일 좌표를 nextPosition으로 할당
-        agent.destination = nextPosition;
+
+        targetPosition = hit.position;
+        Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
+
+        agent.destination = targetPosition;
         agent.speed = creature.patrolSpeed;
     }
     private void TrackingBehaviour()
     {
         // 다음 목표 좌표를 플레이어로 설정
-        nextPosition = player.transform.position;
+        targetPosition = player.transform.position;
 
         // 다음 목표로 이동
-        agent.destination = nextPosition;
+        agent.destination = targetPosition;
         // 트래킹 속도로 전환
         agent.speed = creature.trackingSpeed;
     }
@@ -255,9 +272,23 @@ public class CreatureMovement : MonoBehaviour
     private bool IsArrive()
     {
         // 다음 포지션과 크리쳐의 거리 계산
-        float distanceToWaypoint = Vector3.Distance(transform.position, nextPosition);
+        float distanceToWaypoint = Vector3.Distance(transform.position, targetPosition);
         // Debug.Log(distanceToWaypoint);
 
-        return distanceToWaypoint < 1f;
+        return distanceToWaypoint <= 2.6f;
+    }
+
+
+    public bool IsAgentOnNavMesh(Vector3 target)
+    {
+        NavMeshPath path = new NavMeshPath();
+        agent.CalculatePath(target, path);
+
+        if (!agent.pathPending)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

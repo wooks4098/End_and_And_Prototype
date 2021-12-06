@@ -148,13 +148,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0929e564d3660534f8f84e1760588a07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 1
+  hasTarget: 0
   creature:
-    isActive: 0
-    patrolRange: 10
-    patrolSpeed: 2
-    chaseRange: 4
-    chaseSpeed: 4
-    timeSinceListSawPlayer: 0
+    viewDistance: 10
+    patrolRange: 100
+    patrolSpeed: 10
+    trackingRange: 60
+    trackingSpeed: 20
+    attackRange: 20
     type: 0
+    state: 0
   player: {fileID: 0}
-  createPosition: {x: 0, y: 0, z: 0}
+  createPosition: {x: 324.2, y: 2.5, z: -333.6}
+  eyeTransform: {fileID: 0}
+  timeForWaitingPatrol: 5
+  timeSinceLastPatrol: 0

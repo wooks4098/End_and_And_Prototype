@@ -35,6 +35,6 @@ public enum CreatureType
 public enum CreatureState
 {
     Patrol = 0,
-    Chase,
+    Tracking,
     Attack,
 }
