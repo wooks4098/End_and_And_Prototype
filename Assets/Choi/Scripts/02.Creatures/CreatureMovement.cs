@@ -36,7 +36,7 @@ public class CreatureMovement : MonoBehaviour
     private Coroutine timeLastPatrolCoroutine;
 
     // path
-    NavMeshPath path;
+    // NavMeshPath path;
     private NavMeshHit hit;
 
     #region OnDrawGizmos
@@ -65,7 +65,7 @@ public class CreatureMovement : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        path = new NavMeshPath();
+        // path = new NavMeshPath();
     }
     private void Start()
     {
@@ -194,12 +194,12 @@ public class CreatureMovement : MonoBehaviour
         float randomZ = UnityEngine.Random.Range(createPosition.position.z - creature.patrolRange, createPosition.position.z + creature.patrolRange);
 
         // 다음으로 움직일 포지션 지정
-        targetPosition = new Vector3(randomX, 2.5f, randomZ);
+        targetPosition = new Vector3(randomX, transform.position, randomZ);
 
         // 좌표를 미리 계산해보고 hit로 반환
         // ((주의)) 매개변수 maxDistance 부분이 작아질 수록 연산량이 많아짐 -> 스택 오버플로우!! 
         // 이를 방지하기 위해 NavMash를 좀 두껍게 처리함... (ㅠㅠ)
-        NavMesh.SamplePosition(targetPosition, out hit, 5f, 1);
+        NavMesh.SamplePosition(targetPosition, out hit, 10f, 1);
 
         // 디버그 찍었을 때 bake 된 영역이 아니면 x,y,z 좌표 전부 Infinity가 뜸!!!
         Debug.Log("Hit = " + hit + " myNavHit.position = " + hit.position + " target = " + targetPosition);
