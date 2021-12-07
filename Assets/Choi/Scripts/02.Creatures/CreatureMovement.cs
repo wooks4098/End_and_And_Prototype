@@ -194,7 +194,7 @@ public class CreatureMovement : MonoBehaviour
         float randomZ = UnityEngine.Random.Range(createPosition.position.z - creature.patrolRange, createPosition.position.z + creature.patrolRange);
 
         // 다음으로 움직일 포지션 지정
-        targetPosition = new Vector3(randomX, transform.position, randomZ);
+        targetPosition = new Vector3(randomX, transform.position.y, randomZ);
 
         // 좌표를 미리 계산해보고 hit로 반환
         // ((주의)) 매개변수 maxDistance 부분이 작아질 수록 연산량이 많아짐 -> 스택 오버플로우!! 
