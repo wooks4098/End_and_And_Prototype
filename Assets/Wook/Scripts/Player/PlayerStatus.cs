@@ -11,6 +11,11 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] float hp;
     [SerializeField] float maxHp;
 
+    //목마름
+    [SerializeField] float thirst;
+    [SerializeField] float maxthirst;
+
+
     //포자
     [SerializeField] bool isspores; //포자에 중독중인지
     [SerializeField] float sporesdecreasefigure; //포자의 hp 감소수치 (초당 수치)
@@ -26,6 +31,14 @@ public class PlayerStatus : MonoBehaviour
         }
     }
 
+    public void Changethirst(float _changeThirst)
+    {
+        Mathf.Max(thirst + _changeThirst, 0, maxthirst);
+        if (hp <= 0)
+        {
+            //목마름 체력--
+        }
+    }
 
     #region 포자관련
 

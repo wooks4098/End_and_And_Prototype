@@ -13,7 +13,7 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] Slot[] ObjectItemSlots; //오브젝트 아이템 슬롯
     [SerializeField] Slot[] UseItemSlots; // 사용 아이템 (퀵슬롯 전용 아이템) 슬롯
-    [SerializeField] Item[] QuickSoltItem;//퀵슬롯에 들어갈 아이템
+    [SerializeField] string[] QuickSoltItem;//퀵슬롯에 들어갈 아이템
 
 
     [SerializeField] SlotSelect slotSelect;
@@ -21,6 +21,8 @@ public class Inventory : MonoBehaviour
     //test
     public Item i;
     public Item i2;
+    public Item i3;
+    public Item i4;
 
     private void Start()
     {
@@ -31,6 +33,8 @@ public class Inventory : MonoBehaviour
         SetInput();
         //test Item추가
         AcquireItem(i2);
+        AcquireItem(i3);
+        AcquireItem(i4);
 
     }
 
@@ -111,6 +115,15 @@ public class Inventory : MonoBehaviour
     void AddItemToInventorySlot(Slot[] slots, Item _item, int _Count = 1)
     {
         //해당 아이템이 있는 경우
+        if(!AddItemisNotNall(slots, _item, _Count))
+            //해당 아이템이 없는 경우
+            AdditemNull(slots, _item, _Count);
+
+    }
+
+    //아이템 추가 해당 아이템이 있는경우 | 아이템이 있는경우 true반환
+    bool AddItemisNotNall(Slot[] slots, Item _item, int _Count = 1)
+    {
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].item != null)
@@ -118,11 +131,16 @@ public class Inventory : MonoBehaviour
                 if (slots[i].item.ItemName == _item.ItemName)
                 {
                     slots[i].SetSoltCount(_Count);
-                    return;
+                    return true;
                 }
             }
         }
-        //해당 아이템이 없는 경우
+        return false;
+    }
+
+    //아이템 추가 해당 아이템이 없는경우
+    void AdditemNull(Slot[] slots, Item _item, int _Count = 1)
+    {
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].item == null)
@@ -138,15 +156,32 @@ public class Inventory : MonoBehaviour
     {
         switch (_item.ItemName)
         {
-            //case QuickSoltItem[0].ItemName:
-            case "":
+            case "음식":
+                AddQuickItem(slots[0], _item, _Count);
                 break;
-           // case QuickSoltItem[1].ItemName:
-            case QuickSoltItem[1].ItemName:
+            case "물":
+                AddQuickItem(slots[1], _item, _Count);
                 break;
-            //case QuickSoltItem[2].ItemName:
-            case QuickSoltItem[2].ItemName:
+            case "백신":
+                AddQuickItem(slots[2], _item, _Count);
                 break;
+        }
+    }
+
+    void AddQuickItem(Slot slot, Item _item, int _Count = 1)
+    {
+        if(slot.item != null)
+        {
+            if (slot.item.ItemName == _item.ItemName)
+            {
+                slot.SetSoltCount(_Count);
+                return;
+            }
+        }
+        if (slot.item == null)
+        {
+            slot.AddItem(_item, _Count);
+            return;
         }
     }
     #endregion

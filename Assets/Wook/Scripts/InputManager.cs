@@ -26,12 +26,9 @@ public class InputManager : MonoBehaviour, IInput
     public Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }
     public Action OnInventoryOpenPlayer1 { get; set; }
     public Action OnInventoryOpenPlayer2 { get; set; }
-  public Action OnQuickSolt1Player1 { get; set; }
-  public Action OnQuickSolt1Player2 { get; set; }
-  public Action OnQuickSolt2Player1 { get; set; }
-  public Action OnQuickSolt2Player2 { get; set; }
-  public Action OnQuickSolt3Player1 { get; set; }
-  public Action OnQuickSolt3Player2 { get; set; }
+  public Action<int> OnQuickSoltPlayer1 { get; set; }
+  public Action<int> OnQuickSoltPlayer2 { get; set; }
+
    #endregion
 
     //플레이어 컨트롤러
@@ -62,7 +59,7 @@ public class InputManager : MonoBehaviour, IInput
         OnRun();
         OnUse();
         OnOpenInventory();
-
+        OnQuickSolt();
 
     }
 
@@ -208,37 +205,23 @@ public class InputManager : MonoBehaviour, IInput
             OnInventoryOpenPlayer2?.Invoke();
     }
 
-    void OnQuickSolt1()
+    void OnQuickSolt()
     {
         //플레이어1
         if (Input.GetKeyDown(KeyCode.Alpha1))
-            OnQuickSolt1Player1!.Invoke();
+            OnQuickSoltPlayer1!.Invoke(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            OnQuickSoltPlayer1!.Invoke(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            OnQuickSoltPlayer1!.Invoke(2);
 
         //플레이어2
         if (Input.GetKeyDown(KeyCode.Keypad7))
-            OnQuickSolt1Player2!.Invoke();
-    }
-
-    void OnQuickSolt2()
-    {        //플레이어1
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-            OnQuickSolt2Player1!.Invoke();
-
-        //플레이어2
+            OnQuickSoltPlayer2!.Invoke(0);
         if (Input.GetKeyDown(KeyCode.Keypad8))
-            OnQuickSolt2Player2!.Invoke();
-    }
-
-    void OnQuickSolt3()
-    {
-        //플레이어1
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-            OnQuickSolt3Player1!.Invoke();
-
-        //플레이어2
+            OnQuickSoltPlayer2!.Invoke(1);
         if (Input.GetKeyDown(KeyCode.Keypad9))
-            OnQuickSolt3Player2!.Invoke();
+            OnQuickSoltPlayer2!.Invoke(2);
     }
-
     #endregion
 }
