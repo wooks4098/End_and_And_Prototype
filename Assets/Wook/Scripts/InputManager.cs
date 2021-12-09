@@ -26,7 +26,13 @@ public class InputManager : MonoBehaviour, IInput
     public Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }
     public Action OnInventoryOpenPlayer1 { get; set; }
     public Action OnInventoryOpenPlayer2 { get; set; }
-    #endregion
+  public Action OnQuickSolt1Player1 { get; set; }
+  public Action OnQuickSolt1Player2 { get; set; }
+  public Action OnQuickSolt2Player1 { get; set; }
+  public Action OnQuickSolt2Player2 { get; set; }
+  public Action OnQuickSolt3Player1 { get; set; }
+  public Action OnQuickSolt3Player2 { get; set; }
+   #endregion
 
     //플레이어 컨트롤러
     [SerializeField] PlayerController player1;
@@ -56,7 +62,11 @@ public class InputManager : MonoBehaviour, IInput
         OnRun();
         OnUse();
         OnOpenInventory();
+
+
     }
+
+    #region Move
 
     void OnForntBack()
     {
@@ -167,6 +177,10 @@ public class InputManager : MonoBehaviour, IInput
             OnRunPlayer2?.Invoke(false);
     }
 
+    #endregion
+
+
+    #region Use
     void OnUse()
     {
         //플레이어1
@@ -179,6 +193,10 @@ public class InputManager : MonoBehaviour, IInput
 
     }
 
+    #endregion 
+
+    #region Inventory
+
     void OnOpenInventory()
     {
         //플레이어1
@@ -189,4 +207,38 @@ public class InputManager : MonoBehaviour, IInput
         if (Input.GetKeyDown(KeyCode.Keypad4))
             OnInventoryOpenPlayer2?.Invoke();
     }
+
+    void OnQuickSolt1()
+    {
+        //플레이어1
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            OnQuickSolt1Player1!.Invoke();
+
+        //플레이어2
+        if (Input.GetKeyDown(KeyCode.Keypad7))
+            OnQuickSolt1Player2!.Invoke();
+    }
+
+    void OnQuickSolt2()
+    {        //플레이어1
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            OnQuickSolt2Player1!.Invoke();
+
+        //플레이어2
+        if (Input.GetKeyDown(KeyCode.Keypad8))
+            OnQuickSolt2Player2!.Invoke();
+    }
+
+    void OnQuickSolt3()
+    {
+        //플레이어1
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            OnQuickSolt3Player1!.Invoke();
+
+        //플레이어2
+        if (Input.GetKeyDown(KeyCode.Keypad9))
+            OnQuickSolt3Player2!.Invoke();
+    }
+
+    #endregion
 }

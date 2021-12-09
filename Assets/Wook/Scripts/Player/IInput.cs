@@ -35,4 +35,11 @@ public interface IInput
     Action OnInventoryOpenPlayer1 { get; set; } 
     Action OnInventoryOpenPlayer2 { get; set; } 
 
+    //아이템 사용 키
+   Action OnQuickSolt1Player1 { get; set; }
+   Action OnQuickSolt1Player2 { get; set; }
+   Action OnQuickSolt2Player1 { get; set; }
+   Action OnQuickSolt2Player2 { get; set; }
+   Action OnQuickSolt3Player1 { get; set; }
+   Action OnQuickSolt3Player2 { get; set; }
 }

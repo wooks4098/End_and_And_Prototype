@@ -13,6 +13,8 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] Slot[] ObjectItemSlots; //오브젝트 아이템 슬롯
     [SerializeField] Slot[] UseItemSlots; // 사용 아이템 (퀵슬롯 전용 아이템) 슬롯
+    [SerializeField] Item[] QuickSoltItem;//퀵슬롯에 들어갈 아이템
+
 
     [SerializeField] SlotSelect slotSelect;
     ItemGet itemget;
@@ -55,6 +57,7 @@ public class Inventory : MonoBehaviour
 
     }
 
+
     //인벤토리 아이템 선택 색상 변경
     public void SlotSelectColorChange(int SlotNum,Color color)
     {
@@ -93,10 +96,10 @@ public class Inventory : MonoBehaviour
         switch (_item.itemType)
         {
             case ItemType.ObjectItem:
-                AddItemToSlot(ObjectItemSlots, _item, _Count);
+                AddItemToInventorySlot(ObjectItemSlots, _item, _Count);
                 break;
             case ItemType.UseItem:
-                AddItemToSlot(UseItemSlots, _item, _Count);
+                AddItemToInventorySlot(UseItemSlots, _item, _Count);
                 break;
             default:
                 Debug.Log("아이템 타입이 정해져 있지 않은 아이템입니다");
@@ -104,8 +107,8 @@ public class Inventory : MonoBehaviour
         }
         
     }
-    //획득한 아이템 슬롯에 추가
-    void AddItemToSlot(Slot[] slots, Item _item, int _Count = 1)
+    //획득한 아이템 슬롯에 추가 (인벤토리용)
+    void AddItemToInventorySlot(Slot[] slots, Item _item, int _Count = 1)
     {
         //해당 아이템이 있는 경우
         for (int i = 0; i < slots.Length; i++)
@@ -127,6 +130,23 @@ public class Inventory : MonoBehaviour
                 slots[i].AddItem(_item, _Count);
                 return;
             }
+        }
+    }
+
+    //획득한 아이템 슬롯에 추가 (퀵슬롯용)
+    void AddItemToQuickSlot(Slot[] slots, Item _item, int _Count = 1)
+    {
+        switch (_item.ItemName)
+        {
+            //case QuickSoltItem[0].ItemName:
+            case "":
+                break;
+           // case QuickSoltItem[1].ItemName:
+            case QuickSoltItem[1].ItemName:
+                break;
+            //case QuickSoltItem[2].ItemName:
+            case QuickSoltItem[2].ItemName:
+                break;
         }
     }
     #endregion
