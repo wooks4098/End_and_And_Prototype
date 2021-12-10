@@ -16,3 +16,5 @@ MonoBehaviour:
   itemType: 1
   itemSprite: {fileID: 21300000, guid: b915a7ee8a2712a43a9ed2e24541c454, type: 3}
   itemInfo: "\uBA39\uC73C\uBA74 \uCCB4\uB825\uC774 \uCC2C\uB2E4"
+  itemUseEffect: 1
+  UseItemFigure: 10

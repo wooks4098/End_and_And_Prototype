@@ -16,3 +16,5 @@ MonoBehaviour:
   itemType: 1
   itemSprite: {fileID: 21300000, guid: 192c75ec989012747a20619736c041b5, type: 3}
   itemInfo: 
+  itemUseEffect: 3
+  UseItemFigure: 10

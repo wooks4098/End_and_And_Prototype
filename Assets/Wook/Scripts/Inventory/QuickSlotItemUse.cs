@@ -35,11 +35,31 @@ public class QuickSlotItemUse : MonoBehaviour
 
     void UseItem(int _slotNumber)
     {
+        UseEffect(solts[_slotNumber].item);
         solts[_slotNumber].SetSoltCount(-1);
         
         //추가할것
         //사용효과
         //쿨타임
+    }
+
+    //아이템 사용 효과
+    void UseEffect(Item _item)
+    {
+        switch(_item.itemUseEffect)
+        {
+            case ItemUseEffect.HpUp:
+                playerStatus.ChangeHp(_item.UseItemFigure);
+                Debug.Log("체력회복");
+                break;
+            case ItemUseEffect.ThirstyUp:
+                playerStatus.Changethirst(_item.UseItemFigure);
+                Debug.Log("목마름 회복");
+                break;
+            case ItemUseEffect.InfectionRateDown:
+                Debug.Log("감염율 하락");
+                break;
+        }
     }
 
 }
