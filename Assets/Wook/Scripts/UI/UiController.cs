@@ -15,6 +15,12 @@ enum SliderDirection
 public class UiController : MonoBehaviour
 {
     [SerializeField] PlayerType playerType;
+
+    //StatusUI
+    [SerializeField] Slider HpSlider; //Hp 슬라이더
+    [SerializeField] Slider ThirstyWallSlider; //Thirsty 슬라이더
+
+
     //오브젝트 UI용
     public Camera camera; //플레이어 카메라
     public RectTransform Canvas; //canvas recttransfrom
@@ -36,6 +42,22 @@ public class UiController : MonoBehaviour
     [SerializeField] float sliderRopeHoldSpeed; //슬라이더 속도
     [SerializeField] float sliderRopeHoldAddValue; //슬라이더 증가값
 
+    #region Status
+
+    public void ChangeHpSlider()
+    {
+
+    }
+
+
+    //Status슬라이더 값 변경
+    IEnumerator StatusSliderValueChange()
+    {
+        yield return null;
+    }
+
+
+    #endregion
 
     #region ClimbWall
 
