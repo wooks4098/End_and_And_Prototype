@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class PlayerStatus : MonoBehaviour
 {
+    [SerializeField] PlayerType playerType;
     //체력
     [SerializeField] float hp;
     [SerializeField] float maxHp;
@@ -21,12 +22,11 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] float sporesdecreasefigure; //포자의 hp 감소수치 (초당 수치)
 
 
-
     public void ChangeHp(float _changeHp)
     {
-        Mathf.Max(hp + _changeHp, 0, maxHp);
-        
-        if(hp <= 0)
+        hp = Mathf.Clamp((hp + _changeHp), 0, maxHp);
+        UIManager.Instance.ChangeHpUi(playerType, hp);
+        if (hp <= 0)
         {
             //죽음
         }

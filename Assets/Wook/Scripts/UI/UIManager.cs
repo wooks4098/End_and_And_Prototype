@@ -22,6 +22,25 @@ public class UIManager : MonoBehaviour
     [SerializeField] UiController P1UI;
     [SerializeField] UiController P2UI;
 
+
+    #region Status 
+
+    public void ChangeHpUi(PlayerType PlayerType, float _hp)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.ChangeHpUi(_hp);
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.ChangeHpUi(_hp);
+                break;
+        }
+    }
+
+
+    #endregion
+
     #region ClimbWall
 
     public void StartClimbWall(PlayerType PlayerType)
@@ -106,6 +125,9 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+
+    #region ObjectUI
+
     public void ObjectUIShow(PlayerType PlayerType)
     {
         switch(PlayerType)
@@ -144,4 +166,6 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
+
+    #endregion
 }

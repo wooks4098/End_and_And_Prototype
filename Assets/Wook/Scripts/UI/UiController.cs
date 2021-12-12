@@ -48,10 +48,10 @@ public class UiController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.L))
-            ChangeHpUi(70);
-        if (Input.GetKeyDown(KeyCode.K))
-            ChangeHpUi(40);
+        //if (Input.GetKeyDown(KeyCode.L))
+        //    ChangeHpUi(70);
+        //if (Input.GetKeyDown(KeyCode.K))
+        //    ChangeHpUi(40);
     }
     public void ChangeHpUi(float _hp)
     { //_hp : 변경된 체력
