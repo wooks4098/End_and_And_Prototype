@@ -15,16 +15,17 @@ enum SliderDirection
 public class UiController : MonoBehaviour
 {
     [SerializeField] PlayerType playerType;
-
-    //StatusUI
-    [SerializeField] Slider HpSlider; //Hp 슬라이더
-    [SerializeField] Slider ThirstyWallSlider; //Thirsty 슬라이더
-
-
     //오브젝트 UI용
     public Camera camera; //플레이어 카메라
     public RectTransform Canvas; //canvas recttransfrom
     public RectTransform image; //이미지 위치
+
+    //StatusUI
+    [Space][Space]
+    [SerializeField] Slider HpSlider; //Hp 슬라이더
+    [SerializeField] Text HpText;
+    [SerializeField] Slider ThirstyWallSlider; //Thirsty 슬라이더
+
 
     //Climb Wall Move UI
     [Space] [Space]
@@ -44,16 +45,38 @@ public class UiController : MonoBehaviour
 
     #region Status
 
-    public void ChangeHpSlider()
-    {
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+            ChangeHpUi(70);
+        if (Input.GetKeyDown(KeyCode.K))
+            ChangeHpUi(40);
+    }
+    public void ChangeHpUi(float _hp)
+    { //_hp : 변경된 체력
+
+        HpText.text = _hp.ToString() + "%";
+
+        StartCoroutine(StatusSliderValueChange(HpSlider, _hp));
     }
 
 
     //Status슬라이더 값 변경
-    IEnumerator StatusSliderValueChange()
+    IEnumerator StatusSliderValueChange(Slider _slider, float _ReslutValue)
     {
-        yield return null;
+        float FalltimeCheck = 0;
+        float Falltime = 0.5f;
+        float SliderValue = _slider.value;
+        float ChangeValue;
+        while (FalltimeCheck <= Falltime)
+        {
+            FalltimeCheck += Time.deltaTime;
+
+            ChangeValue = Mathf.Lerp(SliderValue, _ReslutValue, FalltimeCheck / Falltime);
+            _slider.value += ChangeValue - _slider.value;
+            yield return null;
+        }
     }
 
 

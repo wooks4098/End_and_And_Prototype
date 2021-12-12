@@ -25,6 +25,7 @@ public class PlayerStatus : MonoBehaviour
     public void ChangeHp(float _changeHp)
     {
         Mathf.Max(hp + _changeHp, 0, maxHp);
+        
         if(hp <= 0)
         {
             //Á×À½
