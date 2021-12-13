@@ -72,7 +72,7 @@ public class CreatureMovement : MonoBehaviour
             agent.enabled = true;
         }
 
-        // createPosition = CreaturePool.GetInstance().GetCreatePosition();
+        createPosition = CreaturePool.GetInstance().GetCreatePosition();
         transform.position = createPosition.position;
 
         creature.state = CreatureState.Patrol;
@@ -317,7 +317,7 @@ public class CreatureMovement : MonoBehaviour
         }
 
         targetPosition = hit.position;
-        //Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
+        Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
 
         agent.destination = targetPosition;
         agent.speed = creature.patrolSpeed;
