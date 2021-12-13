@@ -67,7 +67,10 @@ public class CreatureMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        //agent.enabled = true;
+        if(!agent.enabled)
+        {
+            agent.enabled = true;
+        }
 
         // createPosition = CreaturePool.GetInstance().GetCreatePosition();
         transform.position = createPosition.position;
@@ -147,9 +150,13 @@ public class CreatureMovement : MonoBehaviour
             if(activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
                 && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead())
             {
+
+                // 만약 임시 타겟이 비어있지 않고 (-> 임시 타겟이 비어있지 않을 때만 비교)
+                // 임시 타겟의 점수와 새롭게 비교하는 타겟의 점수를 비교
                 if (tempTarget != null
                     && tempTarget.score > activeCollider.gameObject.GetComponent<CreaturePlayer>().score)
                 {
+                    // 임시 타겟 쪽의 점수가 크면 계속 (continue)
                     continue;
                 }
                 else
@@ -186,6 +193,7 @@ public class CreatureMovement : MonoBehaviour
                 AttackBehaviour();
                 break;
             default:
+                PatrolBehaviour();
                 break;
         }
     }
@@ -216,6 +224,9 @@ public class CreatureMovement : MonoBehaviour
     {
         while (true)
         {
+            // 임시 타겟이 생기는 순간 루프를 빠져나감
+            if (tempTarget != null) break;
+
             // 마지막으로 패트롤한지
             timeSinceLastPatrol += Time.deltaTime;
 
@@ -319,9 +330,13 @@ public class CreatureMovement : MonoBehaviour
             StopCoroutine(waitNextPatrolCoroutine);
         }
 
-        if(timeLastPatrolCoroutine == null)
+        // 임시 타겟이 비어있을 때만 코루틴 실행
+        if(tempTarget == null)
         {
-            timeLastPatrolCoroutine = StartCoroutine(TimeLastPatrol());
+            if (timeLastPatrolCoroutine == null)
+            {
+                timeLastPatrolCoroutine = StartCoroutine(TimeLastPatrol());
+            }
         }
 
         // 다음 목표 좌표를 플레이어로 설정
