@@ -15,7 +15,8 @@ public class CreatureMovement : MonoBehaviour
     [SerializeField] Creature creature;
     private NavMeshAgent agent;
 
-    [SerializeField] CreaturePlayer targetCharacter;
+    [SerializeField] CreaturePlayer targetCharacter; // 실제 타겟
+    [SerializeField] CreaturePlayer tempTarget; // 임시로 저장할 타겟
 
     [SerializeField] Transform createPosition;
     private Vector3 targetPosition;
@@ -32,8 +33,8 @@ public class CreatureMovement : MonoBehaviour
     // 마지막으로 플레이어를 본 시간
     private float timeSinceLastSawPlayer = 0f;
 
-    private Coroutine waitNextPatrolCoroutine;
-    private Coroutine timeLastPatrolCoroutine;
+    private Coroutine waitNextPatrolCoroutine; // 다음 패트롤을 기다리는 코루틴
+    private Coroutine timeLastPatrolCoroutine; // 마지막으로 패트롤한 시간을 재는 코루틴 -> 적 추격 상태를 빠져나올 때 사용
 
     // path
     // NavMeshPath path;
@@ -68,7 +69,7 @@ public class CreatureMovement : MonoBehaviour
     {
         //agent.enabled = true;
 
-        createPosition = CreaturePool.GetInstance().GetCreatePosition();
+        // createPosition = CreaturePool.GetInstance().GetCreatePosition();
         transform.position = createPosition.position;
 
         creature.state = CreatureState.Patrol;
@@ -144,17 +145,29 @@ public class CreatureMovement : MonoBehaviour
         {
             // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 태그가 플레이어이고 3. 죽지않은 것만
             if(activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
-                && activeCollider.gameObject.CompareTag("Player")
                 && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead())
             {
-                targetCharacter = activeCollider.gameObject.GetComponent<CreaturePlayer>();
-                hasTarget = true;
+                if (tempTarget != null
+                    && tempTarget.score > activeCollider.gameObject.GetComponent<CreaturePlayer>().score)
+                {
+                    continue;
+                }
+                else
+                {
+                    // 임시타겟 지정
+                    tempTarget = activeCollider.gameObject.GetComponent<CreaturePlayer>();
+                }
+
+                // 타겟 지정
+                targetCharacter = tempTarget;
+
+                hasTarget = true;                
             }
 
             else
             {
-                targetCharacter = null;
-                hasTarget = false;
+                // 임시타겟을 비운다
+                tempTarget = null;
             }
         }        
     }
@@ -189,13 +202,16 @@ public class CreatureMovement : MonoBehaviour
             timeSinceLastPatrol = 0f;
 
             if (waitNextPatrolCoroutine == null)
-            {
-                
+            {                
                 waitNextPatrolCoroutine = StartCoroutine(WaitNextPatrol());
             }
         }
     }
 
+    /// <summary>
+    /// 패트롤 시간이 얼마나 지났는지를 재는 코루틴
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator TimeLastPatrol()
     {
         while (true)
@@ -205,13 +221,27 @@ public class CreatureMovement : MonoBehaviour
 
             yield return new WaitForFixedUpdate();
 
-            // 3초를 초과하면
+            // 10초를 초과하면
             if (timeSinceLastPatrol > 10f)
             {
-                // 새로운 좌표를 지정하고
-                UpdatePath();
-                // 빠져나간다
-                break;
+                // 타겟을 찾아본다
+                FindTargetCharacter();
+
+                // 임시 타겟이 없으면
+                if(tempTarget == null)
+                {
+                    // 1. 타겟을 없음으로 표시
+                    hasTarget = false;
+
+                    // 2. 실제 타겟을 비우고
+                    targetCharacter = null;
+
+                    // 3. 새로운 좌표를 지정
+                    UpdatePath();
+
+                    // 빠져나간다
+                    break;
+                }
             }
         }
 
@@ -221,6 +251,10 @@ public class CreatureMovement : MonoBehaviour
         timeLastPatrolCoroutine = null;
     }
 
+    /// <summary>
+    /// 다음 패트롤 좌표를 찾기까지 시간을 재는 코루틴
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator WaitNextPatrol()
     {
         while (true)
@@ -242,8 +276,6 @@ public class CreatureMovement : MonoBehaviour
         // 코루틴 비우기
         waitNextPatrolCoroutine = null;
     }
-
-
 
     /// <summary>
     /// 좌표를 갱신하는 메서드
@@ -281,6 +313,17 @@ public class CreatureMovement : MonoBehaviour
     }
     private void TrackingBehaviour()
     {
+        // 코루틴 진행중이면 강제로 코루틴 멈춤
+        if (waitNextPatrolCoroutine != null)
+        {
+            StopCoroutine(waitNextPatrolCoroutine);
+        }
+
+        if(timeLastPatrolCoroutine == null)
+        {
+            timeLastPatrolCoroutine = StartCoroutine(TimeLastPatrol());
+        }
+
         // 다음 목표 좌표를 플레이어로 설정
         targetPosition = targetCharacter.transform.position;
 
