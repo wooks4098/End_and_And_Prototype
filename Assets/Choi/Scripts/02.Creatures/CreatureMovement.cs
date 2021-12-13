@@ -15,13 +15,13 @@ public class CreatureMovement : MonoBehaviour
     [SerializeField] Creature creature;
     private NavMeshAgent agent;
 
-    [SerializeField] CreaturePlayer player;
+    [SerializeField] CreaturePlayer targetCharacter;
 
     [SerializeField] Transform createPosition;
     private Vector3 targetPosition;
 
     // 적을 감지할 시야의 기준점 (영역 내에서 감지)
-    public Transform eyeTransform;
+    // public Transform eyeTransform;
 
     // 패트롤 끝난 후 대기 시간
     [SerializeField] float timeForWaitingPatrol = 5f;
@@ -62,6 +62,34 @@ public class CreatureMovement : MonoBehaviour
 
     #endregion
 
+    #region OnEnable, OnDisable
+
+    private void OnEnable()
+    {
+        //agent.enabled = true;
+
+        createPosition = CreaturePool.GetInstance().GetCreatePosition();
+        transform.position = createPosition.position;
+
+        creature.state = CreatureState.Patrol;
+        timeForWaitingPatrol = 5f;
+
+        //currentPosition = 
+
+        targetPosition = createPosition.position;
+
+        agent.destination = targetPosition;
+        agent.speed = creature.patrolSpeed;
+    }
+
+    private void OnDisable()
+    {
+        
+    }
+
+    #endregion
+
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -69,8 +97,6 @@ public class CreatureMovement : MonoBehaviour
     }
     private void Start()
     {
-        targetPosition = createPosition.position;
-
         // agent.stoppingDistance를 이용하면 어느 정도 거리에서 멈출지 설정할 수 있다.
         // agent.stoppingDistance = creature.attackDistance;
 
@@ -79,15 +105,20 @@ public class CreatureMovement : MonoBehaviour
 
     private void Update()
     {
-        // 공격 범위에 들어오면
-        if (IsInAttackRange())
+        FindTargetCharacter();
+
+        if (hasTarget)
         {
-            creature.state = CreatureState.Attack;
-        }
-        // 트래킹 범위에 들어오면
-        else if (IsInTrackingRange())
-        {
-            creature.state = CreatureState.Tracking;
+            // 공격 범위에 들어오면
+            if (IsInAttackRange())
+            {
+                creature.state = CreatureState.Attack;
+            }
+            // 트래킹 범위에 들어오면
+            else if (IsInTrackingRange())
+            {
+                creature.state = CreatureState.Tracking;
+            }
         }
         else
         {
@@ -95,6 +126,37 @@ public class CreatureMovement : MonoBehaviour
         }
 
         DecisionBehaviour(creature.state);
+    }
+
+    /// <summary>
+    ///  타겟 캐릭터 설정
+    /// </summary>
+    private void FindTargetCharacter()
+    {
+        Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.trackingRange);
+
+        //if(hitCollider.Length != 0)
+        //{
+        //    Debug.Log("뭔가 찾았습니다!");
+        //}
+
+        foreach (var activeCollider in hitCollider)
+        {
+            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 태그가 플레이어이고 3. 죽지않은 것만
+            if(activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
+                && activeCollider.gameObject.CompareTag("Player")
+                && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead())
+            {
+                targetCharacter = activeCollider.gameObject.GetComponent<CreaturePlayer>();
+                hasTarget = true;
+            }
+
+            else
+            {
+                targetCharacter = null;
+                hasTarget = false;
+            }
+        }        
     }
 
     private void DecisionBehaviour(CreatureState _state)
@@ -111,7 +173,6 @@ public class CreatureMovement : MonoBehaviour
                 AttackBehaviour();
                 break;
             default:
-                PatrolBehaviour();
                 break;
         }
     }
@@ -177,17 +238,18 @@ public class CreatureMovement : MonoBehaviour
             }
         }
         // 시간을 5로
-        timeForWaitingPatrol = 1f;
+        timeForWaitingPatrol = 2f;
         // 코루틴 비우기
         waitNextPatrolCoroutine = null;
     }
+
+
 
     /// <summary>
     /// 좌표를 갱신하는 메서드
     /// </summary>
     private void UpdatePath()
-    {
-
+    {       
         // 랜덤 X, Z 좌표 생성 - CreatePosition을 중심으로
         // createPosition - creature.patrolRange => (생성 포지션 - 크리쳐 패트롤 범위)        
         float randomX = UnityEngine.Random.Range(createPosition.position.x - creature.patrolRange, createPosition.position.x + creature.patrolRange);
@@ -202,7 +264,8 @@ public class CreatureMovement : MonoBehaviour
         NavMesh.SamplePosition(targetPosition, out hit, 10f, 1);
 
         // 디버그 찍었을 때 bake 된 영역이 아니면 x,y,z 좌표 전부 Infinity가 뜸!!!
-        Debug.Log("Hit = " + hit + " myNavHit.position = " + hit.position + " target = " + targetPosition);
+        //Debug.Log("Hit = " + hit + " myNavHit.position = " + hit.position + " target = " + targetPosition);
+
         // bake 된 영역 바깥이면 
         if(hit.position.x == Mathf.Infinity || hit.position.z == Mathf.Infinity)
         {
@@ -211,7 +274,7 @@ public class CreatureMovement : MonoBehaviour
         }
 
         targetPosition = hit.position;
-        Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
+        //Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
 
         agent.destination = targetPosition;
         agent.speed = creature.patrolSpeed;
@@ -219,7 +282,7 @@ public class CreatureMovement : MonoBehaviour
     private void TrackingBehaviour()
     {
         // 다음 목표 좌표를 플레이어로 설정
-        targetPosition = player.transform.position;
+        targetPosition = targetCharacter.transform.position;
 
         // 다음 목표로 이동
         agent.destination = targetPosition;
@@ -233,7 +296,7 @@ public class CreatureMovement : MonoBehaviour
     private void AttackBehaviour()
     {
         // 플레이어를 바라보고
-        transform.LookAt(player.transform);
+        transform.LookAt(targetCharacter.transform);
         agent.velocity = Vector3.zero;
 
         // 공격한다
@@ -245,8 +308,10 @@ public class CreatureMovement : MonoBehaviour
     /// </summary>
     private bool IsInAttackRange()
     {
+        if (targetCharacter == null) return false;
+
         // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
+        float distanceToPlayer = Vector3.Distance(targetCharacter.transform.position, transform.position);
         //Debug.Log(distanceToPlayer);
 
         // 비교한 값이 attack 범위보다 적으면 true
@@ -258,8 +323,10 @@ public class CreatureMovement : MonoBehaviour
     /// </summary>
     private bool IsInTrackingRange()
     {
+        if (targetCharacter == null) return false;
+
         // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(player.transform.position, transform.position);
+        float distanceToPlayer = Vector3.Distance(targetCharacter.transform.position, transform.position);
         // Debug.Log(distanceToPlayer);
 
         // 비교한 값이 tracking 범위보다 적으면 true
@@ -276,19 +343,5 @@ public class CreatureMovement : MonoBehaviour
         // Debug.Log(distanceToWaypoint);
 
         return distanceToWaypoint <= 2.6f;
-    }
-
-
-    public bool IsAgentOnNavMesh(Vector3 target)
-    {
-        NavMeshPath path = new NavMeshPath();
-        agent.CalculatePath(target, path);
-
-        if (!agent.pathPending)
-        {
-            return false;
-        }
-
-        return true;
     }
 }
