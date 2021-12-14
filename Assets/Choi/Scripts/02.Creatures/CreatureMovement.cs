@@ -9,6 +9,8 @@ using UnityEngine.AI;
 /// </summary>
 public class CreatureMovement : MonoBehaviour
 {
+    [SerializeField] Animator animator;
+
     [SerializeField] bool isActive;
     [SerializeField] bool hasTarget;
 
@@ -72,7 +74,7 @@ public class CreatureMovement : MonoBehaviour
             agent.enabled = true;
         }
 
-        createPosition = CreaturePool.GetInstance().GetCreatePosition();
+        //createPosition = CreaturePool.GetInstance().GetCreatePosition();
         transform.position = createPosition.position;
 
         creature.state = CreatureState.Patrol;
@@ -96,7 +98,9 @@ public class CreatureMovement : MonoBehaviour
 
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+
         // path = new NavMeshPath();
     }
     private void Start()
@@ -146,9 +150,10 @@ public class CreatureMovement : MonoBehaviour
 
         foreach (var activeCollider in hitCollider)
         {
-            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 태그가 플레이어이고 3. 죽지않은 것만
+            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
             if(activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
-                && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead())
+                && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead()
+                && activeCollider.gameObject.activeSelf)
             {
 
                 // 만약 임시 타겟이 비어있지 않고 (-> 임시 타겟이 비어있지 않을 때만 비교)
@@ -203,9 +208,17 @@ public class CreatureMovement : MonoBehaviour
     /// </summary>
     private void PatrolBehaviour()
     {
+        // 애니메이션
+        animator.SetFloat("Speed", 0.1f);
+
         // 지정한 도착했는지
         if (IsArrive())
         {
+            // 도착했으면 1. 애니메이션 Idle로
+            animator.SetFloat("Speed", 0.0f);
+            // 2. 멈춤
+            agent.velocity = Vector3.zero;
+
             // 마지막 패트롤 시간 0으로 초기화
             timeSinceLastPatrol = 0f;
 
@@ -307,7 +320,7 @@ public class CreatureMovement : MonoBehaviour
         NavMesh.SamplePosition(targetPosition, out hit, 10f, 1);
 
         // 디버그 찍었을 때 bake 된 영역이 아니면 x,y,z 좌표 전부 Infinity가 뜸!!!
-        //Debug.Log("Hit = " + hit + " myNavHit.position = " + hit.position + " target = " + targetPosition);
+        Debug.Log("Hit = " + hit + " myNavHit.position = " + hit.position + " target = " + targetPosition);
 
         // bake 된 영역 바깥이면 
         if(hit.position.x == Mathf.Infinity || hit.position.z == Mathf.Infinity)
@@ -317,7 +330,11 @@ public class CreatureMovement : MonoBehaviour
         }
 
         targetPosition = hit.position;
-        Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
+        // Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
+
+        // agent.enabled = false;
+        // transform.LookAt(targetPosition);
+        // agent.enabled = true;
 
         agent.destination = targetPosition;
         agent.speed = creature.patrolSpeed;
@@ -339,6 +356,10 @@ public class CreatureMovement : MonoBehaviour
             }
         }
 
+
+        // 애니메이션
+        animator.SetFloat("Speed", 0.6f);
+
         // 다음 목표 좌표를 플레이어로 설정
         targetPosition = targetCharacter.transform.position;
 
@@ -356,6 +377,9 @@ public class CreatureMovement : MonoBehaviour
         // 플레이어를 바라보고
         transform.LookAt(targetCharacter.transform);
         agent.velocity = Vector3.zero;
+
+        // 애니메이터
+        animator.SetBool("Attack", true);
 
         // 공격한다
         Debug.Log("AttackBehaviour()");
@@ -401,5 +425,14 @@ public class CreatureMovement : MonoBehaviour
         // Debug.Log(distanceToWaypoint);
 
         return distanceToWaypoint <= 2.6f;
+    }
+
+
+    /// <summary>
+    /// 애니메이션 빠져나가기
+    /// </summary>
+    public void ExitAttack()
+    {
+        animator.SetBool("Attack", false);
     }
 }
