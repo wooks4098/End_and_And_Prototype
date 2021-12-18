@@ -11,7 +11,7 @@ public class ObjectUIShow : MonoBehaviour
     [SerializeField] PlayerType playerType;
     [SerializeField] Transform ObjectUiPos;
     [SerializeField] bool CanUse = false;// 오브젝트 사용가능한지
-
+    [SerializeField] string objectText;
 
     public bool GetCanUse()
     {
@@ -31,7 +31,7 @@ public class ObjectUIShow : MonoBehaviour
                 if (other.tag == "Player1")
                 {
                     CanUse = true;
-                    GameManager.Instance.PlayerObjectHitin(PlayerType.FirstPlayer);
+                    GameManager.Instance.PlayerObjectHitin(PlayerType.FirstPlayer, objectText);
                     //UIManager.Instance.ObjectUIShow(PlayerType.FirstPlayer);
                 }
                 break;
@@ -39,7 +39,7 @@ public class ObjectUIShow : MonoBehaviour
                 if (other.tag == "Player2")
                 {
                     CanUse = true;
-                    GameManager.Instance.PlayerObjectHitin(PlayerType.SecondPlayer);
+                    GameManager.Instance.PlayerObjectHitin(PlayerType.SecondPlayer, objectText);
                 }
                 break;
         }

@@ -13,12 +13,16 @@ public class Inventory : MonoBehaviour
 
     [SerializeField] Slot[] ObjectItemSlots; //오브젝트 아이템 슬롯
     [SerializeField] Slot[] UseItemSlots; // 사용 아이템 (퀵슬롯 전용 아이템) 슬롯
+    [SerializeField] string[] QuickSoltItem;//퀵슬롯에 들어갈 아이템
+
 
     [SerializeField] SlotSelect slotSelect;
     ItemGet itemget;
     //test
     public Item i;
     public Item i2;
+    public Item i3;
+    public Item i4;
 
     private void Start()
     {
@@ -29,6 +33,8 @@ public class Inventory : MonoBehaviour
         SetInput();
         //test Item추가
         AcquireItem(i2);
+        AcquireItem(i3);
+        AcquireItem(i4);
 
     }
 
@@ -52,8 +58,15 @@ public class Inventory : MonoBehaviour
         //테스트 아이템 획득키
         if(Input.GetKeyDown(KeyCode.Q))
             AcquireItem(i);
+        if (Input.GetKeyDown(KeyCode.T  ))
+            AcquireItem(i2);
+        if (Input.GetKeyDown(KeyCode.U))
+            AcquireItem(i3);
+        if (Input.GetKeyDown(KeyCode.O))
+            AcquireItem(i4);
 
     }
+
 
     //인벤토리 아이템 선택 색상 변경
     public void SlotSelectColorChange(int SlotNum,Color color)
@@ -93,10 +106,10 @@ public class Inventory : MonoBehaviour
         switch (_item.itemType)
         {
             case ItemType.ObjectItem:
-                AddItemToSlot(ObjectItemSlots, _item, _Count);
+                AddItemToInventorySlot(ObjectItemSlots, _item, _Count);
                 break;
             case ItemType.UseItem:
-                AddItemToSlot(UseItemSlots, _item, _Count);
+                AddItemToInventorySlot(UseItemSlots, _item, _Count);
                 break;
             default:
                 Debug.Log("아이템 타입이 정해져 있지 않은 아이템입니다");
@@ -104,10 +117,19 @@ public class Inventory : MonoBehaviour
         }
         
     }
-    //획득한 아이템 슬롯에 추가
-    void AddItemToSlot(Slot[] slots, Item _item, int _Count = 1)
+    //획득한 아이템 슬롯에 추가 (인벤토리용)
+    void AddItemToInventorySlot(Slot[] slots, Item _item, int _Count = 1)
     {
         //해당 아이템이 있는 경우
+        if(!AddItemisNotNall(slots, _item, _Count))
+            //해당 아이템이 없는 경우
+            AdditemNull(slots, _item, _Count);
+
+    }
+
+    //아이템 추가 해당 아이템이 있는경우 | 아이템이 있는경우 true반환
+    bool AddItemisNotNall(Slot[] slots, Item _item, int _Count = 1)
+    {
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].item != null)
@@ -115,11 +137,16 @@ public class Inventory : MonoBehaviour
                 if (slots[i].item.ItemName == _item.ItemName)
                 {
                     slots[i].SetSoltCount(_Count);
-                    return;
+                    return true;
                 }
             }
         }
-        //해당 아이템이 없는 경우
+        return false;
+    }
+
+    //아이템 추가 해당 아이템이 없는경우
+    void AdditemNull(Slot[] slots, Item _item, int _Count = 1)
+    {
         for (int i = 0; i < slots.Length; i++)
         {
             if (slots[i].item == null)
@@ -127,6 +154,40 @@ public class Inventory : MonoBehaviour
                 slots[i].AddItem(_item, _Count);
                 return;
             }
+        }
+    }
+
+    //획득한 아이템 슬롯에 추가 (퀵슬롯용)
+    void AddItemToQuickSlot(Slot[] slots, Item _item, int _Count = 1)
+    {
+        switch (_item.ItemName)
+        {
+            case "음식":
+                AddQuickItem(slots[0], _item, _Count);
+                break;
+            case "물":
+                AddQuickItem(slots[1], _item, _Count);
+                break;
+            case "백신":
+                AddQuickItem(slots[2], _item, _Count);
+                break;
+        }
+    }
+
+    void AddQuickItem(Slot slot, Item _item, int _Count = 1)
+    {
+        if(slot.item != null)
+        {
+            if (slot.item.ItemName == _item.ItemName)
+            {
+                slot.SetSoltCount(_Count);
+                return;
+            }
+        }
+        if (slot.item == null)
+        {
+            slot.AddItem(_item, _Count);
+            return;
         }
     }
     #endregion

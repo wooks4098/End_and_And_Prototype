@@ -1786,10 +1786,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97991eb092822644389171af86be8ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerType: 0
   camera: {fileID: 657078185}
   Canvas: {fileID: 401046767}
   image: {fileID: 519421514}
-  Image: {fileID: 519421513}
+  HpSlider: {fileID: 0}
+  HpText: {fileID: 0}
+  ThirstyWallSlider: {fileID: 0}
+  isClimbWall: 0
+  climbWallSlider: {fileID: 0}
+  dir: 0
+  climbWallSliderSpeed: 0
+  minPos: 0
+  maxPos: 0
+  SliderTimingRect: {fileID: 0}
+  isHoldRope: 0
+  sliderRopeHold: {fileID: 0}
+  sliderRopeHoldSpeed: 0
+  sliderRopeHoldAddValue: 0
 --- !u!114 &401046769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2950,7 +2964,7 @@ GameObject:
   - component: {fileID: 652658526}
   - component: {fileID: 652658525}
   m_Layer: 0
-  m_Name: Manager
+  m_Name: SafeBoxManager
   m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2984,6 +2998,10 @@ MonoBehaviour:
   safeboxObjectB: {fileID: 957666941}
   isPlayer1: 0
   isPlayer2: 0
+  Glove: {fileID: 0}
+  OnTriggerExitSafeBox:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &652658526
 Transform:
   m_ObjectHideFlags: 0
@@ -3580,10 +3598,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97991eb092822644389171af86be8ecc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerType: 0
   camera: {fileID: 271814362}
   Canvas: {fileID: 721707549}
   image: {fileID: 348068058}
-  Image: {fileID: 348068057}
+  HpSlider: {fileID: 0}
+  HpText: {fileID: 0}
+  ThirstyWallSlider: {fileID: 0}
+  isClimbWall: 0
+  climbWallSlider: {fileID: 0}
+  dir: 0
+  climbWallSliderSpeed: 0
+  minPos: 0
+  maxPos: 0
+  SliderTimingRect: {fileID: 0}
+  isHoldRope: 0
+  sliderRopeHold: {fileID: 0}
+  sliderRopeHoldSpeed: 0
+  sliderRopeHoldAddValue: 0
 --- !u!114 &721707551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4217,9 +4249,12 @@ MonoBehaviour:
   G_UseSlotsParent: {fileID: 1638570263}
   ObjectItemSlots: []
   UseItemSlots: []
+  QuickSoltItem: []
   slotSelect: {fileID: 423358172}
   i: {fileID: 11400000, guid: 4b48718e3ac896d4d851f70dd8d5d27e, type: 2}
   i2: {fileID: 11400000, guid: ea52f55add7fe544a8136f05e6618a50, type: 2}
+  i3: {fileID: 0}
+  i4: {fileID: 0}
 --- !u!224 &903873456
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4971,8 +5006,10 @@ MonoBehaviour:
   safeboxManager: {fileID: 652658525}
   availableList: 
   zoomInCamera: {fileID: 720324330}
-  isActive: 0
   objectUiShow: {fileID: 725810053}
+  OnTriggerEnterSafeBox:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &957666943
 Transform:
   m_ObjectHideFlags: 0
@@ -5453,8 +5490,10 @@ MonoBehaviour:
   safeboxManager: {fileID: 652658525}
   availableList: 
   zoomInCamera: {fileID: 890453833}
-  isActive: 0
   objectUiShow: {fileID: 807612527}
+  OnTriggerEnterSafeBox:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1013330797
 Transform:
   m_ObjectHideFlags: 0
@@ -6341,9 +6380,12 @@ MonoBehaviour:
   G_UseSlotsParent: {fileID: 1242256461}
   ObjectItemSlots: []
   UseItemSlots: []
+  QuickSoltItem: []
   slotSelect: {fileID: 2040445714}
   i: {fileID: 11400000, guid: 4b48718e3ac896d4d851f70dd8d5d27e, type: 2}
   i2: {fileID: 11400000, guid: ea52f55add7fe544a8136f05e6618a50, type: 2}
+  i3: {fileID: 0}
+  i4: {fileID: 0}
 --- !u!1 &1294900899
 GameObject:
   m_ObjectHideFlags: 0
