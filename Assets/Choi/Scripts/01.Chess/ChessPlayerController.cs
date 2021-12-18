@@ -21,6 +21,9 @@ public class ChessPlayerController : MonoBehaviour
     [SerializeField] bool isMoving = false;
     public bool IsMoving { get { return isMoving; } }
 
+    // 키입력
+    bool useKey = false;
+
     // 움직이는 속도, 거리
     private float moveSpeed = 4.0f;
     //[SerializeField] float moveDistance = 5.0f;
@@ -169,59 +172,70 @@ public class ChessPlayerController : MonoBehaviour
     /// </summary>
     private void InputDirectionKey()
     {
-        // 앞
-        if (Input.GetKeyDown(KeyCode.W))
+        if(!useKey)
         {
-            // (이하 모든 비교문이 비슷한 역할을 함)
-            // 1. 현재 인덱스를 비교. 앞을 향하는 것이기 때문에 가장 윗줄 이동을 막음.
-            // 하지만 0번 바닥일 때는 골인을 향해 가야하기 때문에? 이동을 막지 않음.
-            if (currentFloorIndex > 5 || currentFloorIndex == 0)
+            // 앞
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                // 입력을 받으면 isMoving = true로 설정하여 입력을 막음
-                isMoving = true;
-                // 애니메이션 이벤트를 실행하기 위한 애니메이션을 만들었고
-                // 그 애니메이션을 실행하기 위한 이벤트 트리거
-                animator.SetTrigger("MoveToDirection");
+                useKey = true;
 
-                // 인덱스를 변경한다
-                // 인덱스가 감소하면 -> 앞쪽과 왼쪽,
-                // 인덱스가 증가하면 -> 뒤쪽과 오른쪽
-                currentFloorIndex -= 6;
-            }            
-        }
-        // 뒤
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            if(currentFloorIndex < 30 && currentFloorIndex != startFloorIndex)
-            {
-                isMoving = true;
-                animator.SetTrigger("MoveToDirection");
+                // (이하 모든 비교문이 비슷한 역할을 함)
+                // 1. 현재 인덱스를 비교. 앞을 향하는 것이기 때문에 가장 윗줄 이동을 막음.
+                // 하지만 0번 바닥일 때는 골인을 향해 가야하기 때문에? 이동을 막지 않음.
+                if (currentFloorIndex > 5 || currentFloorIndex == 0)
+                {
+                    // 입력을 받으면 isMoving = true로 설정하여 입력을 막음
+                    isMoving = true;
+                    // 애니메이션 이벤트를 실행하기 위한 애니메이션을 만들었고
+                    // 그 애니메이션을 실행하기 위한 이벤트 트리거
+                    animator.SetTrigger("MoveToDirection");
 
-                currentFloorIndex += 6;
-            }            
-        }
-        // 왼
-        else if (Input.GetKeyDown(KeyCode.A) && currentFloorIndex != startFloorIndex)
-        {
-            if (currentFloorIndex % 6 != 0) 
-            {
-                isMoving = true;
-                animator.SetTrigger("MoveToDirection");
-
-                currentFloorIndex -= 1;
+                    // 인덱스를 변경한다
+                    // 인덱스가 감소하면 -> 앞쪽과 왼쪽,
+                    // 인덱스가 증가하면 -> 뒤쪽과 오른쪽
+                    currentFloorIndex -= 6;
+                }
             }
-        }
-        // 오
-        else if (Input.GetKeyDown(KeyCode.D) && currentFloorIndex != startFloorIndex)
-        {
-            if ((currentFloorIndex % 6) < 5)
+            // 뒤
+            else if (Input.GetKeyDown(KeyCode.S))
             {
-                isMoving = true;
-                animator.SetTrigger("MoveToDirection");
+                useKey = true;
 
-                currentFloorIndex += 1;
-            }            
-        }
+                if (currentFloorIndex < 30 && currentFloorIndex != startFloorIndex)
+                {
+                    isMoving = true;
+                    animator.SetTrigger("MoveToDirection");
+
+                    currentFloorIndex += 6;
+                }
+            }
+            // 왼
+            else if (Input.GetKeyDown(KeyCode.A) && currentFloorIndex != startFloorIndex)
+            {
+                useKey = true;
+
+                if (currentFloorIndex % 6 != 0)
+                {
+                    isMoving = true;
+                    animator.SetTrigger("MoveToDirection");
+
+                    currentFloorIndex -= 1;
+                }
+            }
+            // 오
+            else if (Input.GetKeyDown(KeyCode.D) && currentFloorIndex != startFloorIndex)
+            {
+                useKey = true;
+
+                if ((currentFloorIndex % 6) < 5)
+                {
+                    isMoving = true;
+                    animator.SetTrigger("MoveToDirection");
+
+                    currentFloorIndex += 1;
+                }
+            }
+        }        
     }
 
     /// <summary>
@@ -238,16 +252,17 @@ public class ChessPlayerController : MonoBehaviour
         // Vector3를 사용하여 새로운 좌표로 업데이트.
         transform.position = new Vector3(newPositonX, transform.position.y, newPositonZ);
 
-        //Debug.Log(Vector3.Distance(transform.position, currentFloor.transform.position));
+        // Debug.Log(Vector3.Distance(transform.position, currentFloor.transform.position));
 
         // 도착하면 플래그를 false로 변경
-        if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 1.0f)
+        if (Vector3.Distance(transform.position, currentFloor.transform.position) <= 0.27f)
         {
             // 플레이어 체력이 0보다 클 때만 움직임을 푼다.
             // 리스폰 시 움직임이 입력되는 문제 때문에 막아둠
             if(playerHp.GetPlayerHp() > 0)
             {
                 isMoving = false;
+                useKey = false;
             }
         }
     }
