@@ -22,15 +22,121 @@ public class UIManager : MonoBehaviour
     [SerializeField] UiController P1UI;
     [SerializeField] UiController P2UI;
 
-    public void ObjectUIShow(PlayerType PlayerType)
+
+    #region Status 
+
+    public void ChangeHpUi(PlayerType PlayerType, float _hp)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.ChangeHpUi(_hp);
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.ChangeHpUi(_hp);
+                break;
+        }
+    }
+
+
+    #endregion
+
+    #region ClimbWall
+
+    public void StartClimbWall(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.StartClimbWall();
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.StartClimbWall();
+                break;
+        }
+    }
+
+    public void EndClimbWall(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.EndClimbWall();
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.EndClimbWall();
+                break;
+        }
+    }
+
+    public bool isSliderTriggerCheck(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                return P1UI.isSliderTriggerCheck();
+            case PlayerType.SecondPlayer:
+               return  P2UI.isSliderTriggerCheck();
+        }
+        return false;
+    }
+
+    #endregion
+
+    #region RopeHold
+    public void StartHoldRope(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.StartHoldRope();
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.StartHoldRope();
+                break;
+        }
+    }
+
+    public void EndHoldRope(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.EndHoldRope();
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.EndHoldRope();
+                break;
+        }
+    }
+
+    public void AddHoldRopeValue(PlayerType PlayerType)
+    {
+        switch (PlayerType)
+        {
+            case PlayerType.FirstPlayer:
+                P1UI.AddHoldRopeValue();
+                break;
+            case PlayerType.SecondPlayer:
+                P2UI.AddHoldRopeValue();
+                break;
+        }
+    }
+
+    #endregion
+
+
+    #region ObjectUI
+
+    public void ObjectUIShow(PlayerType PlayerType ,string _text)
     {
         switch(PlayerType)
         {
             case PlayerType.FirstPlayer:
-                P1UI.ObjectUIShow();
+                P1UI.ObjectUIShow(_text);
                 break;
             case PlayerType.SecondPlayer:
-                P2UI.ObjectUIShow();
+                P2UI.ObjectUIShow(_text);
                 break;
         }
     }
@@ -60,4 +166,6 @@ public class UIManager : MonoBehaviour
                 break;
         }
     }
+
+    #endregion
 }

@@ -26,7 +26,10 @@ public class InputManager : MonoBehaviour, IInput
     public Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }
     public Action OnInventoryOpenPlayer1 { get; set; }
     public Action OnInventoryOpenPlayer2 { get; set; }
-    #endregion
+  public Action<int> OnQuickSoltPlayer1 { get; set; }
+  public Action<int> OnQuickSoltPlayer2 { get; set; }
+
+   #endregion
 
     //플레이어 컨트롤러
     [SerializeField] PlayerController player1;
@@ -56,7 +59,11 @@ public class InputManager : MonoBehaviour, IInput
         OnRun();
         OnUse();
         OnOpenInventory();
+        OnQuickSolt();
+
     }
+
+    #region Move
 
     void OnForntBack()
     {
@@ -167,6 +174,10 @@ public class InputManager : MonoBehaviour, IInput
             OnRunPlayer2?.Invoke(false);
     }
 
+    #endregion
+
+
+    #region Use
     void OnUse()
     {
         //플레이어1
@@ -179,6 +190,10 @@ public class InputManager : MonoBehaviour, IInput
 
     }
 
+    #endregion 
+
+    #region Inventory
+
     void OnOpenInventory()
     {
         //플레이어1
@@ -189,4 +204,24 @@ public class InputManager : MonoBehaviour, IInput
         if (Input.GetKeyDown(KeyCode.Keypad4))
             OnInventoryOpenPlayer2?.Invoke();
     }
+
+    void OnQuickSolt()
+    {
+        //플레이어1
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            OnQuickSoltPlayer1!.Invoke(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            OnQuickSoltPlayer1!.Invoke(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            OnQuickSoltPlayer1!.Invoke(2);
+
+        //플레이어2
+        if (Input.GetKeyDown(KeyCode.Keypad7))
+            OnQuickSoltPlayer2!.Invoke(0);
+        if (Input.GetKeyDown(KeyCode.Keypad8))
+            OnQuickSoltPlayer2!.Invoke(1);
+        if (Input.GetKeyDown(KeyCode.Keypad9))
+            OnQuickSoltPlayer2!.Invoke(2);
+    }
+    #endregion
 }

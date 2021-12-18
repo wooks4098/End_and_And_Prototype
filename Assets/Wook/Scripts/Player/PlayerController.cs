@@ -15,10 +15,13 @@ public enum PlayerState
     ClimbUpWall, //벽 올라가기
     Wait, //대기상태
     ClimbRope,//로프 오르는중
-    ClimbRopeUp,//로프 올라가기
+    //ClimbRopeUp,//로프 올라가기
+    ClimbWallFall,//벽 타기중 떨어지기
+    HoldRope,//로프 잡는중
     Inventory, //인벤토리 오픈
     SafeBox,//금고 사용중
-
+    None, //Null로 사용
+    Die,//죽음
 }
 
 public class PlayerController : MonoBehaviour
@@ -31,7 +34,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float gravity; //중력
     Vector3 moveDirection; //이동방향
     [SerializeField] bool isRun = false;
-    
+
     CharacterController characterController;
     [SerializeField] Transform CameraTransform;
     [SerializeField] Animator ani;
@@ -40,11 +43,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject playerCamera;
     [SerializeField] SkinnedMeshRenderer meshRenderer;
 
+    [SerializeField] int FallCount;
+    [SerializeField] bool isClimbWallCheck;//벽타기시 클릭 가능한 상태인지
+     Vector3 groundPos;
+    [SerializeField] float toGroundLength; //땅까지의 거리
+    [SerializeField] float fallLength; //벽타기시 떨어질 수 있는 거리
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         ani = GetComponentInChildren<Animator>();
-        
+
     }
     private void Start()
     {
@@ -68,7 +76,7 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Walk:
                 moveDirection.y -= gravity * Time.deltaTime;
                 break;
-          
+
         }
 
 
@@ -97,7 +105,7 @@ public class PlayerController : MonoBehaviour
 
     void MoveTo(Vector3 direction)
     {
-        switch(playerState)
+        switch (playerState)
         {
             case PlayerState.ClimbUpWall:
             case PlayerState.SafeBox:
@@ -107,30 +115,27 @@ public class PlayerController : MonoBehaviour
         }
 
         characterController.Move(direction * (isRun == false ? moveSpeed : moveSpeed * 2.3f) * Time.deltaTime);
-
     }
     void Move(MoveType moveType, PlayerState _playerState)
     {
-        switch(playerState)
+        switch (playerState)
         {
             case PlayerState.Walk:
                 FrontBackWalk(moveType);
                 break;
             case PlayerState.ClimbWall:
             case PlayerState.ClimbRope:
-                Climb(moveType);
+                //Climb(moveType);
                 break;
             case PlayerState.ClimbUpWall:
                 moveDirection = Vector3.zero;
-               
+
                 break;
         }
     }
 
     void FrontBackWalk(MoveType moveType)
     {
-
-
         if (moveType == MoveType.Front)
         {
             moveDirection = GetDirection(InputDir.front, PlayerState.Walk);
@@ -154,6 +159,144 @@ public class PlayerController : MonoBehaviour
         ani.SetBool("Run", isRun);
     }
 
+    #region ClimbWall
+
+    void ClimbWallStart()
+    {
+        FallCount = 3;
+        isClimbWallCheck = true;
+        //바닥 위치 등록
+        groundPos = transform.position;
+        switch (playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnUsePlayer1 += ClimbWallCheck;
+                UIManager.Instance.StartClimbWall(playerType);
+                break;
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnUsePlayer2 += ClimbWallCheck;
+                UIManager.Instance.StartClimbWall(playerType);
+                break;
+        }
+    }
+
+    public void ClimbWallEnd()
+    {
+        switch (playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnUsePlayer1 -= ClimbWallCheck;
+                //UIManager.Instance.StartClimbWall(playerType);
+                break;
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnUsePlayer2 -= ClimbWallCheck;
+                //UIManager.Instance.StartClimbWall(playerType);
+                break;
+        }
+    }
+
+    void ClimbWallCheck(PlayerType _playerType, PlayerState _playerState)
+    {
+        if (!isClimbWallCheck)
+            return;
+        if (UIManager.Instance.isSliderTriggerCheck(_playerType))
+        {
+            StartCoroutine(ClimbWallUp());
+        }
+        else
+        {
+            FallCount--;
+            if (FallCount <= 0)
+            {
+                toGroundLength = Vector3.Distance(groundPos, transform.position);
+                if(toGroundLength >= fallLength)
+                {
+                    //떨어지기
+                    Debug.Log("Fall down");
+                  
+                    StartClimbWallFall();
+                    return;
+                }
+                
+            }
+            //미끄러지기
+            StartCoroutine(ClimbWallDown());
+
+        }
+    }
+
+    IEnumerator ClimbWallUp()
+    {
+        float timeCheck = 1f;
+        moveSpeed = 2;
+        isClimbWallCheck = false;
+        while (timeCheck >= 0)
+        {
+            timeCheck -= Time.deltaTime;
+            moveDirection = Vector3.up;
+            ani.SetFloat("ClimbSpeed", 1f);
+            yield return null;
+        }
+        moveDirection = Vector3.zero;
+        ani.SetFloat("ClimbSpeed", 0);
+        isClimbWallCheck = true;
+        yield return null;
+    }
+
+    //미끄러지기
+    IEnumerator ClimbWallDown()
+    {
+        float timeCheck = 0.5f;
+        moveSpeed = 5;
+        isClimbWallCheck = false;
+        while (timeCheck >= 0)
+        {
+            timeCheck -= Time.deltaTime;
+            moveDirection = Vector3.down;
+            ani.SetFloat("ClimbSpeed", -2.5f);
+            yield return null;
+        }
+        moveDirection = Vector3.zero;
+        ani.SetFloat("ClimbSpeed", 0);
+        isClimbWallCheck = true;
+        yield return null;
+    }
+
+    public void StartClimbWallFall(bool isRopeClimbUp = false)//isRopeClimbUp 로프를 타고 올라가 벽을 올라갔는지
+    {
+        if (playerState != PlayerState.ClimbRope && playerState != PlayerState.ClimbWall && playerState != PlayerState.HoldRope)
+            return;
+        PlayerStateChange(PlayerState.ClimbWallFall);
+        ani.SetTrigger("ClimbupFall");
+        StartCoroutine(ClimbWallFall(isRopeClimbUp));
+    }
+
+    public IEnumerator ClimbWallFall(bool isRopeClimbUp)
+    {
+ 
+        float FalltimeCheck = 0;
+        float Falltime = 2f;
+        float MoveY;
+        UIManager.Instance.EndClimbWall(playerType);
+        yield return new WaitForSeconds(0.3f);
+        while(FalltimeCheck <= 2)
+        {
+            FalltimeCheck += Time.deltaTime / Falltime;
+            MoveY = Mathf.Lerp(transform.position.y, groundPos.y, FalltimeCheck);
+            MoveY = transform.position.y - MoveY;
+            transform.position -= new Vector3(0, MoveY, 0);
+            yield return null;
+        }
+
+        //플레이어 idle상태로 변경
+        if(isRopeClimbUp)
+        {
+            yield return new WaitForSeconds(0.3f);
+            ani.SetTrigger("ClimbupFallExit");
+        }
+    }
+
+    #endregion
     void Climb(MoveType moveType)
     {
         if (moveType == MoveType.Front)
@@ -231,6 +374,70 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    //로프잡기 시작
+    public void StartHoldRope(Vector3 _ropePos)
+    {
+        //로프를 바라보도록 회전
+        float angle = Vector3.Angle(transform.position, _ropePos);
+        transform.LookAt(_ropePos);
+        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y + 50f, 0);
+        ani.SetBool("HoldingRope", true);
+        switch (playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnUsePlayer1 += AddHoldRopeValue;
+                UIManager.Instance.StartHoldRope(playerType);
+                break;
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnUsePlayer1 += AddHoldRopeValue;
+                UIManager.Instance.StartHoldRope(playerType);
+                break;
+        }    
+    }
+
+    public void EndHoldRope()
+    {
+
+        switch (playerType)
+        {
+            case PlayerType.FirstPlayer:
+                InputManager.Instance.OnUsePlayer1 -= AddHoldRopeValue;
+                UIManager.Instance.EndHoldRope(playerType);
+                ani.SetTrigger("ClimbupFall");
+                ani.SetTrigger("ClimbupFallExit");
+                ani.SetBool("HoldingRope", false);
+                PlayerStateChange(PlayerState.Walk);
+                break;
+            case PlayerType.SecondPlayer:
+                InputManager.Instance.OnUsePlayer1 -= AddHoldRopeValue;
+                UIManager.Instance.EndHoldRope(playerType);
+                ani.SetTrigger("ClimbupFall");
+                ani.SetTrigger("ClimbupFallExit");
+                ani.SetBool("HoldingRope", false);
+                PlayerStateChange(PlayerState.Walk);
+                break;
+        }
+    }
+
+
+
+    void AddHoldRopeValue(PlayerType _playertype, PlayerState _playerState)
+    {
+        switch(playerType)
+        {
+            case PlayerType.FirstPlayer:
+                UIManager.Instance.AddHoldRopeValue(playerType);
+                break;
+            case PlayerType.SecondPlayer:
+                UIManager.Instance.AddHoldRopeValue(playerType);
+                break;
+        }
+    }
+    //로프 잡다가 넘어지기
+    public void HoldRopeFall()
+    {
+        ani.SetTrigger("ClimbupFall");
+    }
 
     public void PlayerStateChange(PlayerState _playerState)
     {
@@ -239,14 +446,25 @@ public class PlayerController : MonoBehaviour
         ani.SetBool("Run", false);
         ani.SetBool("IsClimbinUpWall", false);
         ani.SetFloat("ClimbSpeed", 0);
+        ani.SetBool("HoldingRope", false);
         playerState = _playerState;
         switch (_playerState)
         {
+            case PlayerState.Walk:
+                moveSpeed = 5;
+                break;
             case PlayerState.ClimbWall:
+                ClimbWallStart();
                 ani.SetTrigger("ClimbStart");
+                moveDirection = Vector3.zero;
                 break;
             case PlayerState.ClimbRope:
+                ClimbWallStart();
                 ani.SetTrigger("RopeClimbStart");
+                moveDirection = Vector3.zero;
+                break;
+            case PlayerState.HoldRope:
+                moveDirection = Vector3.zero;
                 break;
 
         }
@@ -262,7 +480,7 @@ public class PlayerController : MonoBehaviour
     {
         meshRenderer.enabled = _State;
     }
-    
+
 
     #region Get
     public PlayerState GetPlayerState()

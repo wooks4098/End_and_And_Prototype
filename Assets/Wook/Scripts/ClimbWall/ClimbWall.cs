@@ -33,6 +33,8 @@ public class ClimbWall : MonoBehaviour
 
     [SerializeField] ClimbingUpWall climbingUpWall;
 
+    
+
     private void Start()
     {
         SetInput();
@@ -66,6 +68,8 @@ public class ClimbWall : MonoBehaviour
         {
             gRope.SetActive(true);
             isRope = true;
+            GameManager.Instance.PlayerStateChange(_playerType, PlayerState.HoldRope);
+            GameManager.Instance.GetPlayerController(_playerType).StartHoldRope(gRope.transform.position);
             return;
         }
 
