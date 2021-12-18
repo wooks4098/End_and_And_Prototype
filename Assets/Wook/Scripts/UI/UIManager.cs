@@ -128,15 +128,15 @@ public class UIManager : MonoBehaviour
 
     #region ObjectUI
 
-    public void ObjectUIShow(PlayerType PlayerType)
+    public void ObjectUIShow(PlayerType PlayerType ,string _text)
     {
         switch(PlayerType)
         {
             case PlayerType.FirstPlayer:
-                P1UI.ObjectUIShow();
+                P1UI.ObjectUIShow(_text);
                 break;
             case PlayerType.SecondPlayer:
-                P2UI.ObjectUIShow();
+                P2UI.ObjectUIShow(_text);
                 break;
         }
     }

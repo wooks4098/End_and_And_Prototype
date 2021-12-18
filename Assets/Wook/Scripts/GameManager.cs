@@ -165,9 +165,9 @@ public class GameManager : MonoBehaviour
     /// 플레이어가 오브젝트 근처에 간 경우
     /// UI를 보여주고, 어떤 플레이어(1P, 2P)인지 오브젝트에 전달
     /// </summary>
-    public void PlayerObjectHitin(PlayerType _playerType)
+    public void PlayerObjectHitin(PlayerType _playerType,string _text)
     {
-        UIManager.Instance.ObjectUIShow(_playerType);
+        UIManager.Instance.ObjectUIShow(_playerType, _text);
 
     }
 

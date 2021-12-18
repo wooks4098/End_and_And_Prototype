@@ -450,6 +450,9 @@ public class PlayerController : MonoBehaviour
         playerState = _playerState;
         switch (_playerState)
         {
+            case PlayerState.Walk:
+                moveSpeed = 5;
+                break;
             case PlayerState.ClimbWall:
                 ClimbWallStart();
                 ani.SetTrigger("ClimbStart");

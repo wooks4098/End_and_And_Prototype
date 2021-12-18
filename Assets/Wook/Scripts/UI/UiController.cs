@@ -19,6 +19,7 @@ public class UiController : MonoBehaviour
     public Camera camera; //플레이어 카메라
     public RectTransform Canvas; //canvas recttransfrom
     public RectTransform image; //이미지 위치
+    public Text objectUIText;
 
     //StatusUI
     [Space][Space]
@@ -186,13 +187,15 @@ public class UiController : MonoBehaviour
     }
     #endregion
 
-    public void ObjectUIShow( )
+    public void ObjectUIShow(string _text)
     {
         image.gameObject.SetActive(true);
+        objectUIText.text = _text;
     }
-    public void ObjectUIHide( )
+    public void ObjectUIHide()
     {
         image.gameObject.SetActive(false);
+
     }
 
     public void ObjectUIMove(Vector3 objPos)
