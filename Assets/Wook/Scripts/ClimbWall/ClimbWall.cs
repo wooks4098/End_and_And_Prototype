@@ -80,12 +80,26 @@ public class ClimbWall : MonoBehaviour
                 if (isRope == false)
                 {
                     if (ClimbObjectShowP1.GetCanUse())
+                    {
+                        ClimbObjectShowP1.gameObject.SetActive(false);
+                        ClimbObjectShowP2.gameObject.SetActive(false);
+                        UIManager.Instance.ObjectUIHide(PlayerType.FirstPlayer);
+                        UIManager.Instance.ObjectUIHide(PlayerType.SecondPlayer);
                         Climbwall(_playerType);
+
+                    }
                 }                
                 else
                 {
                     if (RopeObjectShowP1.GetCanUse())
+                    {
+                        RopeObjectShowP1.gameObject.SetActive(false);
+                        RopeObjectShowP2.gameObject.SetActive(false);
+                        UIManager.Instance.ObjectUIHide(PlayerType.FirstPlayer);
+                        UIManager.Instance.ObjectUIHide(PlayerType.SecondPlayer);
                         RopeClimb(_playerType);
+
+                    }
                 }                    
                 break;
 
@@ -94,13 +108,26 @@ public class ClimbWall : MonoBehaviour
                 if (isRope == false)
                 {
                     if (ClimbObjectShowP2.GetCanUse())
+                    {
+                        ClimbObjectShowP1.gameObject.SetActive(false);
+                        ClimbObjectShowP2.gameObject.SetActive(false);
+                        UIManager.Instance.ObjectUIHide(PlayerType.FirstPlayer);
+                        UIManager.Instance.ObjectUIHide(PlayerType.SecondPlayer);
                         Climbwall(_playerType);
+                    }
                 }
 
                 else
                 {
                     if (RopeObjectShowP2.GetCanUse())
+                    {
+                        RopeObjectShowP1.gameObject.SetActive(false);
+                        RopeObjectShowP2.gameObject.SetActive(false);
+                        UIManager.Instance.ObjectUIHide(PlayerType.FirstPlayer);
+                        UIManager.Instance.ObjectUIHide(PlayerType.SecondPlayer);
                         RopeClimb(_playerType);
+
+                    }
                 }
                 break;
         }
@@ -199,4 +226,25 @@ public class ClimbWall : MonoBehaviour
         climbingUpWall.ChangeEndPos(_playerType, playerTrans.position);
     }
     #endregion
+
+
+    public void Reset()
+    {
+        isPlayer1Climb = false;
+        isPlayer2Climb = false;
+        isPlayer1ClimbRope = false;
+        isPlayer2ClimbRope = false;
+        isRope = false;
+
+        ClimbObjectShowP1.gameObject.SetActive(true);
+        ClimbObjectShowP2.gameObject.SetActive(true);
+
+        //RopeObjectShowP1.gameObject.SetActive(true);
+        //RopeObjectShowP2.gameObject.SetActive(true);
+
+        RopeDownObjectShowP1.gameObject.SetActive(true);
+        RopeDownObjectShowP2.gameObject.SetActive(true);
+
+        gRope.SetActive(false);
+    }
 }

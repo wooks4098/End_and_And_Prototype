@@ -8,6 +8,7 @@ public class SafeBoxClear : MonoBehaviour
     [SerializeField] Transform[] SafeboxOpenDoorRightDoor;
     [SerializeField] GameObject ChessAnswer;
     [SerializeField] GameObject[] Camera;
+    [SerializeField] GameObject[] Collider;
 
     public void StartOpenDoor()
     {
@@ -18,6 +19,8 @@ public class SafeBoxClear : MonoBehaviour
             StartCoroutine(SafeboxOpenDoor(SafeboxOpenDoorRightDoor[i], false));
 
         }
+        for (int i = 0; i < Collider.Length; i++)
+            Collider[i].SetActive(false);
     }
 
     IEnumerator SafeboxOpenDoor(Transform Door, bool isLeft)
