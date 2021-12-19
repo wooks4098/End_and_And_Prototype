@@ -320,7 +320,7 @@ public class CreatureMovement : MonoBehaviour
         NavMesh.SamplePosition(targetPosition, out hit, 10f, 1);
 
         // 디버그 찍었을 때 bake 된 영역이 아니면 x,y,z 좌표 전부 Infinity가 뜸!!!
-        Debug.Log("Hit = " + hit + " myNavHit.position = " + hit.position + " target = " + targetPosition);
+        // Debug.Log("Hit = " + hit + " myNavHit.position = " + hit.position + " target = " + targetPosition);
 
         // bake 된 영역 바깥이면 
         if(hit.position.x == Mathf.Infinity || hit.position.z == Mathf.Infinity)
@@ -332,9 +332,10 @@ public class CreatureMovement : MonoBehaviour
         targetPosition = hit.position;
         // Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
 
-        // agent.enabled = false;
-        // transform.LookAt(targetPosition);
-        // agent.enabled = true;
+        if (agent.velocity.sqrMagnitude > Mathf.Epsilon)
+        {
+            transform.rotation = Quaternion.LookRotation(agent.velocity.normalized);
+        }
 
         agent.destination = targetPosition;
         agent.speed = creature.patrolSpeed;
