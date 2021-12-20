@@ -7,7 +7,7 @@ using UnityEngine.AI;
 /// <summary>
 /// 크리쳐의 움직임을 관리하는 클래스
 /// </summary>
-public class CreatureMovement : MonoBehaviour
+public class CreatureMovement : MonoBehaviour, ICreatureAction
 {
     [SerializeField] Animator animator;
 
@@ -141,6 +141,8 @@ public class CreatureMovement : MonoBehaviour
     /// </summary>
     private void FindTargetCharacter()
     {
+        // Cancel();
+
         Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.trackingRange);
 
         //if(hitCollider.Length != 0)
@@ -168,10 +170,14 @@ public class CreatureMovement : MonoBehaviour
                 {
                     // 임시타겟 지정
                     tempTarget = activeCollider.gameObject.GetComponent<CreaturePlayer>();
+
+                    // 애니메이션 멈춤
+                    animator.SetBool("Attack", false);                    
                 }
 
                 // 타겟 지정
                 targetCharacter = tempTarget;
+                agent.isStopped = false;
 
                 hasTarget = true;                
             }
@@ -249,7 +255,7 @@ public class CreatureMovement : MonoBehaviour
             if (timeSinceLastPatrol > 10f)
             {
                 // 타겟을 찾아본다
-                FindTargetCharacter();
+                // FindTargetCharacter();
 
                 // 임시 타겟이 없으면
                 if(tempTarget == null)
@@ -332,10 +338,13 @@ public class CreatureMovement : MonoBehaviour
         targetPosition = hit.position;
         // Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
 
+        // 회전
+        agent.isStopped = true;
         if (agent.velocity.sqrMagnitude > Mathf.Epsilon)
         {
             transform.rotation = Quaternion.LookRotation(agent.velocity.normalized);
         }
+        agent.isStopped = false;
 
         agent.destination = targetPosition;
         agent.speed = creature.patrolSpeed;
@@ -375,12 +384,16 @@ public class CreatureMovement : MonoBehaviour
     /// </summary>
     private void AttackBehaviour()
     {
+        // GetComponent<CreatureActionScheduler>().StartAction(this);
+
         // 플레이어를 바라보고
         transform.LookAt(targetCharacter.transform);
         agent.velocity = Vector3.zero;
 
+        agent.isStopped = false;
+
         // 애니메이터
-        animator.SetBool("Attack", true);
+        animator.SetBool("Attack", true);       
 
         // 공격한다
         Debug.Log("AttackBehaviour()");
@@ -435,5 +448,12 @@ public class CreatureMovement : MonoBehaviour
     public void ExitAttack()
     {
         animator.SetBool("Attack", false);
+    }
+
+    public void Cancel()
+    {
+        ExitAttack();
+        // targetCharacter = null;
+        agent.isStopped = true;        
     }
 }
