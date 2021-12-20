@@ -19,8 +19,10 @@ public class SafeBoxClear : MonoBehaviour
             StartCoroutine(SafeboxOpenDoor(SafeboxOpenDoorRightDoor[i], false));
 
         }
-        for (int i = 0; i < Collider.Length; i++)
-            Collider[i].SetActive(false);
+        //for (int i = 0; i < Collider.Length; i++)
+        //    Collider[i].SetActive(false);
+        UIManager.Instance.ObjectUIHide(PlayerType.FirstPlayer);
+        UIManager.Instance.ObjectUIHide(PlayerType.SecondPlayer);
     }
 
     IEnumerator SafeboxOpenDoor(Transform Door, bool isLeft)

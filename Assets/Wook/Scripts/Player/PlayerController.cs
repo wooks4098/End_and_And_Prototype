@@ -380,7 +380,7 @@ public class PlayerController : MonoBehaviour
         //로프를 바라보도록 회전
         float angle = Vector3.Angle(transform.position, _ropePos);
         transform.LookAt(_ropePos);
-        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y + 50f, 0);
+        transform.rotation = Quaternion.Euler(0, transform.eulerAngles.y, 0);
         ani.SetBool("HoldingRope", true);
         switch (playerType)
         {

@@ -13,6 +13,7 @@ public class ChessClear : MonoBehaviour
         if (Open)
             return;
         Open = true;
+        GameManager.Instance.GetPlayerTrans(PlayerType.FirstPlayer).GetComponent<PlayerStatus>().ChangeHp(-40);
         for (int i = 0; i < SafeboxOpenDoorLeftDoor.Length-1; i++)
         {
             StartCoroutine(OpenDoor(SafeboxOpenDoorLeftDoor[i], true));
