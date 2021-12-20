@@ -214,6 +214,8 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
     /// </summary>
     private void PatrolBehaviour()
     {
+        agent.updateRotation = true;
+
         // 애니메이션
         animator.SetFloat("Speed", 0.1f);
 
@@ -339,18 +341,26 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
         // Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
 
         // 회전
-        agent.isStopped = true;
+        agent.updateRotation = false;
         if (agent.velocity.sqrMagnitude > Mathf.Epsilon)
         {
             transform.rotation = Quaternion.LookRotation(agent.velocity.normalized);
         }
-        agent.isStopped = false;
 
         agent.destination = targetPosition;
         agent.speed = creature.patrolSpeed;
+
+        if (targetCharacter!=null)
+        {
+            transform.LookAt(targetCharacter.transform);
+        }
+
+        // agent.updateRotation = true;
     }
     private void TrackingBehaviour()
     {
+        transform.LookAt(targetCharacter.transform);
+
         // 코루틴 진행중이면 강제로 코루틴 멈춤
         if (waitNextPatrolCoroutine != null)
         {
