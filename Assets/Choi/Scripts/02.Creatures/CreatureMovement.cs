@@ -341,6 +341,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
         // Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
 
         // 회전
+        // 회전 업데이트 멈춤
         agent.updateRotation = false;
         if (agent.velocity.sqrMagnitude > Mathf.Epsilon)
         {
@@ -350,6 +351,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
         agent.destination = targetPosition;
         agent.speed = creature.patrolSpeed;
 
+        // 타겟이 있으면 타겟 바라보기 
         if (targetCharacter!=null)
         {
             transform.LookAt(targetCharacter.transform);
