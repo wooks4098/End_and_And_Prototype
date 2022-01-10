@@ -22,6 +22,8 @@ public enum PlayerState
     SafeBox,//금고 사용중
     None, //Null로 사용
     Die,//죽음
+
+    Attack,//공격
 }
 
 public class PlayerController : MonoBehaviour
@@ -43,11 +45,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject playerCamera;
     [SerializeField] SkinnedMeshRenderer meshRenderer;
 
+    //벽타기 변수
     [SerializeField] int FallCount;
     [SerializeField] bool isClimbWallCheck;//벽타기시 클릭 가능한 상태인지
      Vector3 groundPos;
     [SerializeField] float toGroundLength; //땅까지의 거리
     [SerializeField] float fallLength; //벽타기시 떨어질 수 있는 거리
+
+    //공격 변수
+    [SerializeField] int AttackComboCount = 0;//콤보 번호 초기 0 | 공격종류 1~3
+    [SerializeField] bool CanAttack = true; // 공격 가능한지
+   // [SerializeField] bool CanNextCombo = true;//다음 공격으로 이어갈 수 있는지
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -91,12 +99,15 @@ public class PlayerController : MonoBehaviour
                 InputManager.Instance.OnFrontBackPlayer1 += Move;
                 InputManager.Instance.OnLeftRightPlayer1 += Rotation;
                 InputManager.Instance.OnRunPlayer1 += Run;
+                InputManager.Instance.OnAttackPlayer1 += Attack;
                 break;
 
             case PlayerType.SecondPlayer:
                 InputManager.Instance.OnFrontBackPlayer2 += Move;
                 InputManager.Instance.OnLeftRightPlayer2 += Rotation;
                 InputManager.Instance.OnRunPlayer2 += Run;
+                InputManager.Instance.OnAttackPlayer2 += Attack;
+
                 break;
         }
     }
@@ -110,6 +121,7 @@ public class PlayerController : MonoBehaviour
             case PlayerState.ClimbUpWall:
             case PlayerState.SafeBox:
             case PlayerState.Inventory:
+            case PlayerState.Attack:
                 moveDirection = Vector3.zero;
                 return;
         }
@@ -118,6 +130,11 @@ public class PlayerController : MonoBehaviour
     }
     void Move(MoveType moveType, PlayerState _playerState)
     {
+        switch(playerState)
+        {
+            case PlayerState.Attack:
+                return;
+        }
         switch (playerState)
         {
             case PlayerState.Walk:
@@ -129,7 +146,6 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.ClimbUpWall:
                 moveDirection = Vector3.zero;
-
                 break;
         }
     }
@@ -374,6 +390,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region 기믹-로프
     //로프잡기 시작
     public void StartHoldRope(Vector3 _ropePos)
     {
@@ -438,6 +455,73 @@ public class PlayerController : MonoBehaviour
     {
         ani.SetTrigger("ClimbupFall");
     }
+
+    #endregion
+
+
+    void Attack(PlayerState playerstate)
+    {
+        if (CanAttack == false)
+            return;
+        switch(playerstate)
+        {
+            case PlayerState.ClimbWall:
+            case PlayerState.ClimbUpWall:
+            case PlayerState.ClimbWallFall:
+            case PlayerState.HoldRope:
+            case PlayerState.SafeBox:
+            case PlayerState.Die:
+                return;
+        }
+        if(AttackComboCount<3)
+        {
+            PlayerStateChange(PlayerState.Attack);
+            AttackComboCount++;
+            ani.SetTrigger("Attack" + AttackComboCount.ToString());
+            if(AttackComboCount <3)
+            {
+                StartCoroutine(ComboEndCheck(AttackComboCount));
+                StartCoroutine(AniNextCombo());
+
+            }
+            else
+                StartCoroutine(AttackCoolTime());
+            CanAttack = false;
+        }
+    }
+
+    //콤보를 이어가지 않아 끝났는지 확인하는 함수
+    IEnumerator ComboEndCheck(int lastComboNumber)
+    {
+        yield return new WaitForSeconds(1f);
+        if( lastComboNumber == AttackComboCount)
+        {
+            CanAttack = false;
+            PlayerStateChange(PlayerState.Walk);
+            yield return new WaitForSeconds(0.2f);
+            CanAttack = true;
+            AttackComboCount = 0;
+        }
+    }
+
+    IEnumerator AniNextCombo()
+    {
+        yield return new WaitForSeconds(0.7f);
+        CanAttack = true;
+        PlayerStateChange(PlayerState.Walk);
+
+    }
+
+    IEnumerator AttackCoolTime()
+    {
+        CanAttack = false;
+        yield return new WaitForSeconds(0.7f);
+        PlayerStateChange(PlayerState.Walk);
+        yield return new WaitForSeconds(0.3f);
+        CanAttack = true;
+        AttackComboCount = 0;
+    }
+
 
     public void PlayerStateChange(PlayerState _playerState)
     {

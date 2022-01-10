@@ -22,6 +22,9 @@ public class InputManager : MonoBehaviour, IInput
     public Action<MoveType, PlayerState> OnLeftRightPlayer2 { get; set; }
     public Action<bool> OnRunPlayer1 { get; set; }
     public Action<bool> OnRunPlayer2 { get; set; }
+
+    public Action<PlayerState> OnAttackPlayer1 { get; set; }
+    public Action<PlayerState> OnAttackPlayer2 { get; set; }
     public Action<PlayerType, PlayerState> OnUsePlayer1 { get; set; }
     public Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }
     public Action OnInventoryOpenPlayer1 { get; set; }
@@ -60,7 +63,7 @@ public class InputManager : MonoBehaviour, IInput
         OnUse();
         OnOpenInventory();
         OnQuickSolt();
-
+        OnAttack();
     }
 
     #region Move
@@ -176,6 +179,16 @@ public class InputManager : MonoBehaviour, IInput
 
     #endregion
 
+    void OnAttack()
+    {
+        //플레이어1
+        if (Input.GetKeyDown(KeyCode.J))
+            OnAttackPlayer1?.Invoke(player1State);
+
+        //플레이어2
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+            OnAttackPlayer2?.Invoke(player2State);
+    }
 
     #region Use
     void OnUse()
