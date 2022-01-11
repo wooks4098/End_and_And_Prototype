@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
     //공격 변수
     [SerializeField] int AttackComboCount = 0;//콤보 번호 초기 0 | 공격종류 1~3
     [SerializeField] bool CanAttack = true; // 공격 가능한지
+    [SerializeField] ParticleSystem[] AttackParticle;
    // [SerializeField] bool CanNextCombo = true;//다음 공격으로 이어갈 수 있는지
     private void Awake()
     {
@@ -478,6 +479,7 @@ public class PlayerController : MonoBehaviour
             PlayerStateChange(PlayerState.Attack);
             AttackComboCount++;
             ani.SetTrigger("Attack" + AttackComboCount.ToString());
+            StartCoroutine(ShowParticle());
             if(AttackComboCount <3)
             {
                 StartCoroutine(ComboEndCheck(AttackComboCount));
@@ -489,7 +491,23 @@ public class PlayerController : MonoBehaviour
             CanAttack = false;
         }
     }
+    IEnumerator ShowParticle()
+    {
+        switch (AttackComboCount)
+        {
+            case 1:
+            case 3:
+                yield return new WaitForSeconds(0.3f);
+                break;
+            case 2:
+                yield return new WaitForSeconds(0.4f);
+                break;
 
+
+        }
+    AttackParticle[AttackComboCount-1].Emit(1);
+
+    }
     //콤보를 이어가지 않아 끝났는지 확인하는 함수
     IEnumerator ComboEndCheck(int lastComboNumber)
     {
