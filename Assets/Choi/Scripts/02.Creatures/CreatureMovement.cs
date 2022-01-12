@@ -13,6 +13,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
 
     [SerializeField] bool isActive;
     [SerializeField] bool hasTarget;
+    [SerializeField] bool isAttack;
 
     [SerializeField] Creature creature;
     private NavMeshAgent agent;
@@ -460,12 +461,13 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
     public void ExitAttack()
     {
         animator.SetBool("Attack", false);
+        Debug.Log("EixtAttackBehaviour()");
     }
 
     public void Cancel()
     {
         ExitAttack();
         // targetCharacter = null;
-        agent.isStopped = true;        
+        agent.isStopped = true; 
     }
 }
