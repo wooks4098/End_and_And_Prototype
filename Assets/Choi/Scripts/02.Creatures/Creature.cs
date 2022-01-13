@@ -36,5 +36,6 @@ public enum CreatureState
 {
     Patrol = 0,
     Tracking,
+    Casting,
     Attack,
 }

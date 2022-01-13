@@ -13,7 +13,11 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
 
     [SerializeField] bool isActive;
     [SerializeField] bool hasTarget;
-    // [SerializeField] bool isAttacking;
+    [SerializeField] bool isCasting = false;
+    [SerializeField] bool canAttack = false;
+
+    public bool IsCasting { get { return isCasting; } set { isCasting = value; } }
+    public bool CanAttack { get { return canAttack; } set { canAttack = value; } }
 
     [SerializeField] Creature creature;
     private NavMeshAgent agent;
@@ -79,6 +83,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
         transform.position = createPosition.position;
 
         creature.state = CreatureState.Patrol;
+
         timeForWaitingPatrol = 5f;
 
         //currentPosition = 
@@ -114,6 +119,8 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
 
     private void Update()
     {
+        if (isCasting) return;
+
         FindTargetCharacter();
 
         if (hasTarget)
@@ -121,12 +128,22 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
             // 공격 범위에 들어오면
             if (IsInAttackRange())
             {
-                creature.state = CreatureState.Attack;
+                if(!canAttack)
+                {
+                    creature.state = CreatureState.Casting;
+                }
+                else
+                {
+                    creature.state = CreatureState.Attack;
+                }
             }
             // 트래킹 범위에 들어오면
             else if (IsInTrackingRange())
             {
-                creature.state = CreatureState.Tracking;
+                if(!isCasting)
+                {
+                    creature.state = CreatureState.Tracking;
+                }
             }
         }
         else
@@ -173,7 +190,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
                     tempTarget = activeCollider.gameObject.GetComponent<CreaturePlayer>();
 
                     // 애니메이션 멈춤
-                    animator.SetBool("Attack", false);                    
+                    // animator.ResetTrigger("Run Attack");
                 }
 
                 // 타겟 지정
@@ -200,6 +217,9 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
                 break;
             case CreatureState.Tracking:
                 TrackingBehaviour();
+                break;
+            case CreatureState.Casting:
+                CastingBehaviour();
                 break;
             case CreatureState.Attack:
                 AttackBehaviour();
@@ -393,6 +413,20 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
     }
 
     /// <summary>
+    /// 캐스팅 행동
+    /// </summary>
+    private void CastingBehaviour()
+    {
+        isCasting = true;
+
+        agent.velocity = Vector3.zero;
+        agent.isStopped = true;
+
+        // 애니메이터
+        animator.SetTrigger("Prepare Attack");
+    }
+
+    /// <summary>
     /// 공격 행동
     /// </summary>
     private void AttackBehaviour()
@@ -402,14 +436,15 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
         // 플레이어를 바라보고
         transform.LookAt(targetCharacter.transform);
         agent.velocity = Vector3.zero;
-
         agent.isStopped = false;
 
         // 애니메이터
-        animator.SetTrigger("Attack");
+        animator.SetTrigger("Run Attack");
+        animator.ResetTrigger("Prepare Attack");
 
         // 공격한다
         Debug.Log("AttackBehaviour()");
+        canAttack = false;
     }
 
     /// <summary>
