@@ -9,7 +9,7 @@ using UnityEngine.AI;
 /// </summary>
 public class CreatureMovement : MonoBehaviour, ICreatureAction
 {
-    [SerializeField] Animator animator;
+    Animator animator;
 
     [SerializeField] bool isActive;
     [SerializeField] bool hasTarget;
