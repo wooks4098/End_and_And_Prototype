@@ -495,7 +495,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
     /// </summary>
     public void ExitAttack()
     {
-        animator.ResetTrigger("Attack");
+        animator.ResetTrigger("Run Attack");
     }
 
     public void Cancel()
@@ -503,5 +503,12 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
         ExitAttack();
         // targetCharacter = null;
         agent.isStopped = true; 
+    }
+
+    public void BiteTest()
+    {
+        if (targetCharacter.GetIsDead()) return;
+
+        targetCharacter.GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
     }
 }

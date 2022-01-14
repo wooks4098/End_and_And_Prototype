@@ -12,4 +12,5 @@ public class CreatureHp : MonoBehaviour
     {
         currentHp = maxHp;
     }
+
 }
