@@ -119,16 +119,14 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
 
     private void Update()
     {
-        if (isCasting) return;
-
-        FindTargetCharacter();
+        Debug.Log(creature.state);
 
         if (hasTarget)
         {
             // 공격 범위에 들어오면
             if (IsInAttackRange())
             {
-                if(!canAttack)
+                if (!canAttack)
                 {
                     creature.state = CreatureState.Casting;
                 }
@@ -143,15 +141,28 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
                 if(!isCasting)
                 {
                     creature.state = CreatureState.Tracking;
+
+                    FindTargetCharacter();
+                }
+                else if (canAttack)
+                {
+                    creature.state = CreatureState.Attack;
                 }
             }
         }
         else
         {
             creature.state = CreatureState.Patrol;
+
+            FindTargetCharacter();
         }
 
         DecisionBehaviour(creature.state);
+
+        //if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        //{
+        //  animator.SetTrigger("Exit");
+        //}
     }
 
     /// <summary>
@@ -190,6 +201,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
                     tempTarget = activeCollider.gameObject.GetComponent<CreaturePlayer>();
 
                     // 애니메이션 멈춤
+                    // animator.ResetTrigger("Prepare Attack");
                     // animator.ResetTrigger("Run Attack");
                 }
 
@@ -236,6 +248,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
     private void PatrolBehaviour()
     {
         agent.updateRotation = true;
+        agent.isStopped = false;
 
         // 애니메이션
         animator.SetFloat("Speed", 0.1f);
@@ -391,14 +404,13 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
         }
 
         // 임시 타겟이 비어있을 때만 코루틴 실행
-        if(tempTarget == null)
+        if (tempTarget == null)
         {
             if (timeLastPatrolCoroutine == null)
             {
                 timeLastPatrolCoroutine = StartCoroutine(TimeLastPatrol());
             }
         }
-
 
         // 애니메이션
         animator.SetFloat("Speed", 0.6f);
@@ -509,6 +521,9 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
     {
         if (targetCharacter.GetIsDead()) return;
 
-        targetCharacter.GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
+        if (targetCharacter != null)
+        {
+            targetCharacter.GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
+        }        
     }
 }

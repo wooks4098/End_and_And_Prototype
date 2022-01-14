@@ -33,10 +33,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         goCastingProjector.SetActive(false);
 
         //animator.ResetTrigger("Prepare Attack");
-        GetComponent<CreatureMovement>().IsCasting = false;
         GetComponent<CreatureMovement>().CanAttack = true;
-        // creature.state = CreatureState.Attack;
-
-        //animator.SetTrigger("Run Attack");
+        GetComponent<CreatureMovement>().IsCasting = false;
     }
 }
