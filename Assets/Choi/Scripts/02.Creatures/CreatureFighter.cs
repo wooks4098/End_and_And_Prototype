@@ -27,6 +27,10 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         
     }
 
+
+
+
+
     public void OnCastingProjector()
     {
         //animator.SetTrigger("Run Attack");

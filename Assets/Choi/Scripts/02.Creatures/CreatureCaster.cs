@@ -9,6 +9,7 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     public void StartSpellCastBehaviour()
     {
         GetComponent<CreatureActionScheduler>().StartAction(this);
+        CastingBehaviour();
     }
     public void Cancel()
     {
@@ -30,4 +31,6 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
         // 애니메이터
         GetComponent<Animator>().SetTrigger("Prepare Attack");
     }
+
+
 }
