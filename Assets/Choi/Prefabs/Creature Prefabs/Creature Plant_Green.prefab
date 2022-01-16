@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6234120361456713371}
   - component: {fileID: 1266126407}
   - component: {fileID: 1891575391346633029}
-  - component: {fileID: 1266126405}
+  - component: {fileID: 4159632306255250440}
   - component: {fileID: 222006884619837485}
   - component: {fileID: 2367905925721017468}
   - component: {fileID: 7002653051419668342}
@@ -181,7 +181,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6ae0ad0034a4704889175104d4d2b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1266126405
+  creature:
+    viewDistance: 10
+    patrolRange: 100
+    patrolSpeed: 2
+    trackingRange: 60
+    trackingSpeed: 4
+    attackRange: 20
+    type: 0
+    state: 0
+--- !u!114 &4159632306255250440
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,7 +199,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6234120361449440225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0929e564d3660534f8f84e1760588a07, type: 3}
+  m_Script: {fileID: 11500000, guid: c0ca74d6ca970324c96bb6d53b4e0958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isActive: 0
@@ -200,9 +209,9 @@ MonoBehaviour:
   creature:
     viewDistance: 10
     patrolRange: 100
-    patrolSpeed: 10
+    patrolSpeed: 2
     trackingRange: 60
-    trackingSpeed: 20
+    trackingSpeed: 4
     attackRange: 20
     type: 0
     state: 0

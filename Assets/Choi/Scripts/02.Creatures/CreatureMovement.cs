@@ -7,7 +7,7 @@ using UnityEngine.AI;
 /// <summary>
 /// 크리쳐의 움직임을 관리하는 클래스
 /// </summary>
-public class CreatureMover : MonoBehaviour, ICreatureAction
+public class CreatureMovement : MonoBehaviour, ICreatureAction
 {
     Animator animator;
 
@@ -508,6 +508,11 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     public void ExitAttack()
     {
         animator.ResetTrigger("Run Attack");
+    }
+
+    public void StartPatrolBehaviour()
+    {
+        GetComponent<CreatureActionScheduler>().StartAction(this);
     }
 
     public void Cancel()

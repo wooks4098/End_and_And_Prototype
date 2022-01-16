@@ -5,10 +5,16 @@ using UnityEngine.AI;
 
 public class CreatureCaster : MonoBehaviour, ICreatureAction
 {
+
+    public void StartSpellCastBehaviour()
+    {
+        GetComponent<CreatureActionScheduler>().StartAction(this);
+    }
     public void Cancel()
     {
         
     }
+
 
 
     /// <summary>

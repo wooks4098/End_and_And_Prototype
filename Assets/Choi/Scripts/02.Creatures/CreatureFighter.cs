@@ -17,6 +17,11 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         agent = GetComponent<NavMeshAgent>();        
     }
 
+    public void StartAttackBehaviour()
+    {
+        GetComponent<CreatureActionScheduler>().StartAction(this);
+    }
+
     public void Cancel()
     {
         
@@ -33,7 +38,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         goCastingProjector.SetActive(false);
 
         //animator.ResetTrigger("Prepare Attack");
-        GetComponent<CreatureMover>().CanAttack = true;
-        GetComponent<CreatureMover>().IsCasting = false;
+        GetComponent<CreatureMovement>().CanAttack = true;
+        GetComponent<CreatureMovement>().IsCasting = false;
     }
 }
