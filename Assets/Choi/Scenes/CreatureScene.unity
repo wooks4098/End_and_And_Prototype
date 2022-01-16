@@ -3015,7 +3015,8 @@ PrefabInstance:
       propertyPath: creature.attackDistance
       value: 20
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5463026960665797509, guid: 61463771dae32cc4e95a611709d62e04, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 61463771dae32cc4e95a611709d62e04, type: 3}
 --- !u!1001 &6234120360192560549
 PrefabInstance:
@@ -3024,6 +3025,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1891575391346633029, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
+      propertyPath: createPosition
+      value: 
+      objectReference: {fileID: 1784403515}
     - target: {fileID: 4159632306255250440, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
       propertyPath: m_Enabled
       value: 0
