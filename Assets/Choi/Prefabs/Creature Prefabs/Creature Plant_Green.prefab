@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6234120361449803777}
   - component: {fileID: 6234120361456713371}
   - component: {fileID: 1266126407}
+  - component: {fileID: 1891575391346633029}
   - component: {fileID: 1266126405}
   - component: {fileID: 222006884619837485}
   - component: {fileID: 2367905925721017468}
@@ -168,6 +169,18 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1891575391346633029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6234120361449440225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6ae0ad0034a4704889175104d4d2b78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1266126405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +195,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isActive: 0
   hasTarget: 0
+  isCasting: 0
+  canAttack: 0
   creature:
     viewDistance: 10
     patrolRange: 100
@@ -235,6 +250,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goCastingProjector: {fileID: 5329036736552207776}
+  creature:
+    viewDistance: 10
+    patrolRange: 100
+    patrolSpeed: 2
+    trackingRange: 60
+    trackingSpeed: 4
+    attackRange: 20
+    type: 0
+    state: 0
 --- !u!1 &6234120361449440227
 GameObject:
   m_ObjectHideFlags: 0
@@ -6218,13 +6242,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}
---- !u!1 &5329036736552207776 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4503587542559446519, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}
-  m_PrefabInstance: {fileID: 8614119102477422679}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5329036736552245632 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4503587542559803863, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}
+  m_PrefabInstance: {fileID: 8614119102477422679}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5329036736552207776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4503587542559446519, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}
   m_PrefabInstance: {fileID: 8614119102477422679}
   m_PrefabAsset: {fileID: 0}

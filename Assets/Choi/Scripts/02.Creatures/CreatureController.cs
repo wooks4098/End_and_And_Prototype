@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class CreatureController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    CreatureMover mover;
+    CreatureHp hp;
+    CreatureFighter fighter;
+
+
+    private void Awake()
     {
-        
+        mover = GetComponent<CreatureMover>();
+        hp = GetComponent<CreatureHp>();
+        fighter = GetComponent<CreatureFighter>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
