@@ -12,6 +12,7 @@ TagManager:
   - SafeBoxA
   - ClimbWall
   - Enemy
+  - PushObjectEndPos
   layers:
   - Default
   - TransparentFX

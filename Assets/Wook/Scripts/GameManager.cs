@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] Inventory inventoryP2;
     GameObject gPlayer1;
     GameObject gPlayer2;
-
     private void Awake()
     {
 

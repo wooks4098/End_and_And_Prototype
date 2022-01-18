@@ -20,6 +20,9 @@ public enum PlayerState
     HoldRope,//로프 잡는중
     Inventory, //인벤토리 오픈
     SafeBox,//금고 사용중
+
+    PushObject,//미는 오브젝트
+
     None, //Null로 사용
     Die,//죽음
 
@@ -123,6 +126,7 @@ public class PlayerController : MonoBehaviour
             case PlayerState.SafeBox:
             case PlayerState.Inventory:
             case PlayerState.Attack:
+            case PlayerState.PushObject:
                 moveDirection = Vector3.zero;
                 return;
         }
