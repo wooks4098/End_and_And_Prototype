@@ -12,5 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c755d1ba0f34c34692ec119add91242, type: 3}
   m_Name: Creature
   m_EditorClassIdentifier: 
+  viewDistance: 10
+  patrolRange: 100
+  patrolSpeed: 10
+  trackingRange: 60
+  trackingSpeed: 20
+  attackRange: 20
+  hasTarget: 0
   type: 0
-  state: 0

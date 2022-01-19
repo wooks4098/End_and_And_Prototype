@@ -63,14 +63,38 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     private void Update()
     {
         FindTargetCharacter();
+
+        if(IsInTrackingRange())
+        {
+            StartTrackingBehaviour();
+        }
     }
 
+    /// <summary>
+    /// 플레이어와의 거리 계산 (트래킹 범위)
+    /// </summary>
+    private bool IsInTrackingRange()
+    {
+        if (targetCharacter == null) return false;
+
+        // 플레이어와 크리처의 거리 계산
+        float distanceToPlayer = Vector3.Distance(targetCharacter.transform.position, transform.position);
+        // Debug.Log(distanceToPlayer);
+
+        // 비교한 값이 tracking 범위보다 적으면 true
+        return distanceToPlayer < creature.GetTrackingRange();
+    }
+
+    /// <summary>
+    /// StartMoveBehavour?
+    /// </summary>
     public void StartPatrolBehaviour()
     {
         GetComponent<CreatureActionScheduler>().StartAction(this);
 
         Patrol();
     }
+
     private void Patrol()
     {
         agent.updateRotation = true;
@@ -99,7 +123,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
 
     public void StartTrackingBehaviour()
     {
-        GetComponent<CreatureActionScheduler>().StartAction(this);
+        // GetComponent<CreatureActionScheduler>().StartAction(this);
 
         Tracking();
     }

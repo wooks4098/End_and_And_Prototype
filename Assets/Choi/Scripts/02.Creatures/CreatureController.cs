@@ -11,8 +11,8 @@ public class CreatureController : MonoBehaviour
     public CreatureState state;
 
     // 컴포넌트
-    private CreaturePatroller patroller;
-    private CreatureTracker tracker;    
+    // private CreaturePatroller patroller;
+    // private CreatureTracker tracker;    
     private CreatureMover mover;    
     private CreatureCaster caster;
     private CreatureFighter fighter;
@@ -21,7 +21,7 @@ public class CreatureController : MonoBehaviour
     private NavMeshAgent agent;
 
     /* ============== 체크용 bool 타입 ================ */
-    [SerializeField] bool hasTarget = false; // 타겟유무
+    // [SerializeField] bool hasTarget = false; // 타겟유무
     [SerializeField] bool isCasting = false; // 캐스팅 중인지
     [SerializeField] bool canAttack = false; // 공격할 수 있는지
 
@@ -100,8 +100,9 @@ public class CreatureController : MonoBehaviour
 
     private void Awake()
     {
-        patroller = GetComponent<CreaturePatroller>();
-        tracker = GetComponent<CreatureTracker>();
+        // patroller = GetComponent<CreaturePatroller>();
+        // tracker = GetComponent<CreatureTracker>();
+        mover = GetComponent<CreatureMover>();
         caster = GetComponent<CreatureCaster>();
         fighter = GetComponent<CreatureFighter>();
 
@@ -124,41 +125,23 @@ public class CreatureController : MonoBehaviour
     /// </summary>
     private void DecideBehaviours()
     {
-        if (hasTarget)
+        // 공격 범위에 들어오면
+        if (IsInAttackRange())
         {
-            // 공격 범위에 들어오면
-            if (IsInAttackRange())
+            if (!canAttack)
             {
-                if (!canAttack)
-                {
-                    CastBehaviour();
-                }
-                else
-                {
-                    AttackBehaviour();
-                }
+                CastBehaviour();
             }
-            // 트래킹 범위에 들어오면
-            else if (IsInTrackingRange())
+            else
             {
-                if (!isCasting)
-                {
-                    TrackBehaviour();
-                }
-                else if (canAttack)
-                {
-                    AttackBehaviour();
-                }
+                AttackBehaviour();
             }
         }
         else
         {
-            PatrolBehaviour();
+            MoveBehaviour();
         }
     }
-
-    
-
 
 
     #region CalculateRanges
@@ -178,34 +161,14 @@ public class CreatureController : MonoBehaviour
         return distanceToPlayer < creature.GetAttackRange();
     }
 
-    /// <summary>
-    /// 플레이어와의 거리 계산 (트래킹 범위)
-    /// </summary>
-    private bool IsInTrackingRange()
-    {
-        if (targetCharacter == null) return false;
-
-        // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(targetCharacter.transform.position, transform.position);
-        // Debug.Log(distanceToPlayer);
-
-        // 비교한 값이 tracking 범위보다 적으면 true
-        return distanceToPlayer < creature.GetTrackingRange();
-    }
-
     #endregion
        
 
     #region Behaviours()
 
-    private void PatrolBehaviour()
+    private void MoveBehaviour()
     {
         mover.StartPatrolBehaviour();
-    }
-
-    private void TrackBehaviour()
-    {
-        mover.StartTrackingBehaviour();
     }
 
     private void CastBehaviour()
