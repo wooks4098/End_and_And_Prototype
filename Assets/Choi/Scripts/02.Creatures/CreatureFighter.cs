@@ -5,11 +5,14 @@ using UnityEngine.AI;
 
 public class CreatureFighter : MonoBehaviour, ICreatureAction
 {
+    // 컴포넌트
     Animator animator;
-    NavMeshAgent agent;    
-
-    [SerializeField] GameObject goCastingProjector; // 캐스팅동안 범위를 표시할 프로젝터
+    NavMeshAgent agent;
+        
     [SerializeField] Creature creature;
+
+    
+
 
     private void Awake()
     {
@@ -24,25 +27,12 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
 
     public void Cancel()
     {
-        
+        // StopAttack();
+        // target = null;
+        GetComponent<CreatureTracker>().Cancel();
     }
 
 
 
 
-
-    public void OnCastingProjector()
-    {
-        //animator.SetTrigger("Run Attack");
-        goCastingProjector.SetActive(true);
-    }
-
-    public void OffCastingProjector()
-    {
-        goCastingProjector.SetActive(false);
-
-        //animator.ResetTrigger("Prepare Attack");
-        GetComponent<CreatureMovement>().CanAttack = true;
-        GetComponent<CreatureMovement>().IsCasting = false;
-    }
 }

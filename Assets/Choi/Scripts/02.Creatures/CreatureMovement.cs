@@ -114,7 +114,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
         // agent.stoppingDistance를 이용하면 어느 정도 거리에서 멈출지 설정할 수 있다.
         // agent.stoppingDistance = creature.attackDistance;
 
-        timeForWaitingPatrol = 5f;
+        // timeForWaitingPatrol = 5f;
     }
 
     private void Update()

@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 1081875622058114655}
   - component: {fileID: 1080578380088852694}
   - component: {fileID: 3856790153505863388}
-  - component: {fileID: 5463026960665797509}
   - component: {fileID: 8783273447828211790}
   m_Layer: 0
   m_Name: Creature Box
@@ -137,34 +136,6 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5463026960665797509
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081875622058114654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0929e564d3660534f8f84e1760588a07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isActive: 1
-  hasTarget: 0
-  creature:
-    viewDistance: 10
-    patrolRange: 100
-    patrolSpeed: 20
-    trackingRange: 60
-    trackingSpeed: 20
-    attackRange: 20
-    type: 0
-    state: 0
-  player: {fileID: 0}
-  createPosition: {fileID: 0}
-  eyeTransform: {fileID: 0}
-  timeForWaitingPatrol: 5
-  timeSinceLastPatrol: 0
 --- !u!114 &8783273447828211790
 MonoBehaviour:
   m_ObjectHideFlags: 0
