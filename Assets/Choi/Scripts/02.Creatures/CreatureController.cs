@@ -22,14 +22,9 @@ public class CreatureController : MonoBehaviour
 
     /* ============== 체크용 bool 타입 ================ */
     // [SerializeField] bool hasTarget = false; // 타겟유무
-    [SerializeField] bool isCasting = false; // 캐스팅 중인지
+    // [SerializeField] bool isCasting = false; // 캐스팅 중인지
     [SerializeField] bool canAttack = false; // 공격할 수 있는지
-
-    /* ============== 타겟 ================ */
-    // 임시 타겟
-    [SerializeField] CreaturePlayer tempTarget;
-    // 실제 타겟
-    [SerializeField] CreaturePlayer targetCharacter;
+    public bool CanAttack { get { return canAttack; } set { canAttack = value; } }
 
     /* ============== 좌표 ================ */
     // 생성 좌표
@@ -65,10 +60,6 @@ public class CreatureController : MonoBehaviour
         // 공격 거리
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, creature.GetAttackRange());
-
-        // 다음 (목표) 위치
-        // Gizmos.color = Color.cyan;
-        // Gizmos.DrawWireSphere(targetPosition.position, 3);
     }
 
     #endregion
@@ -86,9 +77,6 @@ public class CreatureController : MonoBehaviour
         transform.position = createPosition.position;
 
         state = CreatureState.Patrol;
-
-        agent.destination = targetPosition;
-        agent.speed = creature.GetPatrolSpeed();
     }
     private void OnDisable()
     {
@@ -128,18 +116,21 @@ public class CreatureController : MonoBehaviour
         // 공격 범위에 들어오면
         if (IsInAttackRange())
         {
-            if (!caster.GetIsCasting())
+            // if (canAttack)
+            // {
+            //     AttackBehaviour();
+            // }
+            // 캐스터 컴포넌트가 null이 아니고
+            // isCasting이 false 일 때(= 캐스팅 중이 아닐 때)만 실행 
+            // else 
+            if (caster != null && !caster.GetIsCasting())
             {
                 CastBehaviour();
-            }
-            else if (canAttack)
-            {
-                AttackBehaviour();
             }
         }
         else
         {
-            if (caster.GetIsCasting())
+            if (!caster.GetIsCasting())
             {
                 MoveBehaviour();
             }
@@ -182,6 +173,7 @@ public class CreatureController : MonoBehaviour
 
     private void AttackBehaviour()
     {
+        caster.Cancel();
         fighter.StartAttackBehaviour();
     }
 

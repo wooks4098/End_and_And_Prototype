@@ -9,15 +9,20 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     private NavMeshAgent agent;
     private Animator animator;
 
+    // 크리쳐 정보
+    [SerializeField] CreatureSO creature;
+
     // 캐스팅동안 범위를 표시할 프로젝터
     [SerializeField] GameObject goCastingProjector; 
 
     // 타겟 캐릭터
-    [SerializeField] CreaturePlayer targetCharacter;
+    [SerializeField] List<CreaturePlayer> targetCharacter;
 
-    // 체크용 bool 타입 변수
-    private bool isCasting = false;
+    /* ============== 체크용 bool 타입 ============== */
+    // 캐스팅 중인가
+    [SerializeField] bool isCasting = false;
     public bool GetIsCasting() { return isCasting; }
+
 
     private void Awake()
     {
@@ -39,8 +44,34 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
         isCasting = true;
 
         // 애니메이터
-        animator.SetTrigger("Prepare Attack");        
+        animator.SetTrigger("Prepare Attack");
     }
+
+    /// <summary>
+    ///  캐스팅동안 타겟 캐릭터 찾기
+    /// </summary>
+    private void FindTargetCharacterWhileCasting()
+    {
+        Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.GetAttackRange());
+
+        //if(hitCollider.Length != 0)
+        //{
+        //    Debug.Log("뭔가 찾았습니다!");
+        //}
+
+        foreach (var activeCollider in hitCollider)
+        {
+            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
+            if (activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
+                && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead()
+                && activeCollider.gameObject.activeSelf)
+            {
+                // 타겟 지정
+                targetCharacter.Add(activeCollider.GetComponent<CreaturePlayer>());
+            }
+        }
+    }
+
 
     #region call in casting animation 
     /// <summary>
@@ -53,9 +84,16 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     }
     public void OffCastingProjector()
     {
-        goCastingProjector.SetActive(false);
+        // 캐스팅이 끝나면서 타겟찾기
+        FindTargetCharacterWhileCasting();
 
+        // 장판용 프로젝터를 끄고
+        goCastingProjector.SetActive(false);
+        // 캐스팅 중임을 false로
         isCasting = false;
+
+        // 공격할 수 있다고 표시
+        GetComponent<CreatureController>().CanAttack = true;
 
         // animator.ResetTrigger("Prepare Attack");
         // GetComponent<CreatureMovement>().CanAttack = true;

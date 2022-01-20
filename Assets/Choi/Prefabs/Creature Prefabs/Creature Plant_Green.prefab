@@ -268,10 +268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
   state: 0
-  isCasting: 0
   canAttack: 0
-  tempTarget: {fileID: 0}
-  targetCharacter: {fileID: 0}
   createPosition: {fileID: 0}
 --- !u!114 &222006884619837485
 MonoBehaviour:
@@ -316,7 +313,7 @@ MonoBehaviour:
   timeSinceLastPatrol: 0
   hasTarget: 0
   tempTarget: {fileID: 0}
-  targetCharacter: {fileID: 0}
+  trackingTargetCharacter: {fileID: 0}
   createPosition: {fileID: 0}
 --- !u!114 &4113688123481055379
 MonoBehaviour:
@@ -330,8 +327,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad52aba9734879a4782d7c3f0d2c8ef7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goCastingProjector: {fileID: 0}
-  targetCharacter: {fileID: 0}
+  creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
+  goCastingProjector: {fileID: 5329036736552207776}
+  targetCharacter:
+  - {fileID: 0}
+  isCasting: 0
 --- !u!114 &7002653051419668342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,7 +344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6831decedf6cd374a9245b29cc2e84d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creature: {fileID: 0}
+  creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
+  isAttacking: 0
   tempTarget: {fileID: 0}
   targetCharacter: {fileID: 0}
 --- !u!1 &6234120361449440227
@@ -6282,7 +6283,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4503587542559446519, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4503587542559803863, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}
       propertyPath: m_RootOrder
@@ -6333,5 +6334,10 @@ PrefabInstance:
 --- !u!4 &5329036736552245632 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4503587542559803863, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}
+  m_PrefabInstance: {fileID: 8614119102477422679}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5329036736552207776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4503587542559446519, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}
   m_PrefabInstance: {fileID: 8614119102477422679}
   m_PrefabAsset: {fileID: 0}

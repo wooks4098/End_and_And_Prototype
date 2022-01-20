@@ -31,8 +31,8 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     // 임시 타겟
     [SerializeField] CreaturePlayer tempTarget;
     // 실제 타겟
-    [SerializeField] CreaturePlayer targetCharacter;
-    public CreaturePlayer GetTargetCharacter() { return targetCharacter; }
+    [SerializeField] CreaturePlayer trackingTargetCharacter;
+    public CreaturePlayer GetTargetCharacter() { return trackingTargetCharacter; }
 
     // 다음 포지션
     private Vector3 v3nextPosition;
@@ -43,6 +43,12 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     [SerializeField] Transform createPosition;
 
 
+    private void OnDrawGizmos()
+    {
+        // 다음 (목표) 위치
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(v3nextPosition, 3);
+    }
 
 
     private void OnEnable()
@@ -63,10 +69,12 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     }
     private void Update()
     {
-        FindTargetCharacter();
+        FindTrackingTargetCharacter();
 
-        if(IsInTrackingRange() && !GetComponent<CreatureController>().IsInAttackRange())
+        if(IsInTrackingRange())
         {
+            if (GetComponent<CreatureCaster>().GetIsCasting()) return;
+
             StartTrackingBehaviour();
         }
     }
@@ -76,10 +84,10 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     /// </summary>
     private bool IsInTrackingRange()
     {
-        if (targetCharacter == null) return false;
+        if (trackingTargetCharacter == null) return false;
 
         // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(targetCharacter.transform.position, transform.position);
+        float distanceToPlayer = Vector3.Distance(trackingTargetCharacter.transform.position, transform.position);
         // Debug.Log(distanceToPlayer);
 
         // 비교한 값이 tracking 범위보다 적으면 true
@@ -103,10 +111,13 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         agent.updateRotation = true;
         agent.isStopped = false;
 
+        agent.destination = v3nextPosition;
+        agent.speed = creature.GetPatrolSpeed();
+
         // 애니메이션
         animator.SetFloat("Speed", 0.1f);
 
-        // 지정한 도착했는지
+        // 지정한 위치에 도착했는지
         if (IsArrive())
         {
             // 도착했으면 1. 애니메이션 Idle로
@@ -133,7 +144,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     }
     private void Tracking()
     {
-        transform.LookAt(targetCharacter.transform);
+        transform.LookAt(trackingTargetCharacter.transform);
 
         // 임시 타겟이 비어있을 때만 코루틴 실행
         if (tempTarget == null)
@@ -148,7 +159,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         GetComponent<Animator>().SetFloat("Speed", 0.6f);
 
         // 다음 목표 좌표를 플레이어로 설정
-        v3nextPosition = targetCharacter.transform.position;
+        v3nextPosition = trackingTargetCharacter.transform.position;
 
         // 다음 목표로 이동
         agent.destination = v3nextPosition;
@@ -223,7 +234,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
                     // hasTarget = false;
 
                     // 2. 실제 타겟을 비우고
-                    targetCharacter = null;
+                    trackingTargetCharacter = null;
 
                     // 3. 새로운 좌표를 지정
                     GetComponent<CreaturePatroller>().UpdatePath();
@@ -234,8 +245,6 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
             }
         }
     }
-
-
 
     /// <summary>
     /// 좌표를 갱신하는 메서드
@@ -277,7 +286,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         }
 
         agent.destination = v3nextPosition;
-        agent.speed = 10/*creature.patrolSpeed*/;
+        agent.speed = creature.GetPatrolSpeed();
 
         // 타겟이 있으면 타겟 바라보기 
         // if (targetCharacter != null)
@@ -289,12 +298,10 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     }
 
     /// <summary>
-    ///  타겟 캐릭터 설정
+    ///  쫓아갈 타겟 캐릭터 찾기
     /// </summary>
-    private void FindTargetCharacter()
+    private void FindTrackingTargetCharacter()
     {
-        // Cancel();
-
         Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.GetTrackingRange());
 
         //if(hitCollider.Length != 0)
@@ -322,14 +329,10 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
                 {
                     // 임시타겟 지정
                     tempTarget = activeCollider.gameObject.GetComponent<CreaturePlayer>();
-
-                    // 애니메이션 멈춤
-                    // animator.ResetTrigger("Prepare Attack");
-                    // animator.ResetTrigger("Run Attack");
                 }
 
                 // 타겟 지정
-                targetCharacter = tempTarget;
+                trackingTargetCharacter = tempTarget;
                 agent.isStopped = false;
 
                 hasTarget = true;

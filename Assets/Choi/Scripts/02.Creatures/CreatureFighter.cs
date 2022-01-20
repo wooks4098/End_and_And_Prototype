@@ -12,12 +12,17 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     // 크리쳐 정보
     [SerializeField] CreatureSO creature;
 
+    /* ============== 체크용 bool 타입 ============== */
+    // 공격 중인가
+    [SerializeField] bool isAttacking = false;
+    public bool GetIsAttacking() { return isAttacking; }
+
+
     /* ============== 타겟 ================ */
     // 임시 타겟
     [SerializeField] CreaturePlayer tempTarget;
     // 실제 타겟
     [SerializeField] CreaturePlayer targetCharacter;
-
 
 
     private void Awake()
@@ -29,33 +34,42 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     public void StartAttackBehaviour()
     {
         GetComponent<CreatureActionScheduler>().StartAction(this);
+
+        // Caster 컴포넌트가 비어있지 않으면
+        if(GetComponent<CreatureCaster>() != null)
+        {
+            // 
+        }
+
+        Attack();        
     }
 
-
-
-    /// <summary>
-    /// 플레이어와 거리 계산 (공격 범위)
-    /// </summary>
-    public bool IsInAttackRange()
+    private void Attack()
     {
-        if (GetComponent<CreatureMover>().GetTargetCharacter() == null) return false;
+        isAttacking = true;
+        if (targetCharacter == null) return;
+        
+        // 플레이어를 바라보고
+        transform.LookAt(targetCharacter.transform);
+        // 멈춘다
+        agent.velocity = Vector3.zero;
+        agent.isStopped = false;
 
-        // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(GetComponent<CreatureMover>().GetTargetCharacter().transform.position, transform.position);
-        //Debug.Log(distanceToPlayer);
+        // 애니메이터
+        animator.SetTrigger("Run Attack");
+        // animator.ResetTrigger("Prepare Attack");
 
-        // 비교한 값이 attack 범위보다 적으면 true
-        return distanceToPlayer < creature.GetAttackRange();
+        if(targetCharacter != null)
+        {
+            // 공격한다
+            Debug.Log("AttackBehaviour()");
+        }
     }
+
+
 
     public void Cancel()
     {
-        // StopAttack();
-        // target = null;
-        GetComponent<CreatureTracker>().Cancel();
+
     }
-
-
-
-
 }

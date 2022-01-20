@@ -1198,11 +1198,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 522833668}
   m_CullTransparentMesh: 1
---- !u!1 &612109042 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5329036736552207776, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
-  m_PrefabInstance: {fileID: 6234120360192560549}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &722797407
 GameObject:
   m_ObjectHideFlags: 0
@@ -2726,7 +2721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8000238563008081220, guid: 3aab4ea511d7cde4fbc755341d258caf, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8000238563008081220, guid: 3aab4ea511d7cde4fbc755341d258caf, type: 3}
       propertyPath: m_TagString
@@ -3028,14 +3023,6 @@ PrefabInstance:
       propertyPath: createPosition
       value: 
       objectReference: {fileID: 1784403515}
-    - target: {fileID: 4113688123481055379, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
-      propertyPath: goCastingProjector
-      value: 
-      objectReference: {fileID: 612109042}
-    - target: {fileID: 5329036736552207776, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6234120361449440225, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
       propertyPath: m_Name
       value: Creature Plant_Green
@@ -3237,7 +3224,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8000238563008081216, guid: 3aab4ea511d7cde4fbc755341d258caf, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -62.9
+      value: -103.4
       objectReference: {fileID: 0}
     - target: {fileID: 8000238563008081216, guid: 3aab4ea511d7cde4fbc755341d258caf, type: 3}
       propertyPath: m_LocalPosition.y
