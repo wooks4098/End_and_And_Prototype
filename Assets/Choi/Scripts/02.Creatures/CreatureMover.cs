@@ -357,8 +357,14 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
             StopCoroutine(waitNextPatrolCoroutine);
         }
 
+        // 시간 초기화
         timeForWaitingPatrol = 5f;
 
+        // target을 비운다
+        tempTarget = null;
+        trackingTargetCharacter = null;
+
+        // agent 초기화
         agent.ResetPath();
         agent.isStopped = true;
         agent.velocity = Vector3.zero;

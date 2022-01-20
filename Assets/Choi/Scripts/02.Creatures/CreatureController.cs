@@ -116,14 +116,13 @@ public class CreatureController : MonoBehaviour
         // 공격 범위에 들어오면
         if (IsInAttackRange())
         {
-            // if (canAttack)
-            // {
-            //     AttackBehaviour();
-            // }
+            if (canAttack)
+            {
+                AttackBehaviour();
+            }
             // 캐스터 컴포넌트가 null이 아니고
             // isCasting이 false 일 때(= 캐스팅 중이 아닐 때)만 실행 
-            // else 
-            if (caster != null && !caster.GetIsCasting())
+            else if (caster != null && !caster.GetIsCasting())
             {
                 CastBehaviour();
             }
@@ -173,7 +172,11 @@ public class CreatureController : MonoBehaviour
 
     private void AttackBehaviour()
     {
-        caster.Cancel();
+        // caster 컴포넌트가 있으면 caster를 cancel()
+        if(caster != null) caster.Cancel();
+        // caster 컴포넌트가 없으면 mover를 cancel()
+        else mover.Cancel();
+
         fighter.StartAttackBehaviour();
     }
 

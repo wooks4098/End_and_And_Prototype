@@ -16,7 +16,8 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     [SerializeField] GameObject goCastingProjector; 
 
     // 타겟 캐릭터
-    [SerializeField] List<CreaturePlayer> targetCharacter;
+    [SerializeField] List<CreaturePlayer> targetCharacters;
+    public List<CreaturePlayer> GetTargetCharacter() { return targetCharacters; }
 
     /* ============== 체크용 bool 타입 ============== */
     // 캐스팅 중인가
@@ -28,7 +29,11 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-    }   
+    }
+    private void Start()
+    {
+        targetCharacters = new List<CreaturePlayer>();
+    }
 
     public void StartSpellCastBehaviour()
     {
@@ -50,7 +55,7 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     /// <summary>
     ///  캐스팅동안 타겟 캐릭터 찾기
     /// </summary>
-    private void FindTargetCharacterWhileCasting()
+    private void FindTargetsCharacterWhileCasting()
     {
         Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.GetAttackRange());
 
@@ -67,7 +72,7 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
                 && activeCollider.gameObject.activeSelf)
             {
                 // 타겟 지정
-                targetCharacter.Add(activeCollider.GetComponent<CreaturePlayer>());
+                targetCharacters.Add(activeCollider.GetComponent<CreaturePlayer>());
             }
         }
     }
@@ -85,7 +90,7 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     public void OffCastingProjector()
     {
         // 캐스팅이 끝나면서 타겟찾기
-        FindTargetCharacterWhileCasting();
+        FindTargetsCharacterWhileCasting();
 
         // 장판용 프로젝터를 끄고
         goCastingProjector.SetActive(false);

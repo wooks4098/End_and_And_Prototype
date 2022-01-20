@@ -451,7 +451,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
         agent.isStopped = false;
 
         // 애니메이터
-        animator.SetTrigger("Run Attack");
+        animator.SetTrigger("Try Attack");
         animator.ResetTrigger("Prepare Attack");
 
         // 공격한다
