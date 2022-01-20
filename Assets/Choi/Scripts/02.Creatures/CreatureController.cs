@@ -128,18 +128,21 @@ public class CreatureController : MonoBehaviour
         // 공격 범위에 들어오면
         if (IsInAttackRange())
         {
-            if (!canAttack)
+            if (!caster.GetIsCasting())
             {
                 CastBehaviour();
             }
-            else
+            else if (canAttack)
             {
                 AttackBehaviour();
             }
         }
         else
         {
-            MoveBehaviour();
+            if (caster.GetIsCasting())
+            {
+                MoveBehaviour();
+            }
         }
     }
 
@@ -149,12 +152,12 @@ public class CreatureController : MonoBehaviour
     /// <summary>
     /// 플레이어와 거리 계산 (공격 범위)
     /// </summary>
-    private bool IsInAttackRange()
+    public bool IsInAttackRange()
     {
-        if (targetCharacter == null) return false;
+        if (mover.GetTargetCharacter() == null) return false;
 
         // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(targetCharacter.transform.position, transform.position);
+        float distanceToPlayer = Vector3.Distance(mover.GetTargetCharacter().transform.position, transform.position);
         //Debug.Log(distanceToPlayer);
 
         // 비교한 값이 attack 범위보다 적으면 true
@@ -173,6 +176,7 @@ public class CreatureController : MonoBehaviour
 
     private void CastBehaviour()
     {
+        mover.Cancel();
         caster.StartSpellCastBehaviour();
     }
 

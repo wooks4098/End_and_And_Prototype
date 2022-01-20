@@ -97,8 +97,7 @@ GameObject:
   - component: {fileID: 1891575391346633029}
   - component: {fileID: 222006884619837485}
   - component: {fileID: 2367905925721017468}
-  - component: {fileID: 4674262282931339027}
-  - component: {fileID: 2755854043708422421}
+  - component: {fileID: 1462898283}
   - component: {fileID: 4113688123481055379}
   - component: {fileID: 7002653051419668342}
   m_Layer: 12
@@ -269,7 +268,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
   state: 0
-  hasTarget: 0
   isCasting: 0
   canAttack: 0
   tempTarget: {fileID: 0}
@@ -301,7 +299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 100
   currentHp: 20
---- !u!114 &4674262282931339027
+--- !u!114 &1462898283
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,29 +308,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 6234120361449440225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dd60ab3bb48fa442af8429863b15c09, type: 3}
+  m_Script: {fileID: 11500000, guid: a59f6ccbd41ada54a8a2bdac74d9c68b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
   timeForWaitingPatrol: 5
   timeSinceLastPatrol: 0
-  createPosition: {fileID: 0}
---- !u!114 &2755854043708422421
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6234120361449440225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 014b957afb25e65429c95400660e5d8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
-  timeSinceLastPatrol: 0
+  hasTarget: 0
   tempTarget: {fileID: 0}
   targetCharacter: {fileID: 0}
+  createPosition: {fileID: 0}
 --- !u!114 &4113688123481055379
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,6 +331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goCastingProjector: {fileID: 0}
+  targetCharacter: {fileID: 0}
 --- !u!114 &7002653051419668342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,16 +344,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6831decedf6cd374a9245b29cc2e84d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creature:
-    viewDistance: 10
-    patrolRange: 100
-    patrolSpeed: 2
-    trackingRange: 60
-    trackingSpeed: 4
-    attackRange: 20
-    hasTarget: 0
-    type: 0
-    state: 0
+  creature: {fileID: 0}
+  tempTarget: {fileID: 0}
+  targetCharacter: {fileID: 0}
 --- !u!1 &6234120361449440227
 GameObject:
   m_ObjectHideFlags: 0

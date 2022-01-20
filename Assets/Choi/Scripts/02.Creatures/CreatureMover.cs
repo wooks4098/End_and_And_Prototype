@@ -32,6 +32,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     [SerializeField] CreaturePlayer tempTarget;
     // 실제 타겟
     [SerializeField] CreaturePlayer targetCharacter;
+    public CreaturePlayer GetTargetCharacter() { return targetCharacter; }
 
     // 다음 포지션
     private Vector3 v3nextPosition;
@@ -64,7 +65,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     {
         FindTargetCharacter();
 
-        if(IsInTrackingRange())
+        if(IsInTrackingRange() && !GetComponent<CreatureController>().IsInAttackRange())
         {
             StartTrackingBehaviour();
         }
@@ -90,6 +91,8 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     /// </summary>
     public void StartPatrolBehaviour()
     {
+        Debug.Log("Mover.StartPatrolBehaviour()");
+
         GetComponent<CreatureActionScheduler>().StartAction(this);
 
         Patrol();
@@ -123,6 +126,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
 
     public void StartTrackingBehaviour()
     {
+        Debug.Log("Mover.StartTrackingBehaviour()");
         // GetComponent<CreatureActionScheduler>().StartAction(this);
 
         Tracking();
@@ -342,12 +346,18 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
 
     public void Cancel()
     {
+        Debug.Log("Mover.Cancel()");
+
         // 코루틴 진행중이면 강제로 코루틴 멈춤
         if (waitNextPatrolCoroutine != null)
         {
             StopCoroutine(waitNextPatrolCoroutine);
         }
 
-        GetComponent<NavMeshAgent>().isStopped = true;
+        timeForWaitingPatrol = 5f;
+
+        agent.ResetPath();
+        agent.isStopped = true;
+        agent.velocity = Vector3.zero;
     }
 }
