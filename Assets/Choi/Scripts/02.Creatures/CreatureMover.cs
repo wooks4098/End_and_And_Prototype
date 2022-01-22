@@ -18,14 +18,14 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     // 마지막으로 패트롤을 멈춘 시간
     [SerializeField] float timeSinceLastPatrol = 0f;
 
-    /* ============== 체크용 bool 타입 ================ */
-    [SerializeField] bool hasTarget = false; // 타겟유무
-
     /* ============== 코루틴 ================ */
     // 다음 패트롤을 기다리는 코루틴
     private Coroutine waitNextPatrolCoroutine;
     // 마지막으로 패트롤한 시간을 재는 코루틴 -> 적 추격 상태를 빠져나올 때 사용
     private Coroutine timeLastPatrolCoroutine;
+
+    /* ============== 체크용 bool 타입 ================ */
+    [SerializeField] bool hasTarget = false; // 타겟유무
 
     /* ============== 타겟 ================ */
     // 임시 타겟
@@ -50,17 +50,21 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         Gizmos.DrawWireSphere(v3nextPosition, 3);
     }
 
+    #region OnEnable, OnDisable
 
     private void OnEnable()
     {
         timeForWaitingPatrol = 5f;
 
+        createPosition = GetComponent<CreatureController>().GetCreatePosition();
         v3nextPosition = createPosition.position;
     }
     private void OnDisable()
     {
 
     }
+
+    #endregion
 
     private void Awake()
     {

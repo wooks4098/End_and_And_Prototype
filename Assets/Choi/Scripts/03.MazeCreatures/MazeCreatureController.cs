@@ -3,19 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CreatureController : MonoBehaviour
+public class MazeCreatureController : MonoBehaviour
 {
     // 크리쳐 정보
     [SerializeField] CreatureSO creature;
-    /* 상태 */
-    public CreatureState state;
 
     // 컴포넌트
-    // private CreaturePatroller patroller;
-    // private CreatureTracker tracker;    
-    private CreatureMover mover;    
-    private CreatureCaster caster;
-    private CreatureFighter fighter;
+    private MazeCreatureMover mover;
+    private MazeCreatureFighter fighter;
 
     private Animator animator;
     private NavMeshAgent agent;
@@ -36,14 +31,13 @@ public class CreatureController : MonoBehaviour
     private float timeSinceLastSawPlayer = 0f;
 
 
-
     #region OnDrawGizmos
 
     private void OnDrawGizmos()
     {
         // 패트롤 범위
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(createPosition.position, creature.GetPatrolRange());
+        Gizmos.DrawWireSphere(createPosition.position, 3f);
 
         // 인식 시야 범위
         Gizmos.color = Color.yellow;
@@ -60,15 +54,13 @@ public class CreatureController : MonoBehaviour
 
     private void OnEnable()
     {
-        if(!agent.enabled)
+        if (!agent.enabled)
         {
             agent.enabled = true;
         }
 
         // createPosition = CreatuerPool.GetInstance().GetCreatePosition();
         transform.position = createPosition.position;
-
-        state = CreatureState.Patrol;
     }
     private void OnDisable()
     {
@@ -77,18 +69,16 @@ public class CreatureController : MonoBehaviour
 
     #endregion
 
-
     private void Awake()
     {
         // patroller = GetComponent<CreaturePatroller>();
         // tracker = GetComponent<CreatureTracker>();
-        mover = GetComponent<CreatureMover>();
-        caster = GetComponent<CreatureCaster>();
-        fighter = GetComponent<CreatureFighter>();
+        mover = GetComponent<MazeCreatureMover>();
+        fighter = GetComponent<MazeCreatureFighter>();
 
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-    } 
+    }
 
     private void Update()
     {
@@ -107,22 +97,12 @@ public class CreatureController : MonoBehaviour
             {
                 AttackBehaviour();
             }
-            // 캐스터 컴포넌트가 null이 아니고
-            // isCasting이 false 일 때(= 캐스팅 중이 아닐 때)만 실행 
-            else if (caster != null && !caster.GetIsCasting())
-            {
-                CastBehaviour();
-            }
         }
         else
         {
-            if (!caster.GetIsCasting())
-            {
-                MoveBehaviour();
-            }
+            MoveBehaviour();
         }
     }
-
 
     #region CalculateRanges
 
@@ -142,7 +122,6 @@ public class CreatureController : MonoBehaviour
     }
 
     #endregion
-       
 
     #region Behaviours()
 
@@ -151,22 +130,12 @@ public class CreatureController : MonoBehaviour
         mover.StartPatrolBehaviour();
     }
 
-    private void CastBehaviour()
-    {
-        mover.Cancel();
-        caster.StartSpellCastBehaviour();
-    }
-
     private void AttackBehaviour()
     {
-        // caster 컴포넌트가 있으면 caster를 cancel()
-        if(caster != null) caster.Cancel();
-        // caster 컴포넌트가 없으면 mover를 cancel()
-        else mover.Cancel();
+        mover.Cancel();
 
         fighter.StartAttackBehaviour();
     }
 
     #endregion
-
 }
