@@ -160,7 +160,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         }
 
         // 애니메이션
-        GetComponent<Animator>().SetFloat("Speed", 0.6f);
+        animator.SetFloat("Speed", 0.6f);
 
         // 다음 목표 좌표를 플레이어로 설정
         v3nextPosition = trackingTargetCharacter.transform.position;
@@ -192,7 +192,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
             }
         }
         // 시간을 5로
-        timeForWaitingPatrol = 2f;
+        timeForWaitingPatrol = 5f;
         // 코루틴 비우기
         waitNextPatrolCoroutine = null;
     }
@@ -241,7 +241,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
                     trackingTargetCharacter = null;
 
                     // 3. 새로운 좌표를 지정
-                    GetComponent<CreaturePatroller>().UpdatePath();
+                    UpdatePath();
 
                     // 빠져나간다
                     break;

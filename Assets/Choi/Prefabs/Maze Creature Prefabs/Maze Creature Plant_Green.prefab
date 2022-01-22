@@ -265,6 +265,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6acc76f6bebf84042a361a27c2f1d57d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
+  canAttack: 0
+  createPosition: {fileID: 0}
 --- !u!114 &2418890570059255944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,6 +306,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 032e26e340accfa4eaa3f7e6794b1128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
+  timeForWaitingPatrol: 2
+  timeSinceLastPatrol: 0
+  hasTarget: 0
+  trackingTargetCharacter: {fileID: 0}
+  patrolPath: {fileID: 0}
 --- !u!114 &4449577389786628512
 MonoBehaviour:
   m_ObjectHideFlags: 0
