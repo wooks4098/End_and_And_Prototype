@@ -93,10 +93,7 @@ public class MazeCreatureController : MonoBehaviour
         // 공격 범위에 들어오면
         if (IsInAttackRange())
         {
-            if (canAttack)
-            {
-                AttackBehaviour();
-            }
+            AttackBehaviour();
         }
         else
         {
@@ -127,12 +124,14 @@ public class MazeCreatureController : MonoBehaviour
 
     private void MoveBehaviour()
     {
+        fighter.Cancel();
+
         mover.StartPatrolBehaviour();
     }
 
     private void AttackBehaviour()
     {
-        mover.Cancel();
+        // mover.Cancel();
 
         fighter.StartAttackBehaviour();
     }

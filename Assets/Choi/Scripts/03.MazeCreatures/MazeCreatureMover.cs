@@ -74,6 +74,8 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     }
     private void Update()
     {
+        if (GetComponent<MazeCreatureController>().IsInAttackRange()) return;
+
         FindTrackingTargetCharacter();
 
         if (IsInTrackingRange())
@@ -102,6 +104,8 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     /// </summary>
     public void StartPatrolBehaviour()
     {
+        GetComponent<CreatureActionScheduler>().StartAction(this);
+
         Patrol();
     }
 

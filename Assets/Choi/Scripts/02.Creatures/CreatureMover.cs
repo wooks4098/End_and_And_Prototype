@@ -73,12 +73,12 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     }
     private void Update()
     {
+        if (GetComponent<CreatureCaster>().GetIsCasting()) return;
+
         FindTrackingTargetCharacter();
 
         if(IsInTrackingRange())
         {
-            if (GetComponent<CreatureCaster>().GetIsCasting()) return;
-
             StartTrackingBehaviour();
         }
     }

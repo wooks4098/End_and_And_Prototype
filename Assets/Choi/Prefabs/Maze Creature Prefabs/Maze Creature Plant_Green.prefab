@@ -324,6 +324,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cb3c297bc984aa44b098a4aea9f265f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
+  isAttacking: 0
+  targetCharacter: {fileID: 0}
 --- !u!1 &8358981409320284998
 GameObject:
   m_ObjectHideFlags: 0
