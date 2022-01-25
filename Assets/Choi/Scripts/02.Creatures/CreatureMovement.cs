@@ -7,12 +7,17 @@ using UnityEngine.AI;
 /// <summary>
 /// 크리쳐의 움직임을 관리하는 클래스
 /// </summary>
-public class CreatureMovement : MonoBehaviour
+public class CreatureMovement : MonoBehaviour, ICreatureAction
 {
-    [SerializeField] Animator animator;
+    Animator animator;
 
     [SerializeField] bool isActive;
     [SerializeField] bool hasTarget;
+    [SerializeField] bool isCasting = false;
+    [SerializeField] bool canAttack = false;
+
+    public bool IsCasting { get { return isCasting; } set { isCasting = value; } }
+    public bool CanAttack { get { return canAttack; } set { canAttack = value; } }
 
     [SerializeField] Creature creature;
     private NavMeshAgent agent;
@@ -78,6 +83,7 @@ public class CreatureMovement : MonoBehaviour
         transform.position = createPosition.position;
 
         creature.state = CreatureState.Patrol;
+
         timeForWaitingPatrol = 5f;
 
         //currentPosition = 
@@ -108,32 +114,55 @@ public class CreatureMovement : MonoBehaviour
         // agent.stoppingDistance를 이용하면 어느 정도 거리에서 멈출지 설정할 수 있다.
         // agent.stoppingDistance = creature.attackDistance;
 
-        timeForWaitingPatrol = 5f;
+        // timeForWaitingPatrol = 5f;
     }
 
     private void Update()
     {
-        FindTargetCharacter();
+        Debug.Log(creature.state);
 
         if (hasTarget)
         {
             // 공격 범위에 들어오면
             if (IsInAttackRange())
             {
-                creature.state = CreatureState.Attack;
+                if (!canAttack)
+                {
+                    creature.state = CreatureState.Casting;
+                }
+                else
+                {
+                    creature.state = CreatureState.Attack;
+                }
             }
             // 트래킹 범위에 들어오면
             else if (IsInTrackingRange())
             {
-                creature.state = CreatureState.Tracking;
+                if(!isCasting)
+                {
+                    creature.state = CreatureState.Tracking;
+
+                    FindTargetCharacter();
+                }
+                else if (canAttack)
+                {
+                    creature.state = CreatureState.Attack;
+                }
             }
         }
         else
         {
             creature.state = CreatureState.Patrol;
+
+            FindTargetCharacter();
         }
 
         DecisionBehaviour(creature.state);
+
+        //if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+        //{
+        //  animator.SetTrigger("Exit");
+        //}
     }
 
     /// <summary>
@@ -141,6 +170,8 @@ public class CreatureMovement : MonoBehaviour
     /// </summary>
     private void FindTargetCharacter()
     {
+        // Cancel();
+
         Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.trackingRange);
 
         //if(hitCollider.Length != 0)
@@ -168,10 +199,15 @@ public class CreatureMovement : MonoBehaviour
                 {
                     // 임시타겟 지정
                     tempTarget = activeCollider.gameObject.GetComponent<CreaturePlayer>();
+
+                    // 애니메이션 멈춤
+                    // animator.ResetTrigger("Prepare Attack");
+                    // animator.ResetTrigger("Run Attack");
                 }
 
                 // 타겟 지정
                 targetCharacter = tempTarget;
+                agent.isStopped = false;
 
                 hasTarget = true;                
             }
@@ -194,6 +230,9 @@ public class CreatureMovement : MonoBehaviour
             case CreatureState.Tracking:
                 TrackingBehaviour();
                 break;
+            case CreatureState.Casting:
+                CastingBehaviour();
+                break;
             case CreatureState.Attack:
                 AttackBehaviour();
                 break;
@@ -208,6 +247,9 @@ public class CreatureMovement : MonoBehaviour
     /// </summary>
     private void PatrolBehaviour()
     {
+        agent.updateRotation = true;
+        agent.isStopped = false;
+
         // 애니메이션
         animator.SetFloat("Speed", 0.1f);
 
@@ -249,7 +291,7 @@ public class CreatureMovement : MonoBehaviour
             if (timeSinceLastPatrol > 10f)
             {
                 // 타겟을 찾아본다
-                FindTargetCharacter();
+                // FindTargetCharacter();
 
                 // 임시 타겟이 없으면
                 if(tempTarget == null)
@@ -320,7 +362,7 @@ public class CreatureMovement : MonoBehaviour
         NavMesh.SamplePosition(targetPosition, out hit, 10f, 1);
 
         // 디버그 찍었을 때 bake 된 영역이 아니면 x,y,z 좌표 전부 Infinity가 뜸!!!
-        Debug.Log("Hit = " + hit + " myNavHit.position = " + hit.position + " target = " + targetPosition);
+        // Debug.Log("Hit = " + hit + " myNavHit.position = " + hit.position + " target = " + targetPosition);
 
         // bake 된 영역 바깥이면 
         if(hit.position.x == Mathf.Infinity || hit.position.z == Mathf.Infinity)
@@ -332,15 +374,29 @@ public class CreatureMovement : MonoBehaviour
         targetPosition = hit.position;
         // Debug.DrawLine(transform.position, targetPosition, Color.white, Mathf.Infinity);
 
-        // agent.enabled = false;
-        // transform.LookAt(targetPosition);
-        // agent.enabled = true;
+        // 회전
+        // 회전 업데이트 멈춤
+        agent.updateRotation = false;
+        if (agent.velocity.sqrMagnitude > Mathf.Epsilon)
+        {
+            transform.rotation = Quaternion.LookRotation(agent.velocity.normalized);
+        }
 
         agent.destination = targetPosition;
         agent.speed = creature.patrolSpeed;
+
+        // 타겟이 있으면 타겟 바라보기 
+        if (targetCharacter!=null)
+        {
+            transform.LookAt(targetCharacter.transform);
+        }
+
+        // agent.updateRotation = true;
     }
     private void TrackingBehaviour()
     {
+        transform.LookAt(targetCharacter.transform);
+
         // 코루틴 진행중이면 강제로 코루틴 멈춤
         if (waitNextPatrolCoroutine != null)
         {
@@ -348,14 +404,13 @@ public class CreatureMovement : MonoBehaviour
         }
 
         // 임시 타겟이 비어있을 때만 코루틴 실행
-        if(tempTarget == null)
+        if (tempTarget == null)
         {
             if (timeLastPatrolCoroutine == null)
             {
                 timeLastPatrolCoroutine = StartCoroutine(TimeLastPatrol());
             }
         }
-
 
         // 애니메이션
         animator.SetFloat("Speed", 0.6f);
@@ -370,19 +425,38 @@ public class CreatureMovement : MonoBehaviour
     }
 
     /// <summary>
+    /// 캐스팅 행동
+    /// </summary>
+    private void CastingBehaviour()
+    {
+        isCasting = true;
+
+        agent.velocity = Vector3.zero;
+        agent.isStopped = true;
+
+        // 애니메이터
+        animator.SetTrigger("Prepare Attack");
+    }
+
+    /// <summary>
     /// 공격 행동
     /// </summary>
     private void AttackBehaviour()
     {
+        // GetComponent<CreatureActionScheduler>().StartAction(this);
+
         // 플레이어를 바라보고
         transform.LookAt(targetCharacter.transform);
         agent.velocity = Vector3.zero;
+        agent.isStopped = false;
 
         // 애니메이터
-        animator.SetBool("Attack", true);
+        animator.SetTrigger("Try Attack");
+        animator.ResetTrigger("Prepare Attack");
 
         // 공격한다
         Debug.Log("AttackBehaviour()");
+        canAttack = false;
     }
 
     /// <summary>
@@ -433,6 +507,28 @@ public class CreatureMovement : MonoBehaviour
     /// </summary>
     public void ExitAttack()
     {
-        animator.SetBool("Attack", false);
+        animator.ResetTrigger("Run Attack");
+    }
+
+    public void StartPatrolBehaviour()
+    {
+        GetComponent<CreatureActionScheduler>().StartAction(this);
+    }
+
+    public void Cancel()
+    {
+        ExitAttack();
+        // targetCharacter = null;
+        agent.isStopped = true; 
+    }
+
+    public void BiteTest()
+    {
+        if (targetCharacter.GetIsDead()) return;
+
+        if (targetCharacter != null)
+        {
+            targetCharacter.GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
+        }        
     }
 }

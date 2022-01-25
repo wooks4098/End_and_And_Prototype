@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 6209196053199267786}
   - component: {fileID: 3997744434261905360}
   - component: {fileID: 3618289149756147224}
-  - component: {fileID: 4401286664812322743}
   - component: {fileID: 4967847838045119734}
   m_Layer: 0
   m_Name: Creature Slime
@@ -160,35 +159,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &4401286664812322743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6209196053199267787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0929e564d3660534f8f84e1760588a07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  isActive: 0
-  hasTarget: 0
-  creature:
-    viewDistance: 10
-    patrolRange: 100
-    patrolSpeed: 10
-    trackingRange: 60
-    trackingSpeed: 20
-    attackRange: 20
-    type: 0
-    state: 0
-  targetCharacter: {fileID: 0}
-  tempTarget: {fileID: 0}
-  createPosition: {fileID: 0}
-  timeForWaitingPatrol: 5
-  timeSinceLastPatrol: 0
 --- !u!114 &4967847838045119734
 MonoBehaviour:
   m_ObjectHideFlags: 0
