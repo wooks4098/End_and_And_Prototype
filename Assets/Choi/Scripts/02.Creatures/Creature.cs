@@ -17,6 +17,8 @@ public class Creature
 
     public float attackRange = 20f;
 
+    public bool hasTarget = false;
+
     public CreatureType type;
     public CreatureState state;
 }
@@ -36,5 +38,6 @@ public enum CreatureState
 {
     Patrol = 0,
     Tracking,
+    Casting,
     Attack,
 }

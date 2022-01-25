@@ -8,6 +8,7 @@ public class CreaturePlayer : MonoBehaviour
     public int score = 0;
 
     [SerializeField] float playerHp = 100f;
+
     [SerializeField] bool isDead;
 
     private void Start()
@@ -26,9 +27,15 @@ public class CreaturePlayer : MonoBehaviour
         }
     }
 
-
     public bool GetIsDead()
     {
         return isDead;
+    }
+
+    public float CalculatePlayerHP(float _value = 0)
+    {
+        playerHp = playerHp - _value;
+
+        return playerHp;
     }
 }
