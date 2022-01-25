@@ -27,6 +27,11 @@ public interface IInput
     Action<bool> OnRunPlayer1 { get; set; }
     Action<bool> OnRunPlayer2 { get; set; }
 
+    //공격
+    Action<PlayerState> OnAttackPlayer1 { get; set; }
+    Action<PlayerState> OnAttackPlayer2 { get; set; }
+
+
     //사용키
     Action<PlayerType, PlayerState> OnUsePlayer1 { get; set; } 
     Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }

@@ -22,6 +22,9 @@ public class InputManager : MonoBehaviour, IInput
     public Action<MoveType, PlayerState> OnLeftRightPlayer2 { get; set; }
     public Action<bool> OnRunPlayer1 { get; set; }
     public Action<bool> OnRunPlayer2 { get; set; }
+
+    public Action<PlayerState> OnAttackPlayer1 { get; set; }
+    public Action<PlayerState> OnAttackPlayer2 { get; set; }
     public Action<PlayerType, PlayerState> OnUsePlayer1 { get; set; }
     public Action<PlayerType, PlayerState> OnUsePlayer2 { get; set; }
     public Action OnInventoryOpenPlayer1 { get; set; }
@@ -60,7 +63,7 @@ public class InputManager : MonoBehaviour, IInput
         OnUse();
         OnOpenInventory();
         OnQuickSolt();
-
+        OnAttack();
     }
 
     #region Move
@@ -74,6 +77,8 @@ public class InputManager : MonoBehaviour, IInput
             case PlayerState.ClimbWall:
             //case PlayerState.ClimbUpWall:
             case PlayerState.ClimbRope:
+            case PlayerState.PushObject:
+            case PlayerState.Crawl:
                 //GetKey
                 if (Input.GetKey(KeyCode.W))
                     OnFrontBackPlayer1?.Invoke(MoveType.Front, player1State);
@@ -100,6 +105,8 @@ public class InputManager : MonoBehaviour, IInput
             case PlayerState.Walk:
             case PlayerState.ClimbWall:
             case PlayerState.ClimbRope:
+            case PlayerState.PushObject:
+            case PlayerState.Crawl:
                 //GetKey
                 if (Input.GetKey(KeyCode.UpArrow))
                     OnFrontBackPlayer2?.Invoke(MoveType.Front, player2State);
@@ -126,6 +133,7 @@ public class InputManager : MonoBehaviour, IInput
         switch (player1State)
         {
             case PlayerState.Walk:
+            case PlayerState.Crawl:
             //case PlayerState.ClimbWall:
                 //GetKey
                 if (Input.GetKey(KeyCode.A))
@@ -147,6 +155,7 @@ public class InputManager : MonoBehaviour, IInput
         switch (player2State)
         {   //GetKey
             case PlayerState.Walk:
+            case PlayerState.Crawl:
                 if (Input.GetKey(KeyCode.LeftArrow))
                     OnLeftRightPlayer2?.Invoke(MoveType.Left, player2State);
                 else if (Input.GetKey(KeyCode.RightArrow))
@@ -176,6 +185,16 @@ public class InputManager : MonoBehaviour, IInput
 
     #endregion
 
+    void OnAttack()
+    {
+        //플레이어1
+        if (Input.GetKeyDown(KeyCode.J))
+            OnAttackPlayer1?.Invoke(player1State);
+
+        //플레이어2
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+            OnAttackPlayer2?.Invoke(player2State);
+    }
 
     #region Use
     void OnUse()

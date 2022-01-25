@@ -20,39 +20,57 @@ public enum PlayerState
     HoldRope,//로프 잡는중
     Inventory, //인벤토리 오픈
     SafeBox,//금고 사용중
+
+    PushObject,//미는 오브젝트
+
     None, //Null로 사용
+    Crawl,//빈사상태
     Die,//죽음
+
+    Attack,//공격
 }
 
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] PlayerType playerType;
     [SerializeField] PlayerState playerState = PlayerState.Walk;
-
+    [Header("수치")]
     [SerializeField] float moveSpeed; //이동속도
     [SerializeField] float rotateSpeed; //회전속도
+    [SerializeField] float CrawlSpeed; //회전속도
     [SerializeField] float gravity; //중력
     Vector3 moveDirection; //이동방향
     [SerializeField] bool isRun = false;
 
     CharacterController characterController;
     [SerializeField] Transform CameraTransform;
+    [Header("Component")]
     [SerializeField] Animator ani;
+    PlayerStatus playerStatus;
+    [SerializeField] PlayerRevival playerRevival;
     //[SerializeField] PlayerInput playerInput;
     //test
     [SerializeField] GameObject playerCamera;
     [SerializeField] SkinnedMeshRenderer meshRenderer;
-
+    [Header("ClimbWall")]
+    //벽타기 변수
     [SerializeField] int FallCount;
     [SerializeField] bool isClimbWallCheck;//벽타기시 클릭 가능한 상태인지
      Vector3 groundPos;
     [SerializeField] float toGroundLength; //땅까지의 거리
     [SerializeField] float fallLength; //벽타기시 떨어질 수 있는 거리
+    [Header("Attack")]
+    //공격 변수
+    [SerializeField] int AttackComboCount = 0;//콤보 번호 초기 0 | 공격종류 1~3
+    [SerializeField] bool CanAttack = true; // 공격 가능한지
+    [SerializeField] ParticleSystem[] AttackParticle;
+    [SerializeField] BoxCollider AttackCollider;//공격 충돌용 콜라이더
+   // [SerializeField] bool CanNextCombo = true;//다음 공격으로 이어갈 수 있는지
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         ani = GetComponentInChildren<Animator>();
-
+        playerStatus = GetComponent<PlayerStatus>();
     }
     private void Start()
     {
@@ -66,6 +84,18 @@ public class PlayerController : MonoBehaviour
         SetGravity();
         //캐릭터 움직임
         MoveTo(moveDirection);
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if(playerType == PlayerType.FirstPlayer )
+                EndCrawl();
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            if (playerType == PlayerType.FirstPlayer)
+                playerStatus.ChangeHp(-100);
+
+        }
+
     }
 
     // 캐릭터 중력 적용
@@ -91,12 +121,15 @@ public class PlayerController : MonoBehaviour
                 InputManager.Instance.OnFrontBackPlayer1 += Move;
                 InputManager.Instance.OnLeftRightPlayer1 += Rotation;
                 InputManager.Instance.OnRunPlayer1 += Run;
+                InputManager.Instance.OnAttackPlayer1 += Attack;
                 break;
 
             case PlayerType.SecondPlayer:
                 InputManager.Instance.OnFrontBackPlayer2 += Move;
                 InputManager.Instance.OnLeftRightPlayer2 += Rotation;
                 InputManager.Instance.OnRunPlayer2 += Run;
+                InputManager.Instance.OnAttackPlayer2 += Attack;
+
                 break;
         }
     }
@@ -110,6 +143,8 @@ public class PlayerController : MonoBehaviour
             case PlayerState.ClimbUpWall:
             case PlayerState.SafeBox:
             case PlayerState.Inventory:
+            case PlayerState.Attack:
+            case PlayerState.PushObject:
                 moveDirection = Vector3.zero;
                 return;
         }
@@ -118,10 +153,18 @@ public class PlayerController : MonoBehaviour
     }
     void Move(MoveType moveType, PlayerState _playerState)
     {
+        switch(playerState)
+        {
+            case PlayerState.Attack:
+                return;
+        }
         switch (playerState)
         {
             case PlayerState.Walk:
                 FrontBackWalk(moveType);
+                break;
+            case PlayerState.Crawl:
+                FrontBackCrawl(moveType);
                 break;
             case PlayerState.ClimbWall:
             case PlayerState.ClimbRope:
@@ -129,10 +172,11 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.ClimbUpWall:
                 moveDirection = Vector3.zero;
-
                 break;
         }
     }
+
+    #region 앞뒤 이동
 
     void FrontBackWalk(MoveType moveType)
     {
@@ -158,6 +202,52 @@ public class PlayerController : MonoBehaviour
         }
         ani.SetBool("Run", isRun);
     }
+
+    #region 빈사상태
+
+    void StartCrawlState()
+    {
+        ani.SetTrigger("CrawlStart");
+        playerRevival.SetCrawl(playerType);
+    }
+
+    //빈사상태일때 움직임
+    void FrontBackCrawl(MoveType moveType)
+    {
+        if (moveType == MoveType.Front)
+        {
+            moveDirection = GetDirection(InputDir.front, PlayerState.Walk);
+            ani.SetFloat("CrawlSpeed", 0.7f);
+        }
+        else if (moveType == MoveType.Back)
+        {
+            moveDirection = GetDirection(InputDir.back, PlayerState.Walk);
+            ani.SetFloat("CrawlSpeed", -0.7f);
+        }
+        else
+        {
+            moveDirection = Vector3.zero;
+            ani.SetFloat("CrawlSpeed", 0);
+
+        }
+    }
+
+    public void EndCrawl()
+    {
+        //플레이어 체력 변경
+        playerStatus.ChangeHp(30);
+
+        //플레이어 상태변경
+        PlayerStateChange(PlayerState.Walk);
+
+        ani.SetTrigger("CrawlEnd");
+    }
+
+    #endregion
+
+
+    #endregion
+
 
     #region ClimbWall
 
@@ -295,8 +385,6 @@ public class PlayerController : MonoBehaviour
             ani.SetTrigger("ClimbupFallExit");
         }
     }
-
-    #endregion
     void Climb(MoveType moveType)
     {
         if (moveType == MoveType.Front)
@@ -320,10 +408,15 @@ public class PlayerController : MonoBehaviour
             ani.SetFloat("ClimbSpeed", 0);
         }
     }
+    #endregion
 
+
+
+    #region 회전
     void Rotation(MoveType moveType, PlayerState _playerState)
     {
-        if (playerState != PlayerState.Walk)
+
+        if (playerState != PlayerState.Walk &&playerState != PlayerState.Crawl )
             return;
         // ani.SetBool("Run", isRun);
         if (moveType == MoveType.Left)
@@ -336,6 +429,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    #endregion
     void Run(bool _isRun)
     {
         if (playerState != PlayerState.Walk)
@@ -374,6 +468,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region 기믹-로프
     //로프잡기 시작
     public void StartHoldRope(Vector3 _ropePos)
     {
@@ -439,6 +534,101 @@ public class PlayerController : MonoBehaviour
         ani.SetTrigger("ClimbupFall");
     }
 
+    #endregion
+
+
+    #region 공격
+
+    void Attack(PlayerState playerstate)
+    {
+        if (CanAttack == false)
+            return;
+        switch(playerstate)
+        {
+            case PlayerState.ClimbWall:
+            case PlayerState.ClimbUpWall:
+            case PlayerState.ClimbWallFall:
+            case PlayerState.HoldRope:
+            case PlayerState.SafeBox:
+            case PlayerState.Die:
+                return;
+        }
+        if(AttackComboCount<3)
+        {
+            PlayerStateChange(PlayerState.Attack);
+            AttackComboCount++;
+            ani.SetTrigger("Attack" + AttackComboCount.ToString());
+            StartCoroutine(ShowParticle());
+            AttackCollider.enabled = true;
+            if (AttackComboCount <3)
+            {
+                StartCoroutine(ComboEndCheck(AttackComboCount));
+                StartCoroutine(AniNextCombo());
+
+            }
+            else
+                StartCoroutine(AttackCoolTime());
+            CanAttack = false;
+        }
+    }
+    IEnumerator ShowParticle()
+    {
+        switch (AttackComboCount)
+        {
+            case 1:
+            case 3:
+                yield return new WaitForSeconds(0.3f);
+                break;
+            case 2:
+                yield return new WaitForSeconds(0.4f);
+                break;
+
+
+        }
+    AttackParticle[AttackComboCount-1].Emit(1);
+
+    }
+    //콤보를 이어가지 않아 끝났는지 확인하는 함수
+    IEnumerator ComboEndCheck(int lastComboNumber)
+    {
+        yield return new WaitForSeconds(1f);
+        if( lastComboNumber == AttackComboCount)
+        {
+            AttackCollider.enabled = false;
+
+            CanAttack = false;
+            PlayerStateChange(PlayerState.Walk);
+            yield return new WaitForSeconds(0.2f);
+            CanAttack = true;
+            AttackComboCount = 0;
+        }
+    }
+
+    IEnumerator AniNextCombo()
+    {
+
+        yield return new WaitForSeconds(0.7f);
+        CanAttack = true;
+        PlayerStateChange(PlayerState.Walk);
+
+    }
+
+    IEnumerator AttackCoolTime()
+    {
+
+        CanAttack = false;
+        yield return new WaitForSeconds(0.7f);
+        AttackCollider.enabled = false;
+
+        PlayerStateChange(PlayerState.Walk);
+        yield return new WaitForSeconds(0.3f);
+        CanAttack = true;
+        AttackComboCount = 0;
+    }
+
+    #endregion
+
+
     public void PlayerStateChange(PlayerState _playerState)
     {
         ani.SetBool("WalkFront", false);
@@ -452,6 +642,7 @@ public class PlayerController : MonoBehaviour
         {
             case PlayerState.Walk:
                 moveSpeed = 5;
+                rotateSpeed = 100;
                 break;
             case PlayerState.ClimbWall:
                 ClimbWallStart();
@@ -465,6 +656,11 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.HoldRope:
                 moveDirection = Vector3.zero;
+                break;
+            case PlayerState.Crawl:
+                StartCrawlState();
+                moveSpeed = 0.5f;
+                rotateSpeed = 30;
                 break;
 
         }
