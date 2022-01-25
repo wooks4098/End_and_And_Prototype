@@ -89,7 +89,7 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
 
     #region call in attack animation 
     /// <summary>
-    /// 애니메이션 
+    /// 애니메이션에서 호출
     /// </summary>
     public void BiteTest()
     {
@@ -101,11 +101,14 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
 
         if (targetCharacter != null)
         {
+            // tag가 "Player1"이면
             if(targetCharacter.gameObject.tag == "Player1")
             {
+                // 데미지를 주는 함수 호출... 
                 GameManager.Instance.PlayerDamage(PlayerType.FirstPlayer, creature.GetDamageValue());
             }
-            else if(targetCharacter.gameObject.tag == "Player2")
+            // tag가 "Player2"이면
+            else if (targetCharacter.gameObject.tag == "Player2")
             {
                 GameManager.Instance.PlayerDamage(PlayerType.SecondPlayer, creature.GetDamageValue());
             }

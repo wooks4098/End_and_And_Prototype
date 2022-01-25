@@ -18,7 +18,10 @@ public class CreatureHp : MonoBehaviour
         currentHp = maxHp;
     }
 
-    // 데미지 받는
+    /// <summary>
+    /// 데미지를 받는 처리
+    /// </summary>
+    /// <param name="_value">데미지 값</param>
     public float GetDamage(float _value)
     {
         currentHp = currentHp - _value;
