@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewDistance: 10
   patrolRange: 100
-  patrolSpeed: 10
+  patrolSpeed: 3
   trackingRange: 60
-  trackingSpeed: 20
+  trackingSpeed: 5
   attackRange: 20
-  hasTarget: 0
   type: 0

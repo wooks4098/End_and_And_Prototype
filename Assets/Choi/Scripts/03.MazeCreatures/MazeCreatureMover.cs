@@ -33,6 +33,9 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     [SerializeField] CreaturePlayer trackingTargetCharacter;
     public CreaturePlayer GetTargetCharacter() { return trackingTargetCharacter; }
 
+    Transform targetPosition1;
+    Transform targetPosition2;
+
     /* ============== 좌표/포지션 ================ */
     // 패트롤 할 자리
     [SerializeField] MazePatrolPath patrolPath;
@@ -72,6 +75,18 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
     }
+
+    private void Start()
+    {
+        targetPosition1 = GameManager.Instance.GetPlayerTrans(PlayerType.FirstPlayer);
+        targetPosition2 = GameManager.Instance.GetPlayerTrans(PlayerType.SecondPlayer);
+
+        /*
+        GameManager.Instance.GetPlayerState(PlayerType.FirstPlayer);
+        PlayerState.Crawl; // 빈사상태 -> 어그로 없음 (탐색)
+        */
+    }
+
     private void Update()
     {
         if (GetComponent<MazeCreatureController>().IsInAttackRange()) return;

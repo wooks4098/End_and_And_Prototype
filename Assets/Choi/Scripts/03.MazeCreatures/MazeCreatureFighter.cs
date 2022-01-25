@@ -21,6 +21,8 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
     /* ============== 鸥百 ================ */
     // 角力 鸥百
     [SerializeField] CreaturePlayer targetCharacter;
+    // 鸥百 鸥涝
+    PlayerType targetType;
 
 
     private void Awake()
@@ -96,6 +98,11 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
         if (targetCharacter != null)
         {
             targetCharacter.GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
+
+            /*
+            // 单固瘤 贸府
+            GameManager.Instance.Damage(PlayerType.FirstPlayer, 20f);
+            */
         }
     }
     /// <summary>
