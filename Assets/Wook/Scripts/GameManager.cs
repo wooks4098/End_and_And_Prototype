@@ -32,6 +32,21 @@ public class GameManager : MonoBehaviour
 
     #region 플레이어 관련
 
+    //플레이어 데미지
+    public void PlayerDamage(PlayerType _playerType,float _Damage)
+    {
+        switch (_playerType)
+        {
+            case PlayerType.FirstPlayer:
+                player1.GetComponent<PlayerStatus>().ChangeHp(_Damage);
+                break;
+            case PlayerType.SecondPlayer:
+                player2.GetComponent<PlayerStatus>().ChangeHp(_Damage);
+                break;
+        }
+    }
+
+
     //플레이어 상태 변경
     public void PlayerStateChange(PlayerType _playerType, PlayerState _playerState)
     {
