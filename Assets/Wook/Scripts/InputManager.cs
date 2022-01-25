@@ -78,6 +78,7 @@ public class InputManager : MonoBehaviour, IInput
             //case PlayerState.ClimbUpWall:
             case PlayerState.ClimbRope:
             case PlayerState.PushObject:
+            case PlayerState.Crawl:
                 //GetKey
                 if (Input.GetKey(KeyCode.W))
                     OnFrontBackPlayer1?.Invoke(MoveType.Front, player1State);
@@ -105,6 +106,7 @@ public class InputManager : MonoBehaviour, IInput
             case PlayerState.ClimbWall:
             case PlayerState.ClimbRope:
             case PlayerState.PushObject:
+            case PlayerState.Crawl:
                 //GetKey
                 if (Input.GetKey(KeyCode.UpArrow))
                     OnFrontBackPlayer2?.Invoke(MoveType.Front, player2State);
@@ -131,6 +133,7 @@ public class InputManager : MonoBehaviour, IInput
         switch (player1State)
         {
             case PlayerState.Walk:
+            case PlayerState.Crawl:
             //case PlayerState.ClimbWall:
                 //GetKey
                 if (Input.GetKey(KeyCode.A))
@@ -152,6 +155,7 @@ public class InputManager : MonoBehaviour, IInput
         switch (player2State)
         {   //GetKey
             case PlayerState.Walk:
+            case PlayerState.Crawl:
                 if (Input.GetKey(KeyCode.LeftArrow))
                     OnLeftRightPlayer2?.Invoke(MoveType.Left, player2State);
                 else if (Input.GetKey(KeyCode.RightArrow))

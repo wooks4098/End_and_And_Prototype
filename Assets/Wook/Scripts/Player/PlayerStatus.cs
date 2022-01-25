@@ -8,6 +8,7 @@ using UnityEngine;
 public class PlayerStatus : MonoBehaviour
 {
     [SerializeField] PlayerType playerType;
+    PlayerController playerController;
     //체력
     [SerializeField] float hp;
     [SerializeField] float maxHp;
@@ -21,6 +22,10 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] bool isspores; //포자에 중독중인지
     [SerializeField] float sporesdecreasefigure; //포자의 hp 감소수치 (초당 수치)
 
+    private void Start()
+    {
+        playerController = GetComponent<PlayerController>();
+    }
 
     public void ChangeHp(float _changeHp)
     {
@@ -28,9 +33,15 @@ public class PlayerStatus : MonoBehaviour
         UIManager.Instance.ChangeHpUi(playerType, hp);
         if (hp <= 0)
         {
-            //죽음
+            //임시 빈사상태
+            if (playerController.GetPlayerState() == PlayerState.Crawl)
+                return;
+            playerController.PlayerStateChange(PlayerState.Crawl);
+
+
         }
     }
+
 
     public void Changethirst(float _changeThirst)
     {
