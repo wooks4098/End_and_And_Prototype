@@ -62,10 +62,6 @@ public class MazeCreatureController : MonoBehaviour
         // createPosition = CreatuerPool.GetInstance().GetCreatePosition();
         transform.position = createPosition.position;
     }
-    private void OnDisable()
-    {
-
-    }
 
     #endregion
 

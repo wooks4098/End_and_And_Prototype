@@ -36,6 +36,7 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
     {
         GetComponent<CreatureActionScheduler>().StartAction(this);
 
+        // 공격
         Attack();
     }
     private void Attack()
@@ -76,7 +77,7 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
 
         foreach (var activeCollider in hitCollider)
         {
-            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
+            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 빈사상태가 아니고 3. 활성화 되어있는 것
             if (activeCollider.GetComponent<PlayerController>() != null
                 && activeCollider.GetComponent<PlayerController>().GetPlayerState() != PlayerState.Crawl
                 && activeCollider.gameObject.activeSelf)
@@ -99,6 +100,7 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
          * GameManager.Instance.Damage(PlayerType.FirstPlayer, 20f);
          */
 
+        // 타겟이 비어있지 않으면
         if (targetCharacter != null)
         {
             // tag가 "Player1"이면

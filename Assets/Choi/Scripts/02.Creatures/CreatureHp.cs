@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 크리쳐 HP를 연산
+/// </summary>
 public class CreatureHp : MonoBehaviour
 {
     public float maxHp = 100f;

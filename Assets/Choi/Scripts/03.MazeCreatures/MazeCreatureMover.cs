@@ -117,6 +117,7 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     {
         GetComponent<CreatureActionScheduler>().StartAction(this);
 
+        // 패트롤
         Patrol();
     }
 
@@ -254,12 +255,13 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
             {                                
                 agent.isStopped = false;
 
+                // 타겟에 PlayerController를 전달
                 trackingTargetCharacter = activeCollider.GetComponent<PlayerController>();
 
                 // 태그 확인
-                Debug.Log(trackingTargetCharacter.gameObject.tag);
+                // Debug.Log(trackingTargetCharacter.gameObject.tag);
                 // 상태 확인
-                Debug.Log(trackingTargetCharacter.GetComponent<PlayerController>().GetPlayerState());
+                // Debug.Log(trackingTargetCharacter.GetComponent<PlayerController>().GetPlayerState());
 
                 hasTarget = true;
             }
