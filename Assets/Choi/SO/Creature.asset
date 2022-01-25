@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Creature
   m_EditorClassIdentifier: 
   viewDistance: 10
-  patrolRange: 100
+  patrolRange: 20
   patrolSpeed: 3
-  trackingRange: 60
+  trackingRange: 12
   trackingSpeed: 5
-  attackRange: 20
+  attackRange: 4
   type: 0

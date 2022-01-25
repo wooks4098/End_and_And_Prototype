@@ -30,8 +30,9 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
 
     /* ============== 타겟 ================ */
     // 실제 타겟
-    [SerializeField] CreaturePlayer trackingTargetCharacter;
-    public CreaturePlayer GetTargetCharacter() { return trackingTargetCharacter; }
+    [SerializeField] PlayerController trackingTargetCharacter;
+    //[SerializeField] CreaturePlayer trackingTargetCharacter;
+    public PlayerController GetTargetCharacter() { return trackingTargetCharacter; }
 
     Transform targetPosition1;
     Transform targetPosition2;
@@ -79,12 +80,7 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     private void Start()
     {
         targetPosition1 = GameManager.Instance.GetPlayerTrans(PlayerType.FirstPlayer);
-        targetPosition2 = GameManager.Instance.GetPlayerTrans(PlayerType.SecondPlayer);
-
-        /*
-        GameManager.Instance.GetPlayerState(PlayerType.FirstPlayer);
-        PlayerState.Crawl; // 빈사상태 -> 어그로 없음 (탐색)
-        */
+        targetPosition2 = GameManager.Instance.GetPlayerTrans(PlayerType.SecondPlayer);        
     }
 
     private void Update()
@@ -149,6 +145,7 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
             // 마지막 패트롤 시간 0으로 초기화
             timeSinceLastPatrol = 0f;
 
+            // 코루틴 시작
             if (waitNextPatrolCoroutine == null)
             {
                 waitNextPatrolCoroutine = StartCoroutine(WaitNextPatrol());
@@ -243,16 +240,26 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
         //    Debug.Log("뭔가 찾았습니다!");
         //}
 
+        /*
+        GameManager.Instance.GetPlayerState(PlayerType.FirstPlayer);
+        PlayerState.Crawl; // 빈사상태 -> 어그로 없음 (탐색)
+        */
+
         foreach (var activeCollider in hitCollider)
         {
-            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
-            if (activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
-                && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead()
+            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 빈사상태가 아니고 3. 활성화 되어있는 것
+            if (activeCollider.GetComponent<PlayerController>() != null
+                && activeCollider.GetComponent<PlayerController>().GetPlayerState() != PlayerState.Crawl
                 && activeCollider.gameObject.activeSelf)
             {                                
                 agent.isStopped = false;
 
-                trackingTargetCharacter = activeCollider.GetComponent<CreaturePlayer>();
+                trackingTargetCharacter = activeCollider.GetComponent<PlayerController>();
+
+                // 태그 확인
+                Debug.Log(trackingTargetCharacter.gameObject.tag);
+                // 상태 확인
+                Debug.Log(trackingTargetCharacter.GetComponent<PlayerController>().GetPlayerState());
 
                 hasTarget = true;
             }

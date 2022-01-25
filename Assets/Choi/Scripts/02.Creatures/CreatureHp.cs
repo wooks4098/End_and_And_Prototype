@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class CreatureHp : MonoBehaviour
 {
-    public int maxHp = 100;
-    public int currentHp = 20;
+    public float maxHp = 100f;
+    public float currentHp = 100f;
 
+
+    private void OnEnable()
+    {
+        currentHp = maxHp;
+    }
 
     public void ResetHp()
     {
@@ -14,8 +19,10 @@ public class CreatureHp : MonoBehaviour
     }
 
     // 데미지 받는
-    public void GetDamage(float _value)
+    public float GetDamage(float _value)
     {
+        currentHp = currentHp - _value;
 
+        return currentHp;
     }
 }

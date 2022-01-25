@@ -7,13 +7,15 @@ public class CreatureSO : ScriptableObject
 {
     [SerializeField] float viewDistance = 10f;
     
-    [SerializeField] float patrolRange = 100f;
-    [SerializeField] float patrolSpeed = 10f;
+    [SerializeField] float patrolRange = 20f;
+    [SerializeField] float patrolSpeed = 3f;
     
-    [SerializeField] float trackingRange = 60f;
-    [SerializeField] float trackingSpeed = 20f;
+    [SerializeField] float trackingRange = 12f;
+    [SerializeField] float trackingSpeed = 5f;
 
-    [SerializeField] float attackRange = 20f;
+    [SerializeField] float attackRange = 4f;
+
+    [SerializeField] float damage = 20f;
 
     [SerializeField] CreatureType type;
 
@@ -41,5 +43,10 @@ public class CreatureSO : ScriptableObject
     public float GetAttackRange()
     {
         return attackRange;
+    }
+    
+    public float GetDamageValue()
+    {
+        return damage;
     }
 }

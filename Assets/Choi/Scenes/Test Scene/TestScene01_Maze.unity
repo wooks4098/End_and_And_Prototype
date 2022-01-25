@@ -3666,6 +3666,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1875302299224825063, guid: 5ae0c759dd460e940889d09e1ddec670, type: 3}
+      propertyPath: playerState
+      value: 11
+      objectReference: {fileID: 0}
     - target: {fileID: 1875302299224825080, guid: 5ae0c759dd460e940889d09e1ddec670, type: 3}
       propertyPath: m_Name
       value: Player
@@ -3844,7 +3848,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1530467810}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &1530467812
 Camera:
   m_ObjectHideFlags: 0
