@@ -56,14 +56,14 @@ public class Inventory : MonoBehaviour
     private void Update()
     {
         //≈◊Ω∫∆Æ æ∆¿Ã≈€ »πµÊ≈∞
-        if(Input.GetKeyDown(KeyCode.Q))
-            AcquireItem(i);
-        if (Input.GetKeyDown(KeyCode.T  ))
-            AcquireItem(i2);
-        if (Input.GetKeyDown(KeyCode.U))
-            AcquireItem(i3);
-        if (Input.GetKeyDown(KeyCode.O))
-            AcquireItem(i4);
+        //if(Input.GetKeyDown(KeyCode.Q))
+        //    AcquireItem(i);
+        //if (Input.GetKeyDown(KeyCode.T  ))
+        //    AcquireItem(i2);
+        //if (Input.GetKeyDown(KeyCode.U))
+        //    AcquireItem(i3);
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    AcquireItem(i4);
 
     }
 

@@ -6,9 +6,20 @@ using UnityEngine;
 /// </summary>
 public class AttackCheck : MonoBehaviour
 {
+
     private void OnTriggerEnter(Collider other)
     {
+<<<<<<< Updated upstream
         //if(other.tag == "农府贸")
             //傍拜
+=======
+        if (other.tag == "Enemy")
+        {
+            //Enemy单固瘤 林扁
+            CreatureHp creatureHp = other.GetComponent<CreatureHp>();
+            creatureHp.GetDamage(10f);
+        }
+>>>>>>> Stashed changes
     }
 }
+   
