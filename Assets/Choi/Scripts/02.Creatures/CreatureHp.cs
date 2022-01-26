@@ -25,10 +25,17 @@ public class CreatureHp : MonoBehaviour
     /// 데미지를 받는 처리
     /// </summary>
     /// <param name="_value">데미지 값</param>
-    public float GetDamage(float _value)
+    public void GetDamage(float _value)
     {
         currentHp = currentHp - _value;
+    }
 
+    /// <summary>
+    ///  현재 체력
+    /// </summary>
+    /// <returns></returns>
+    public float GetCurrentHp()
+    {
         return currentHp;
     }
 }
