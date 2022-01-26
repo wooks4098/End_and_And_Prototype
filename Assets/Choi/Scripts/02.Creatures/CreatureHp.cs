@@ -7,15 +7,39 @@ using UnityEngine;
 /// </summary>
 public class CreatureHp : MonoBehaviour
 {
+    // 체력
     public float maxHp = 100f;
-    public float currentHp = 100f;
+    private float currentHp = 100f;
+
+    // 체크용 bool 
+    private bool isDead = false;
+    public bool GetIsDead() { return isDead; }
+
 
 
     private void OnEnable()
     {
-        currentHp = maxHp;
+        ResetHp();
     }
 
+    /// <summary>
+    /// 죽었을 때 실행할 함수
+    /// </summary>
+    private void Die()
+    {
+        if (isDead) return;
+
+        // 죽었음을 체크
+        isDead = true;
+        // 죽는 애니메이션 실행
+        GetComponent<Animator>().SetTrigger("Die");
+        // 현재 실행하던 행동 강제로 취소
+        GetComponent<CreatureActionScheduler>().CancelCurrentAction();
+    }
+
+    /// <summary>
+    /// HP를 최대HP로 재설정
+    /// </summary>
     public void ResetHp()
     {
         currentHp = maxHp;
@@ -28,12 +52,23 @@ public class CreatureHp : MonoBehaviour
     public void GetDamage(float _value)
     {
         currentHp = currentHp - _value;
+
+        // 체력이 0 아래로 떨어졌을 경우
+        if(currentHp <= 0)
+        {
+            // 사망
+            Die();
+        }
+        else
+        {
+            // 피격
+
+        }
     }
 
     /// <summary>
-    ///  현재 체력
+    ///  현재 체력 값을 외부에서 접근
     /// </summary>
-    /// <returns></returns>
     public float GetCurrentHp()
     {
         return currentHp;
