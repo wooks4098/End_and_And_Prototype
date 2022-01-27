@@ -78,6 +78,8 @@ public class MazeCreatureController : MonoBehaviour
 
     private void Update()
     {
+        if (GetComponent<CreatureHp>().GetIsDead()) return;
+
         DecideBehaviours();
     }
 

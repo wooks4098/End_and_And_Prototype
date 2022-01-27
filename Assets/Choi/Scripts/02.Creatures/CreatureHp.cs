@@ -8,13 +8,12 @@ using UnityEngine;
 public class CreatureHp : MonoBehaviour
 {
     // 체력
-    public float maxHp = 100f;
+    private float maxHp = 100f;
     private float currentHp = 100f;
 
     // 체크용 bool 
     private bool isDead = false;
     public bool GetIsDead() { return isDead; }
-
 
 
     private void OnEnable()
@@ -23,18 +22,31 @@ public class CreatureHp : MonoBehaviour
     }
 
     /// <summary>
+    /// 공격을 받았을 때 실행할 함수
+    /// </summary>
+    public void TakeDamage()
+    {
+        if (isDead) return;
+
+        // 현재 실행하던 행동 강제로 취소
+        GetComponent<CreatureActionScheduler>().CancelCurrentAction();
+        // 죽는 애니메이션 실행
+        GetComponent<Animator>().SetTrigger("Take Damage");
+    }
+
+    /// <summary>
     /// 죽었을 때 실행할 함수
     /// </summary>
-    private void Die()
+    public void Die()
     {
         if (isDead) return;
 
         // 죽었음을 체크
         isDead = true;
-        // 죽는 애니메이션 실행
-        GetComponent<Animator>().SetTrigger("Die");
         // 현재 실행하던 행동 강제로 취소
         GetComponent<CreatureActionScheduler>().CancelCurrentAction();
+        // 죽는 애니메이션 실행
+        GetComponent<Animator>().SetTrigger("Die");        
     }
 
     /// <summary>
@@ -62,6 +74,7 @@ public class CreatureHp : MonoBehaviour
         else
         {
             // 피격
+            TakeDamage();
 
         }
     }
