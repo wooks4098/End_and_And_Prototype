@@ -3145,14 +3145,6 @@ PrefabInstance:
       propertyPath: createPosition
       value: 
       objectReference: {fileID: 1784403515}
-    - target: {fileID: 5329036736552207776, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5329036736557717346, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
-      propertyPath: m_OrthographicSize
-      value: 4.1
-      objectReference: {fileID: 0}
     - target: {fileID: 6234120361449440225, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
       propertyPath: m_Name
       value: Creature Plant_Green
