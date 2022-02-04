@@ -35,6 +35,10 @@ public class CreatureController : MonoBehaviour
     // 마지막으로 플레이어를 본 시간
     private float timeSinceLastSawPlayer = 0f;
 
+    /* ============== 속도 ================ */
+    // 애니메이션 속도
+    private float animatingSpeed = 1f;
+    public float GetAnimatingSpeed() { return animatingSpeed; }
 
 
     #region OnDrawGizmos
@@ -70,11 +74,6 @@ public class CreatureController : MonoBehaviour
 
         state = CreatureState.Patrol;
     }
-    private void OnDisable()
-    {
-
-    }
-
     #endregion
 
 
@@ -92,7 +91,11 @@ public class CreatureController : MonoBehaviour
 
     private void Update()
     {
+        // 크리쳐 행동 결정
         DecideBehaviours();
+
+        // 크리쳐 상태에 따른 변화
+        ChangeActionFromHpState();
     }
 
     /// <summary>
@@ -120,6 +123,35 @@ public class CreatureController : MonoBehaviour
             {
                 MoveBehaviour();
             }
+        }
+    }
+
+    /// <summary>
+    /// 상태에 따른 행동 변화
+    /// </summary>
+    private void ChangeActionFromHpState()
+    {
+        switch(GetComponent<CreatureHp>().GetCurrentCreatureHPState())
+        {
+            case CreatureHPState.Normal:
+                {
+                    animatingSpeed = 1f;
+                    break;
+                }
+            case CreatureHPState.Arousal:
+                {
+                    animatingSpeed = 2f;
+                    break;
+                }
+            case CreatureHPState.Lull:
+                {
+                    animatingSpeed = 0.6f;
+                    break;
+                }
+            case CreatureHPState.Vaccinable:
+                {
+                    break;
+                }
         }
     }
 

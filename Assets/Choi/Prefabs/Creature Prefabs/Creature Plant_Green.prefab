@@ -294,8 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873b51f7c7200a74f9d1ad37b6699953, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHp: 100
-  currentHp: 20
+  currentHp: 100
   hpState: 0
 --- !u!114 &1462898283
 MonoBehaviour:
@@ -6327,6 +6326,10 @@ PrefabInstance:
     - target: {fileID: 4503587542559803863, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4503587542567044917, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}
+      propertyPath: m_OrthographicSize
+      value: 4.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66ce7d02e51579b4c847c396d3568ac1, type: 3}

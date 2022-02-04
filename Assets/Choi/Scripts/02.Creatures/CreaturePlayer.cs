@@ -24,6 +24,9 @@ public class CreaturePlayer : MonoBehaviour
         if(playerHp <= 0f)
         {
             isDead = true;
+
+            Debug.Log("Player Dead");
+            gameObject.SetActive(false);
         }
     }
 

@@ -8,6 +8,7 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     // 컴포넌트
     private NavMeshAgent agent;
     private Animator animator;
+    private CreatureHp hp;
 
     // 크리쳐 정보
     [SerializeField] CreatureSO creature;
@@ -19,21 +20,27 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     [SerializeField] List<CreaturePlayer> targetCharacters;
     public List<CreaturePlayer> GetTargetCharacter() { return targetCharacters; }
 
+
     /* ============== 체크용 bool 타입 ============== */
     // 캐스팅 중인가
     [SerializeField] bool isCasting = false;
     public bool GetIsCasting() { return isCasting; }
+
+    // 캐스팅 속도 - 컨트롤러로부터 받아옴
+    private float castingSpeed;
 
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
+        hp = GetComponent<CreatureHp>();
     }
     private void Start()
     {
         targetCharacters = new List<CreaturePlayer>();
     }
+
 
     public void StartSpellCastBehaviour()
     {
@@ -48,8 +55,11 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     {
         isCasting = true;
 
-        // 애니메이터
+        // 캐스팅 실행
         animator.SetTrigger("Prepare Attack");
+        // 캐스팅 스피드
+        castingSpeed = GetComponent<CreatureController>().GetAnimatingSpeed();
+        animator.SetFloat("Animating Speed", castingSpeed);
     }
 
     /// <summary>
