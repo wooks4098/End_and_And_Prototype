@@ -2223,5 +2223,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lotus Planes
       objectReference: {fileID: 0}
+    - target: {fileID: 6748814174785332456, guid: 237191221bfd9354ba775b9128f8f1df, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748814174785332456, guid: 237191221bfd9354ba775b9128f8f1df, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 237191221bfd9354ba775b9128f8f1df, type: 3}

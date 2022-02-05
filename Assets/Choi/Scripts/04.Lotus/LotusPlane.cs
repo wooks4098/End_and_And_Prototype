@@ -22,10 +22,10 @@ public class LotusPlane : MonoBehaviour
         {
             switch (isTrap)
             {
-                case true:
+                case true: // ∆Æ∑¶¿œ ∂ß
                     Debug.Log("This is Trap");
                     break;
-                case false:
+                case false: // ∆Æ∑¶¿Ã æ∆¥“ ∂ß
                     Debug.Log("This is Real Lotus");
                     break;
             }
