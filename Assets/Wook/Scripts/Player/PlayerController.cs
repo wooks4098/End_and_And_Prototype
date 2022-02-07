@@ -65,12 +65,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool CanAttack = true; // 공격 가능한지
     [SerializeField] ParticleSystem[] AttackParticle;
     [SerializeField] BoxCollider AttackCollider;//공격 충돌용 콜라이더
-   // [SerializeField] bool CanNextCombo = true;//다음 공격으로 이어갈 수 있는지
+    [Header("Skin")]
+    //무기
+    [SerializeField] GameObject HandSword; //손에 들고있는 칼
+    [SerializeField] GameObject BackSword; //등에 집어넣은 칼
+    [SerializeField] bool isUsingSword;
+
+    // [SerializeField] bool CanNextCombo = true;//다음 공격으로 이어갈 수 있는지
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         ani = GetComponentInChildren<Animator>();
         playerStatus = GetComponent<PlayerStatus>();
+        isUsingSword = false;
     }
     private void Start()
     {
@@ -628,6 +635,40 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+
+    #region
+
+
+
+
+    //칼 집어넣기
+    IEnumerator SheathSword()
+    {
+        if(isUsingSword)
+        {
+            //애니
+            yield return new WaitForSeconds(0.3f);
+            HandSword.SetActive(false);
+            BackSword.SetActive(true);
+            isUsingSword = !isUsingSword;
+        }
+        
+    }
+
+    //칼 꺼내기
+    IEnumerator DrawSword()
+    {
+        if(!isUsingSword)
+        {
+            //애니
+            yield return new WaitForSeconds(0.3f);
+            HandSword.SetActive(true);
+            BackSword.SetActive(false);
+            isUsingSword = !isUsingSword;
+        }
+        
+    }
+    #endregion
 
     public void PlayerStateChange(PlayerState _playerState)
     {
