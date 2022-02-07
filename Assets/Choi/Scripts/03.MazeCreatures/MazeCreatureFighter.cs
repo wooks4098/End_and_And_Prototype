@@ -20,7 +20,7 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
 
     /* ============== 타겟 ================ */
     // 실제 타겟
-    [SerializeField] CreaturePlayer targetCharacter;
+    [SerializeField] PlayerController targetCharacter;
     // 타겟 타입
     PlayerType targetType;
 
@@ -36,6 +36,7 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
     {
         GetComponent<CreatureActionScheduler>().StartAction(this);
 
+        // 공격
         Attack();
     }
     private void Attack()
@@ -76,33 +77,43 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
 
         foreach (var activeCollider in hitCollider)
         {
-            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
-            if (activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
-                && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead()
+            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 빈사상태가 아니고 3. 활성화 되어있는 것
+            if (activeCollider.GetComponent<PlayerController>() != null
+                && activeCollider.GetComponent<PlayerController>().GetPlayerState() != PlayerState.Crawl
                 && activeCollider.gameObject.activeSelf)
             {
                 // 타겟 지정
-                targetCharacter = activeCollider.GetComponent<CreaturePlayer>();
+                targetCharacter = activeCollider.GetComponent<PlayerController>();
             }
         }
     }
 
     #region call in attack animation 
     /// <summary>
-    /// 애니메이션 
+    /// 애니메이션에서 호출
     /// </summary>
     public void BiteTest()
     {
         // if (targetCharacter.GetIsDead()) return;
+        /*
+         * 데미지 처리
+         * GameManager.Instance.Damage(PlayerType.FirstPlayer, 20f);
+         */
 
+        // 타겟이 비어있지 않으면
         if (targetCharacter != null)
         {
-            targetCharacter.GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
-
-            /*
-            // 데미지 처리
-            GameManager.Instance.Damage(PlayerType.FirstPlayer, 20f);
-            */
+            // tag가 "Player1"이면
+            if(targetCharacter.gameObject.tag == "Player1")
+            {
+                // 데미지를 주는 함수 호출... 
+                GameManager.Instance.PlayerDamage(PlayerType.FirstPlayer, creature.GetDamageValue());
+            }
+            // tag가 "Player2"이면
+            else if (targetCharacter.gameObject.tag == "Player2")
+            {
+                GameManager.Instance.PlayerDamage(PlayerType.SecondPlayer, creature.GetDamageValue());
+            }
         }
     }
     /// <summary>

@@ -62,10 +62,6 @@ public class MazeCreatureController : MonoBehaviour
         // createPosition = CreatuerPool.GetInstance().GetCreatePosition();
         transform.position = createPosition.position;
     }
-    private void OnDisable()
-    {
-
-    }
 
     #endregion
 
@@ -82,6 +78,8 @@ public class MazeCreatureController : MonoBehaviour
 
     private void Update()
     {
+        if (GetComponent<CreatureHp>().GetIsDead()) return;
+
         DecideBehaviours();
     }
 
