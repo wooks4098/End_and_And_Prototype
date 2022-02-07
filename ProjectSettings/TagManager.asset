@@ -3,7 +3,16 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Player1
+  - Player2
+  - Thorn
+  - SafeBoxB
+  - Manager
+  - SafeBoxA
+  - ClimbWall
+  - Enemy
+  - PushObjectEndPos
   layers:
   - Default
   - TransparentFX
@@ -11,13 +20,13 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player1
+  - Player2
+  - FogVolumeShadowCaster
+  - FogVolume
+  - FogVolumeSurrogate
+  - FogVolumeUniform
+  - Enemy
   - 
   - 
   - 
@@ -40,4 +49,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Fade
+    uniqueID: 3022906769
     locked: 0
