@@ -93,31 +93,23 @@ public class Lotus : MonoBehaviour
         // 태그 검사
         if(_other.CompareTag("Player1")|| _other.CompareTag("Player2"))
         {
-            // 트랩인지 아닌지 판별
-            switch (isTrap)
+            if(isTrap) // 트랩일 때
             {
-                case true: // 트랩일 때
-                    {
-                        Debug.Log("This is Trap");
+                Debug.Log("This is Trap");
 
-                        // 코루틴이 실행중이면 
-                        if(coroutine != null)
-                        {
-                            // 멈추고
-                            StopCoroutine(coroutine);
-                        }
-                        // 새로운 코루틴 실행
-                        coroutine = StartCoroutine(ActiveLotusTrap());
-
-                        break;
-                    }
-                case false: // 트랩이 아닐 때
-                    {
-                        Debug.Log("This is Real Lotus");
-
-                        break;
-                    }
+                // 코루틴이 실행중이면 
+                if (coroutine != null)
+                {
+                    // 멈추고
+                    StopCoroutine(coroutine);
+                }
+                // 새로운 코루틴 실행
+                coroutine = StartCoroutine(ActiveLotusTrap());
             }
+            else if(!isTrap) // 트랩이 아닐 때
+            {
+                Debug.Log("This is Real Lotus");
+            }            
         }
     }
 
