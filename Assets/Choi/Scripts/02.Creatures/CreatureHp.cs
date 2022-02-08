@@ -26,8 +26,15 @@ public class CreatureHp : MonoBehaviour
     float currentHp = 100f;
     public float GetCurrentHp() { return currentHp; }
 
+    // 죽었는지 살았는지 체크
+    private bool isDead = false;
+    public bool GetIsDead() { return isDead; }
+
+    // hp에 따른 상태
     [SerializeField] CreatureHpState hpState;
     public CreatureHpState GetCurrentCreatureHPState() { return hpState; }
+
+
 
     #region Enable
     private void OnEnable()
@@ -66,7 +73,25 @@ public class CreatureHp : MonoBehaviour
             hpState = CreatureHpState.Vaccinable;
         }
     }
+    
+    /// <summary>
+    /// 죽었을 때 실행할 함수
+    /// </summary>
+    private void Die()
+    {
+        if (isDead) return;
 
+        // 죽었음을 체크
+        isDead = true;
+        // 죽는 애니메이션 실행
+        GetComponent<Animator>().SetTrigger("Die");
+        // 현재 실행하던 행동 강제로 취소
+        GetComponent<CreatureActionScheduler>().CancelCurrentAction();
+    }
+
+    /// <summary>
+    /// HP를 최대HP로 재설정
+    /// </summary>
     public void ResetHp()
     {
         currentHp = maxHp;
@@ -81,8 +106,12 @@ public class CreatureHp : MonoBehaviour
     {
         currentHp = currentHp - _value;
 
-        // 체력(Hp)에 따라 상태 갱신
-        // SetCreatureStateAboutHp();
+        // 체력이 0 아래로 떨어졌을 경우
+        if (currentHp <= 0)
+        {
+            // 사망
+            Die();
+        }
 
         return currentHp;
     }
