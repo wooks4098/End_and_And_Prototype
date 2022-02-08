@@ -8,9 +8,9 @@ using UnityEngine;
 public class PlantThorn : MonoBehaviour
 {
     // 플레이어와 충돌하면 사라지도록한다.
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider _other)
     {
-        if(other.CompareTag("Player"))
+        if (_other.CompareTag("Player"))
         {
             // 아래의 HidePlantThorn 메서드 참고
             Invoke("HidePlantThorn", 1f);
