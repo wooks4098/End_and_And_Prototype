@@ -130,6 +130,8 @@ public class Lotus : MonoBehaviour
                     // 코루틴을 강제로 멈춘다.
                     Debug.Log("StopCoroutine");
                     StopCoroutine(coroutine);
+
+                    isCoroutineRunning = false;
                 }
             }
         }
