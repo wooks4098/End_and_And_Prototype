@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 850337212753338572}
   - component: {fileID: 850337212753338573}
   - component: {fileID: 850337212753338562}
-  - component: {fileID: 850337212753338563}
+  - component: {fileID: 939619151880138899}
   - component: {fileID: 2319392572445624610}
   m_Layer: 0
   m_Name: Lotus Plane
@@ -83,8 +83,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &850337212753338563
-MeshCollider:
+--- !u!65 &939619151880138899
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -93,10 +93,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300006, guid: ba6a41dc489914734857bb5924eb70ad, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 1.9999994, y: 0.4, z: 1.9999988}
+  m_Center: {x: -0.00000031789145, y: 0.2, z: 0.00000031789145}
 --- !u!114 &2319392572445624610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,4 +108,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 458b906a6367e784a91b1792f52fee97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goTrap: {fileID: 0}
   isTrap: 0

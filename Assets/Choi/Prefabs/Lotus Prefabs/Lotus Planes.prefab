@@ -35,13 +35,13 @@ Transform:
   - {fileID: 1723994385723875327}
   - {fileID: 226762029931525181}
   - {fileID: 4811667700893407428}
-  - {fileID: 1027918200336908669}
+  - {fileID: 1864034651834083741}
   - {fileID: 4876276926462134591}
   - {fileID: 3179934276783609218}
   - {fileID: 2513493157409783254}
   - {fileID: 5142627990775361750}
   - {fileID: 5811530030323383029}
-  - {fileID: 1864034651834083741}
+  - {fileID: 1027918200336908669}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -120,7 +120,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 850337212753338572, guid: 76ff7646fbede794e81dd29bc26f915b, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 850337212753338572, guid: 76ff7646fbede794e81dd29bc26f915b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -922,11 +922,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8113315684686067609, guid: eb9f693c3ec03ff489e1cd54cf7a0f1e, type: 3}
       propertyPath: m_Name
-      value: Lotus Trap
+      value: Lotus Trap (6)
       objectReference: {fileID: 0}
     - target: {fileID: 8113315684686067614, guid: eb9f693c3ec03ff489e1cd54cf7a0f1e, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8113315684686067614, guid: eb9f693c3ec03ff489e1cd54cf7a0f1e, type: 3}
       propertyPath: m_LocalPosition.x

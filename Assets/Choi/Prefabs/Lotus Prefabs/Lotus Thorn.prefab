@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 1851527949984895157}
   - component: {fileID: 6994605530508942733}
   - component: {fileID: 2459729910064875821}
-  - component: {fileID: 6494253033960401812}
+  - component: {fileID: 1630180860907212589}
   - component: {fileID: 5864184337029660828}
   m_Layer: 0
-  m_Name: Tree
+  m_Name: Lotus Thorn
   m_TagString: Thorn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,7 +107,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.176796, y: 4.6651034, z: 1.274271}
   m_Center: {x: 0, y: 2.3325517, z: 0.018457277}
---- !u!114 &6494253033960401812
+--- !u!114 &1630180860907212589
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 178453725402473722}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9b5a7b835a55e0408a4704bc384df7b, type: 3}
+  m_Script: {fileID: 11500000, guid: 84c8fda3b1f2c554c980e5d16847ac2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &5864184337029660828
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   outlineMode: 0
-  outlineColor: {r: 1, g: 0.0902453, b: 0, a: 1}
+  outlineColor: {r: 0.101178885, g: 1, b: 0, a: 1}
   outlineWidth: 2.41
   precomputeOutline: 0
   bakeKeys: []
