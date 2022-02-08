@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,10 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     [SerializeField] bool isAttacking = false;
     public bool GetIsAttacking() { return isAttacking; }
 
+    /* ============== 공격 횟수 ============== */
+    [SerializeField] int attackCount;
+    public int GetAttackCount() { return attackCount; }
+
     /* ============== 타겟 ================ */
     // 실제 타겟
     [SerializeField] List<CreaturePlayer> targetCharacters;
@@ -32,6 +37,11 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         targetCharacters = new List<CreaturePlayer>();
     }
 
+    private void OnEnable()
+    {
+        attackCount = 0;
+    }
+
     public void StartAttackBehaviour()
     {
         GetComponent<CreatureActionScheduler>().StartAction(this);
@@ -39,7 +49,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         // Caster 컴포넌트가 비어있지 않으면
         if(GetComponent<CreatureCaster>() != null)
         {
-            // 
+            // 임시 예외처리용
         }
 
         Attack();        
@@ -61,10 +71,18 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         {
             // 데미지를 준다
             Debug.Log("AttackBehaviour()");
+
+            // 공격 카운트 +1
+            CalculateAttackCount();
         }
 
         // 공격할 수 없다고 체크
         GetComponent<CreatureController>().CanAttack = false;
+    }
+
+    private void CalculateAttackCount()
+    {
+        attackCount ++;
     }
 
     private void SetAttackTarget()

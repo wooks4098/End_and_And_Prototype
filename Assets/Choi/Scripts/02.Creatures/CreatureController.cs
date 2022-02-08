@@ -21,10 +21,13 @@ public class CreatureController : MonoBehaviour
     private NavMeshAgent agent;
 
     /* ============== 체크용 bool 타입 ================ */
-    // [SerializeField] bool hasTarget = false; // 타겟유무
-    // [SerializeField] bool isCasting = false; // 캐스팅 중인지
-    [SerializeField] bool canAttack = false; // 공격할 수 있는지
+    // 공격 자체를 할 수 있는지
+    [SerializeField] bool canAttack = false;
     public bool CanAttack { get { return canAttack; } set { canAttack = value; } }
+
+    // 스킬 공격을 할 수 있는지
+    [SerializeField] bool canUseSkill = false; 
+    public bool CanUseSkill { get { return canUseSkill; } set { canUseSkill = value; } }
 
     /* ============== 좌표 ================ */
     // 생성 좌표
@@ -39,6 +42,7 @@ public class CreatureController : MonoBehaviour
     // 애니메이션 속도
     private float animatingSpeed = 1f;
     public float GetAnimatingSpeed() { return animatingSpeed; }
+
 
 
     #region OnDrawGizmos
@@ -73,6 +77,9 @@ public class CreatureController : MonoBehaviour
         transform.position = createPosition.position;
 
         state = CreatureState.Patrol;
+
+        canUseSkill = false;
+        canUseSkill = false;
     }
     #endregion
 
@@ -87,7 +94,7 @@ public class CreatureController : MonoBehaviour
 
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-    } 
+    }
 
     private void Update()
     {
@@ -106,15 +113,15 @@ public class CreatureController : MonoBehaviour
         // 공격 범위에 들어오면
         if (IsInAttackRange())
         {
-            if (canAttack)
-            {
-                AttackBehaviour();
-            }
             // 캐스터 컴포넌트가 null이 아니고
             // isCasting이 false 일 때(= 캐스팅 중이 아닐 때)만 실행 
-            else if (caster != null && !caster.GetIsCasting())
+            if (caster != null && !caster.GetIsCasting())
             {
                 CastBehaviour();
+            }
+            else if (canAttack)
+            {
+                AttackBehaviour();
             }
         }
         else
@@ -133,22 +140,22 @@ public class CreatureController : MonoBehaviour
     {
         switch(GetComponent<CreatureHp>().GetCurrentCreatureHPState())
         {
-            case CreatureHPState.Normal:
+            case CreatureHpState.Normal:
                 {
                     animatingSpeed = 1f;
                     break;
                 }
-            case CreatureHPState.Arousal:
+            case CreatureHpState.Arousal:
                 {
                     animatingSpeed = 2f;
                     break;
                 }
-            case CreatureHPState.Lull:
+            case CreatureHpState.Lull:
                 {
                     animatingSpeed = 0.6f;
                     break;
                 }
-            case CreatureHPState.Vaccinable:
+            case CreatureHpState.Vaccinable:
                 {
                     break;
                 }

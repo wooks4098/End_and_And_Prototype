@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 크리쳐 체력(HP)에 따른 상태 분류
 /// </summary>
-public enum CreatureHPState
+public enum CreatureHpState
 {
     Normal      = 0,    // 보통 (일반) : ~ 30%
     Arousal,            // 각성 상태 : 30% ~ 10%
@@ -26,8 +26,8 @@ public class CreatureHp : MonoBehaviour
     float currentHp = 100f;
     public float GetCurrentHp() { return currentHp; }
 
-    [SerializeField] CreatureHPState hpState;
-    public CreatureHPState GetCurrentCreatureHPState() { return hpState; }
+    [SerializeField] CreatureHpState hpState;
+    public CreatureHpState GetCurrentCreatureHPState() { return hpState; }
 
     #region Enable
     private void OnEnable()
@@ -35,7 +35,7 @@ public class CreatureHp : MonoBehaviour
         // 체력 리셋
         ResetHp();
         // 상태 일반으로 설정
-        hpState = CreatureHPState.Normal;
+        hpState = CreatureHpState.Normal;
     }
     #endregion
 
@@ -51,19 +51,19 @@ public class CreatureHp : MonoBehaviour
     {
         if (currentHp > 30.0f)
         {
-            hpState = CreatureHPState.Normal;
+            hpState = CreatureHpState.Normal;
         }
         else if (currentHp <= 30.0f && currentHp > 10.0f)
         {
-            hpState = CreatureHPState.Arousal;
+            hpState = CreatureHpState.Arousal;
         }
         else if (currentHp <= 10.0f && currentHp > 5.0f)
         {
-            hpState = CreatureHPState.Lull;
+            hpState = CreatureHpState.Lull;
         }
         else if (currentHp <= 5.0f)
         {
-            hpState = CreatureHPState.Vaccinable;
+            hpState = CreatureHpState.Vaccinable;
         }
     }
 
