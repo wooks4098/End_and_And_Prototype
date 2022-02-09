@@ -10,9 +10,8 @@ public class CreatureController : MonoBehaviour
     /* 상태 */
     public CreatureState state;
 
-    // 컴포넌트
-    // private CreaturePatroller patroller;
-    // private CreatureTracker tracker;    
+    // 컴포넌트   
+    private CreatureTargetFinder finder;
     private CreatureMover mover;    
     private CreatureCaster caster;
     private CreatureFighter fighter;
@@ -42,6 +41,7 @@ public class CreatureController : MonoBehaviour
     // 애니메이션 속도
     private float animatingSpeed = 1f;
     public float GetAnimatingSpeed() { return animatingSpeed; }
+
 
 
 
@@ -86,8 +86,7 @@ public class CreatureController : MonoBehaviour
 
     private void Awake()
     {
-        // patroller = GetComponent<CreaturePatroller>();
-        // tracker = GetComponent<CreatureTracker>();
+        finder = GetComponent<CreatureTargetFinder>();
         mover = GetComponent<CreatureMover>();
         caster = GetComponent<CreatureCaster>();
         fighter = GetComponent<CreatureFighter>();
@@ -184,7 +183,7 @@ public class CreatureController : MonoBehaviour
     /// </summary>
     public bool IsInAttackRange()
     {
-        if (mover.GetTargetCharacter() == null) return false;
+        if (finder.GetTarget() == null) return false;
 
         // 플레이어와 크리처의 거리 계산
         float distanceToPlayer = Vector3.Distance(mover.GetTargetCharacter().transform.position, transform.position);
