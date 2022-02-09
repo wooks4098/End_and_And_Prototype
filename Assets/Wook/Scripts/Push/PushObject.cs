@@ -43,22 +43,31 @@ public class PushObject : MonoBehaviour
                 if (Player1Collider.GetCanUse())
                 {
                     isPushStartPlayer1 = true;
-                    StartPushObject(PlayerType.FirstPlayer);
+                    StartCoroutine(StartPushObject(PlayerType.FirstPlayer));
                 }
                 break;
             case PlayerType.SecondPlayer:
                 if (Player2Collider.GetCanUse())
                 {
                     isPushStartPlayer2 = true;
-                    StartPushObject(PlayerType.SecondPlayer);
+                    StartCoroutine(StartPushObject(PlayerType.SecondPlayer));
                 }
                 break;
         }
     }
-    void StartPushObject(PlayerType _playerType)
+
+    IEnumerator StartPushObject(PlayerType _playerType)
     {
         //플레이어 상태 변경
         GameManager.Instance.PlayerStateChange(_playerType, PlayerState.PushObject);
+
+        //플레이어가 칼 들고있는지 확인
+        if(GameManager.Instance.GetUseSword(_playerType) == true)
+        {
+            GameManager.Instance.GetPlayerController(_playerType).StartSheathSword();
+            yield return new WaitForSeconds(0.8f);
+        }
+
         switch (_playerType)
         {
             case PlayerType.FirstPlayer:
