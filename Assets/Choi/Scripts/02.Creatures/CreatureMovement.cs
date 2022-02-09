@@ -38,7 +38,7 @@ public class CreatureMovement : MonoBehaviour, ICreatureAction
     [SerializeField] float timeSinceLastPatrol = 0f;
 
     // 마지막으로 플레이어를 본 시간
-    private float timeSinceLastSawPlayer = 0f;
+    // private float timeSinceLastSawPlayer = 0f;
 
     private Coroutine waitNextPatrolCoroutine; // 다음 패트롤을 기다리는 코루틴
     private Coroutine timeLastPatrolCoroutine; // 마지막으로 패트롤한 시간을 재는 코루틴 -> 적 추격 상태를 빠져나올 때 사용

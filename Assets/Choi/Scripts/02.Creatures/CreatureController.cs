@@ -36,7 +36,7 @@ public class CreatureController : MonoBehaviour
 
     /* ============== 시간 ================ */
     // 마지막으로 플레이어를 본 시간
-    private float timeSinceLastSawPlayer = 0f;
+    // private float timeSinceLastSawPlayer = 0f;
 
     /* ============== 속도 ================ */
     // 애니메이션 속도
@@ -103,6 +103,9 @@ public class CreatureController : MonoBehaviour
         // 아니라면 = 불가능
         else canAttack = false;
 
+        // 공격 횟수 계산
+        CalculateAttackCount();
+
         // 크리쳐 행동 결정
         DecideBehaviours();
 
@@ -115,8 +118,6 @@ public class CreatureController : MonoBehaviour
     /// </summary>
     private void DecideBehaviours()
     {
-        Debug.Log("CanAttack: " + canAttack);
-
         if(canAttack)
         { 
             // 공격도 가능하고 스킬 공격을 할 수 있으면
@@ -176,7 +177,7 @@ public class CreatureController : MonoBehaviour
     }
 
 
-    #region CalculateRanges
+    #region CalculateRanges, CalculateAttackCounts
 
     /// <summary>
     /// 플레이어와 거리 계산 (공격 범위)
@@ -193,8 +194,24 @@ public class CreatureController : MonoBehaviour
         return distanceToPlayer < creature.GetAttackRange();
     }
 
+
+    /// <summary>
+    /// 공격 횟수 계산
+    /// </summary>
+    private void CalculateAttackCount()
+    {
+        Debug.Log("CalculateAttackCount");
+        if (fighter.AttackCount > 2)
+        {
+            // 캐스팅 가능 상태
+            GetComponent<CreatureController>().CanCasting = true;
+            // 공격횟수 0으로 초기화
+            fighter.AttackCount = 0;
+        }
+    }
+
     #endregion
-       
+
 
     #region Behaviours()
 

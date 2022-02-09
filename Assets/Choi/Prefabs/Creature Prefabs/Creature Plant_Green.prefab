@@ -223,7 +223,7 @@ Animator:
   m_GameObject: {fileID: 6234120361449440225}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 47cc99137487de74fb69849db8af7bf2, type: 3}
-  m_Controller: {fileID: 9100000, guid: d71cbec6c0bf65143806eb4e857903d7, type: 2}
+  m_Controller: {fileID: 9100000, guid: c7f41fb71ad7f7240bee30783f808a1e, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -269,6 +269,7 @@ MonoBehaviour:
   creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
   state: 0
   canAttack: 0
+  canCasting: 0
   createPosition: {fileID: 0}
 --- !u!114 &222006884619837485
 MonoBehaviour:
@@ -345,7 +346,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
   isAttacking: 0
-  targetCharacters: []
+  attackCount: 0
+  targetCharacter: {fileID: 0}
 --- !u!1 &6234120361449440227
 GameObject:
   m_ObjectHideFlags: 0

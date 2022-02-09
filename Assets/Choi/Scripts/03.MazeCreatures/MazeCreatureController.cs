@@ -28,7 +28,7 @@ public class MazeCreatureController : MonoBehaviour
 
     /* ============== 시간 ================ */
     // 마지막으로 플레이어를 본 시간
-    private float timeSinceLastSawPlayer = 0f;
+    // private float timeSinceLastSawPlayer = 0f;
 
 
     #region OnDrawGizmos

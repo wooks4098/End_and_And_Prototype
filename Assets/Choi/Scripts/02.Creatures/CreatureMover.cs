@@ -368,14 +368,14 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         if (waitNextPatrolCoroutine != null)
         {
             StopCoroutine(waitNextPatrolCoroutine);
+            // 시간 초기화
+            timeForWaitingPatrol = 5f;
         }
         if (timeLastPatrolCoroutine != null)
         {
             StopCoroutine(timeLastPatrolCoroutine);
+            // 시간 초기화
+            timeSinceLastPatrol = 0f;
         }
-
-        // 시간 초기화
-        timeForWaitingPatrol = 5f;
-        timeSinceLastPatrol = 0f;
     }
 }

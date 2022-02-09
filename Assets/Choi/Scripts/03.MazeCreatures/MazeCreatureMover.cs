@@ -26,7 +26,7 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     private Coroutine timeLastPatrolCoroutine;
 
     /* ============== 체크용 bool 타입 ================ */
-    [SerializeField] bool hasTarget = false; // 타겟유무
+    // [SerializeField] bool hasTarget = false; // 타겟유무
 
     /* ============== 타겟 ================ */
     // 실제 타겟
@@ -263,7 +263,7 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
                 // 상태 확인
                 // Debug.Log(trackingTargetCharacter.GetComponent<PlayerController>().GetPlayerState());
 
-                hasTarget = true;
+                // hasTarget = true;
             }
         }
     }

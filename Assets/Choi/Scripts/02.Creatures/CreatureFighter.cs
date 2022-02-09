@@ -19,8 +19,8 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     public bool GetIsAttacking() { return isAttacking; }
 
     /* ============== 공격 횟수 ============== */
-    [SerializeField] int attackCount;
-    public int GetAttackCount() { return attackCount; }
+    [SerializeField] int attackCount = 0;
+    public int AttackCount { get { return attackCount; } set { attackCount = value; } }
 
     /* ============== 타겟 ================ */
     // 실제 타겟
@@ -48,6 +48,10 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         Debug.Log("Fighter.StartAttackBehaviour()");
         GetComponent<CreatureActionScheduler>().StartAction(this);
 
+        // 타겟 찾기
+        FindTargetsForAttack();
+
+        // 공격
         Attack();
     }
 
@@ -71,28 +75,6 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         }
     }
 
-    /// <summary>
-    /// 공격 횟수 계산
-    /// </summary>
-    private void CalculateAttackCount()
-    {
-        Debug.Log("CalculateAttackCount");
-
-        // 공격횟수가 2이하 일 때
-        if(attackCount <= 2)
-        {
-            // 공격횟수 +1 증가
-            attackCount = attackCount + 1;
-        }
-        // 공격횟수가 2보다 크면
-        else if(attackCount > 2)
-        {
-            // 캐스팅 가능 상태
-            GetComponent<CreatureController>().CanCasting = true;
-            // 공격횟수 0으로 초기화
-            attackCount = 0;
-        }
-    }
 
     /// <summary>
     /// 공격할 타겟 캐릭터 찾기
@@ -114,8 +96,15 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
                 && activeCollider.gameObject.activeSelf)
             {
                 // 타겟 지정
-                targetCharacter = activeCollider.GetComponent<CreaturePlayer>();            
+                targetCharacter = activeCollider.GetComponent<CreaturePlayer>();
             }
+        }
+
+        // 죽었을 때를 대비한 예외처리
+        if(targetCharacter != null && targetCharacter.GetIsDead())
+        {
+            // 죽었으면 null 처리
+            targetCharacter = null;
         }
     }
 
@@ -126,9 +115,6 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     /// </summary>
     public void BiteTest()
     {
-        // 타겟 찾기
-        FindTargetsForAttack();
-
         // if (targetCharacter.GetIsDead()) return;
 
         if (targetCharacter != null)
@@ -136,8 +122,11 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
             targetCharacter.GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
         }
 
-        // 공격 횟수 계산
-        CalculateAttackCount();
+        if(!GetComponent<CreatureCaster>().GetIsCasting())
+        {
+            // 공격 횟수 증가
+            attackCount++;
+        }
     }
 
     /// <summary>
