@@ -3145,6 +3145,10 @@ PrefabInstance:
       propertyPath: createPosition
       value: 
       objectReference: {fileID: 1784403515}
+    - target: {fileID: 2134069066376404085, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
+      propertyPath: creature
+      value: 
+      objectReference: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
     - target: {fileID: 6234120361449440225, guid: 936d81fdd158fa1458fa0279063fd733, type: 3}
       propertyPath: m_Name
       value: Creature Plant_Green

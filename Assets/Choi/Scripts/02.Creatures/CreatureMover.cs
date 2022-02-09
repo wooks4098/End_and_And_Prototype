@@ -12,6 +12,8 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     private Animator animator;
     private NavMeshAgent agent;
 
+    private CreatureTargetFinder finder;
+
     /* ============== 시간 ================ */
     // 패트롤 끝난 후 대기 시간
     [SerializeField] float timeForWaitingPatrol = 5f;
@@ -26,13 +28,6 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
 
     /* ============== 체크용 bool 타입 ================ */
     [SerializeField] bool hasTarget = false; // 타겟유무
-
-    /* ============== 타겟 ================ */
-    // 임시 타겟
-    [SerializeField] CreaturePlayer tempTarget;
-    // 실제 타겟
-    [SerializeField] CreaturePlayer trackingTargetCharacter;
-    public CreaturePlayer GetTargetCharacter() { return trackingTargetCharacter; }
 
     // 다음 포지션
     private Vector3 v3nextPosition;
@@ -59,10 +54,6 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         createPosition = GetComponent<CreatureController>().GetCreatePosition();
         v3nextPosition = createPosition.position;
     }
-    private void OnDisable()
-    {
-
-    }
 
     #endregion
 
@@ -70,33 +61,20 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+
+        finder = GetComponent<CreatureTargetFinder>();
     }
     private void Update()
     {
         if (GetComponent<CreatureCaster>().GetIsCasting()) return;
 
-        FindTrackingTargetCharacter();
+        finder.FindTarget();
 
-        if(IsInTrackingRange() && !GetComponent<CreatureController>().IsInAttackRange())
+        if(finder.IsInTrackingRange() && !finder.IsInAttackRange())
         {
             StartTrackingBehaviour();
         }
-    }
-
-    /// <summary>
-    /// 플레이어와의 거리 계산 (트래킹 범위)
-    /// </summary>
-    private bool IsInTrackingRange()
-    {
-        if (trackingTargetCharacter == null) return false;
-
-        // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(trackingTargetCharacter.transform.position, transform.position);
-        // Debug.Log(distanceToPlayer);
-
-        // 비교한 값이 tracking 범위보다 적으면 true
-        return distanceToPlayer < creature.GetTrackingRange();
-    }
+    }    
 
     /// <summary>
     /// StartMoveBehavour?
@@ -148,10 +126,10 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     }
     private void Tracking()
     {
-        transform.LookAt(trackingTargetCharacter.transform);
+        transform.LookAt(finder.GetTarget().transform);
 
         // 임시 타겟이 비어있을 때만 코루틴 실행
-        if (tempTarget == null)
+        if (finder.GetTarget() == null)
         {
             if (timeLastPatrolCoroutine == null)
             {
@@ -163,7 +141,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         animator.SetFloat("Speed", 0.6f);
 
         // 다음 목표 좌표를 플레이어로 설정
-        v3nextPosition = trackingTargetCharacter.transform.position;
+        v3nextPosition = finder.GetTarget().transform.position;
 
         // 다음 목표로 이동
         agent.destination = v3nextPosition;
@@ -218,7 +196,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         while (true)
         {
             // 임시 타겟이 생기는 순간 루프를 빠져나감
-            if (tempTarget != null) break;
+            if (finder.GetTarget() != null) break;
 
             // 마지막으로 패트롤한지
             timeSinceLastPatrol += Time.deltaTime;
@@ -229,16 +207,16 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
             if (timeSinceLastPatrol > 10f)
             {
                 // 타겟을 찾아본다
-                // FindTargetCharacter();
+                finder.FindTarget();
 
                 // 임시 타겟이 없으면
-                if (tempTarget == null)
+                if (finder.GetTarget() == null)
                 {
                     // 1. 타겟을 없음으로 표시
                     // hasTarget = false;
 
                     // 2. 실제 타겟을 비우고
-                    trackingTargetCharacter = null;
+                    // finder.GetTarget() = null;
 
                     // 3. 새로운 좌표를 지정
                     UpdatePath();
@@ -300,64 +278,15 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
 
         // agent.updateRotation = true;
     }
-
-    /// <summary>
-    ///  쫓아갈 타겟 캐릭터 찾기
-    /// </summary>
-    private void FindTrackingTargetCharacter()
-    {
-        Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.GetTrackingRange());
-
-        //if(hitCollider.Length != 0)
-        //{
-        //    Debug.Log("뭔가 찾았습니다!");
-        //}
-
-        foreach (var activeCollider in hitCollider)
-        {
-            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
-            if (activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
-                && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead()
-                && activeCollider.gameObject.activeSelf)
-            {
-
-                // 만약 임시 타겟이 비어있지 않고 (-> 임시 타겟이 비어있지 않을 때만 비교)
-                // 임시 타겟의 점수와 새롭게 비교하는 타겟의 점수를 비교
-                if (tempTarget != null
-                    && tempTarget.score > activeCollider.gameObject.GetComponent<CreaturePlayer>().score)
-                {
-                    // 임시 타겟 쪽의 점수가 크면 계속 (continue)
-                    continue;
-                }
-                else
-                {
-                    // 임시타겟 지정
-                    tempTarget = activeCollider.gameObject.GetComponent<CreaturePlayer>();
-                }
-
-                // 타겟 지정
-                trackingTargetCharacter = tempTarget;
-                agent.isStopped = false;
-
-                hasTarget = true;
-            }
-
-            else
-            {
-                // 임시타겟을 비운다
-                tempTarget = null;
-            }
-        }
-    }
-
+    
 
     public void Cancel()
     {
         Debug.Log("Mover.Cancel()");
 
         // target을 비운다
-        tempTarget = null;
-        trackingTargetCharacter = null;
+        // tempTarget = null;
+        // trackingTargetCharacter = null;
 
         // agent 초기화
         agent.ResetPath();
@@ -370,12 +299,16 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
             StopCoroutine(waitNextPatrolCoroutine);
             // 시간 초기화
             timeForWaitingPatrol = 5f;
+            // 코루틴 비우기
+            waitNextPatrolCoroutine = null;
         }
         if (timeLastPatrolCoroutine != null)
         {
             StopCoroutine(timeLastPatrolCoroutine);
             // 시간 초기화
             timeSinceLastPatrol = 0f;
+            // 코루틴 비우기
+            timeLastPatrolCoroutine = null;
         }
     }
 }

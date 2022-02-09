@@ -7,8 +7,10 @@ using UnityEngine.AI;
 public class CreatureFighter : MonoBehaviour, ICreatureAction
 {
     // 컴포넌트
-    Animator animator;
-    NavMeshAgent agent;
+    private Animator animator;
+    private NavMeshAgent agent;
+
+    private CreatureTargetFinder finder;
         
     // 크리쳐 정보
     [SerializeField] CreatureSO creature;
@@ -22,11 +24,6 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     [SerializeField] int attackCount = 0;
     public int AttackCount { get { return attackCount; } set { attackCount = value; } }
 
-    /* ============== 타겟 ================ */
-    // 실제 타겟
-    [SerializeField] CreaturePlayer targetCharacter;
-    // [SerializeField] List<CreaturePlayer> targetCharacters;
-
     // 공격 속도 - 컨트롤러로부터 받아옴
     private float attackSpeed;
 
@@ -36,6 +33,8 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+
+        finder = GetComponent<CreatureTargetFinder>();
     }
 
     private void OnEnable()
@@ -49,7 +48,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         GetComponent<CreatureActionScheduler>().StartAction(this);
 
         // 타겟 찾기
-        FindTargetsForAttack();
+        finder.FindTarget();
 
         // 공격
         Attack();
@@ -68,43 +67,10 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         // animator.ResetTrigger("Prepare Attack");        
 
         // 타겟이 비어있지 않으면
-        if (targetCharacter != null)
+        if (finder.GetTarget() != null)
         {
             // 데미지를 준다
             Debug.Log("AttackBehaviour()");
-        }
-    }
-
-
-    /// <summary>
-    /// 공격할 타겟 캐릭터 찾기
-    /// </summary>
-    private void FindTargetsForAttack()
-    {
-        Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.GetAttackRange());
-
-        //if(hitCollider.Length != 0)
-        //{
-        //    Debug.Log("뭔가 찾았습니다!");
-        //}
-
-        foreach (var activeCollider in hitCollider)
-        {
-            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
-            if (activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
-                && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead()
-                && activeCollider.gameObject.activeSelf)
-            {
-                // 타겟 지정
-                targetCharacter = activeCollider.GetComponent<CreaturePlayer>();
-            }
-        }
-
-        // 죽었을 때를 대비한 예외처리
-        if(targetCharacter != null && targetCharacter.GetIsDead())
-        {
-            // 죽었으면 null 처리
-            targetCharacter = null;
         }
     }
 
@@ -117,9 +83,9 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     {
         // if (targetCharacter.GetIsDead()) return;
 
-        if (targetCharacter != null)
+        if (finder.GetTarget() != null)
         {
-            targetCharacter.GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
+            finder.GetTarget().CalculatePlayerHP(20f);
         }
 
         if(!GetComponent<CreatureCaster>().GetIsCasting())

@@ -267,6 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79aee172899d7014998d381b159a5a32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  creature: {fileID: 11400000, guid: e475939cd5160ec4f805285a6188d8ec, type: 2}
   target: {fileID: 0}
 --- !u!114 &222006884619837485
 MonoBehaviour:
@@ -327,8 +328,6 @@ MonoBehaviour:
   timeForWaitingPatrol: 5
   timeSinceLastPatrol: 0
   hasTarget: 0
-  tempTarget: {fileID: 0}
-  trackingTargetCharacter: {fileID: 0}
   createPosition: {fileID: 0}
 --- !u!114 &4113688123481055379
 MonoBehaviour:

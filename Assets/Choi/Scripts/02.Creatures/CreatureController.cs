@@ -98,7 +98,7 @@ public class CreatureController : MonoBehaviour
     private void Update()
     {
         // 공격 범위에 들어오면 = 공격가능
-        if (IsInAttackRange()) canAttack = true;
+        if (finder.IsInAttackRange()) canAttack = true;
         // 아니라면 = 불가능
         else canAttack = false;
 
@@ -178,20 +178,7 @@ public class CreatureController : MonoBehaviour
 
     #region CalculateRanges, CalculateAttackCounts
 
-    /// <summary>
-    /// 플레이어와 거리 계산 (공격 범위)
-    /// </summary>
-    public bool IsInAttackRange()
-    {
-        if (finder.GetTarget() == null) return false;
-
-        // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(mover.GetTargetCharacter().transform.position, transform.position);
-        //Debug.Log(distanceToPlayer);
-
-        // 비교한 값이 attack 범위보다 적으면 true
-        return distanceToPlayer < creature.GetAttackRange();
-    }
+    
 
 
     /// <summary>

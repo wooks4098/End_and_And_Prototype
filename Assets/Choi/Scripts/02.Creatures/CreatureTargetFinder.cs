@@ -14,20 +14,57 @@ public class CreatureTargetFinder : MonoBehaviour
     [SerializeField] CreaturePlayer target;
     public CreaturePlayer GetTarget() { return target; }
 
-
-    private void Update()
+    /// <summary>
+    /// 플레이어와의 거리 계산 (트래킹 범위)
+    /// </summary>
+    public bool IsInTrackingRange()
     {
-        
+        if (target == null) return false;
 
+        // 플레이어와 크리처의 거리 계산
+        float distanceToPlayer = Vector3.Distance(target.transform.position, transform.position);
+        // Debug.Log(distanceToPlayer);
+
+        // 비교한 값이 tracking 범위보다 적으면 true
+        return distanceToPlayer < creature.GetTrackingRange();
+    }
+
+    /// <summary>
+    /// 플레이어와 거리 계산 (공격 범위)
+    /// </summary>
+    public bool IsInAttackRange()
+    {
+        if (target == null) return false;
+
+        // 플레이어와 크리처의 거리 계산
+        float distanceToPlayer = Vector3.Distance(target.transform.position, transform.position);
+        //Debug.Log(distanceToPlayer);
+
+        // 비교한 값이 attack 범위보다 적으면 true
+        return distanceToPlayer < creature.GetAttackRange();
     }
 
     /// <summary>
     /// 타겟을 찾는다
     /// </summary>
-    private void FindTarget()
+    public void FindTarget()
     {
         Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.GetTrackingRange());
 
+        foreach (var activeCollider in hitCollider)
+        {
+            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
+            if (activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
+                && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead()
+                && activeCollider.gameObject.activeSelf)
+            {
+                target = activeCollider.GetComponent<CreaturePlayer>();
+            }
+        }
 
+        if (target!= null && target.GetIsDead())
+        {
+            target = null;
+        }
     }
 }
