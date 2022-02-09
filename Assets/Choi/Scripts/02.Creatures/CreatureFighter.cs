@@ -24,17 +24,18 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
 
     /* ============== 타겟 ================ */
     // 실제 타겟
-    [SerializeField] List<CreaturePlayer> targetCharacters;
+    [SerializeField] CreaturePlayer targetCharacter;
+    // [SerializeField] List<CreaturePlayer> targetCharacters;
+
+    // 공격 속도 - 컨트롤러로부터 받아옴
+    private float attackSpeed;
+
 
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        agent = GetComponent<NavMeshAgent>();        
-    }
-    private void Start()
-    {
-        targetCharacters = new List<CreaturePlayer>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     private void OnEnable()
@@ -44,60 +45,52 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
 
     public void StartAttackBehaviour()
     {
+        Debug.Log("Fighter.StartAttackBehaviour()");
         GetComponent<CreatureActionScheduler>().StartAction(this);
 
-        // Caster 컴포넌트가 비어있지 않으면
-        if(GetComponent<CreatureCaster>() != null)
-        {
-            // 임시 예외처리용
-        }
-
-        Attack();        
+        Attack();
     }
 
     private void Attack()
     {
         isAttacking = true;
-        if (targetCharacters == null) return;
-        
-        // 애니메이터
-        animator.SetTrigger("Try Attack");
-        // animator.ResetTrigger("Prepare Attack");
 
-        SetAttackTarget();
+        // 애니메이터
+        // 공격 속도
+        attackSpeed = GetComponent<CreatureController>().GetAnimatingSpeed();
+        animator.SetFloat("Animating Speed", attackSpeed);
+        // 공격 실행
+        animator.SetTrigger("Try Attack");
+        // animator.ResetTrigger("Prepare Attack");        
 
         // 타겟이 비어있지 않으면
-        if (targetCharacters != null)
+        if (targetCharacter != null)
         {
             // 데미지를 준다
             Debug.Log("AttackBehaviour()");
-
-            // 공격 카운트 +1
-            CalculateAttackCount();
         }
-
-        // 공격할 수 없다고 체크
-        GetComponent<CreatureController>().CanAttack = false;
     }
 
+    /// <summary>
+    /// 공격 횟수 계산
+    /// </summary>
     private void CalculateAttackCount()
     {
-        attackCount ++;
-    }
+        Debug.Log("CalculateAttackCount");
 
-    private void SetAttackTarget()
-    {
-        // caster 컴포넌트가 있으면
-        if(GetComponent<CreatureCaster>() != null)
+        // 공격횟수가 2이하 일 때
+        if(attackCount <= 2)
         {
-            // caster 컴포넌트로부터 타겟을 가져온다
-            targetCharacters = GetComponent<CreatureCaster>().GetTargetCharacter();
+            // 공격횟수 +1 증가
+            attackCount = attackCount + 1;
         }
-        // caster 컴포넌트가 없으면
-        else
+        // 공격횟수가 2보다 크면
+        else if(attackCount > 2)
         {
-            // 범위 안에 있는 걸 가져온다~
-            FindTargetsForAttack();
+            // 캐스팅 가능 상태
+            GetComponent<CreatureController>().CanCasting = true;
+            // 공격횟수 0으로 초기화
+            attackCount = 0;
         }
     }
 
@@ -121,7 +114,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
                 && activeCollider.gameObject.activeSelf)
             {
                 // 타겟 지정
-                targetCharacters.Add(activeCollider.GetComponent<CreaturePlayer>());
+                targetCharacter = activeCollider.GetComponent<CreaturePlayer>();            
             }
         }
     }
@@ -133,28 +126,34 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     /// </summary>
     public void BiteTest()
     {
+        // 타겟 찾기
+        FindTargetsForAttack();
+
         // if (targetCharacter.GetIsDead()) return;
 
-        if (targetCharacters[0] != null)
+        if (targetCharacter != null)
         {
-            targetCharacters[0].GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
+            targetCharacter.GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
         }
-        // if (targetCharacters[1] != null)
-        // {
-        //     targetCharacters[1].GetComponent<CreaturePlayer>().CalculatePlayerHP(20f);
-        // }
+
+        // 공격 횟수 계산
+        CalculateAttackCount();
     }
+
     /// <summary>
     /// 애니메이션 리셋
     /// </summary>
     public void ExitAttack()
     {
         animator.ResetTrigger("Try Attack");
+
+        // 공격 중이 아님을 표시
+        isAttacking = false;
     }
     #endregion
 
     public void Cancel()
     {
-        
+        isAttacking = false;
     }
 }

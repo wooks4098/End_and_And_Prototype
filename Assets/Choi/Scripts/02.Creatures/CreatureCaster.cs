@@ -107,8 +107,8 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
         // 캐스팅 중임을 false로
         isCasting = false;
 
-        // 공격할 수 있다고 표시
-        GetComponent<CreatureController>().CanAttack = true;
+        // 
+        GetComponent<CreatureController>().CanCasting = false;
 
         // animator.ResetTrigger("Prepare Attack");
         // GetComponent<CreatureMovement>().CanAttack = true;

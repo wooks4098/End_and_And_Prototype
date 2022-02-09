@@ -77,7 +77,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
 
         FindTrackingTargetCharacter();
 
-        if(IsInTrackingRange())
+        if(IsInTrackingRange() && !GetComponent<CreatureController>().IsInAttackRange())
         {
             StartTrackingBehaviour();
         }
@@ -355,15 +355,6 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     {
         Debug.Log("Mover.Cancel()");
 
-        // 코루틴 진행중이면 강제로 코루틴 멈춤
-        if (waitNextPatrolCoroutine != null)
-        {
-            StopCoroutine(waitNextPatrolCoroutine);
-        }
-
-        // 시간 초기화
-        timeForWaitingPatrol = 5f;
-
         // target을 비운다
         tempTarget = null;
         trackingTargetCharacter = null;
@@ -372,5 +363,19 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         agent.ResetPath();
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
+
+        // 코루틴 진행중이면 강제로 코루틴 멈춤
+        if (waitNextPatrolCoroutine != null)
+        {
+            StopCoroutine(waitNextPatrolCoroutine);
+        }
+        if (timeLastPatrolCoroutine != null)
+        {
+            StopCoroutine(timeLastPatrolCoroutine);
+        }
+
+        // 시간 초기화
+        timeForWaitingPatrol = 5f;
+        timeSinceLastPatrol = 0f;
     }
 }
