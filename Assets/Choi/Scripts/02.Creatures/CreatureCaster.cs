@@ -65,7 +65,7 @@ public class CreatureCaster : MonoBehaviour, ICreatureAction
     public void OffCastingProjector()
     {
         // 캐스팅이 끝나면서 타겟찾기
-        GetComponent<CreatureTargetFinder>().FindTarget();
+        GetComponent<CreatureTargetFinder_Test>().FindTarget();
 
         // 장판용 프로젝터를 끄고
         goCastingProjector.SetActive(false);

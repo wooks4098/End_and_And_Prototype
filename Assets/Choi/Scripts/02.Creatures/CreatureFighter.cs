@@ -10,7 +10,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     private Animator animator;
     private NavMeshAgent agent;
 
-    private CreatureTargetFinder finder;
+    private CreatureTargetFinder_Test finder;
         
     // 크리쳐 정보
     [SerializeField] CreatureSO creature;
@@ -34,7 +34,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
 
-        finder = GetComponent<CreatureTargetFinder>();
+        finder = GetComponent<CreatureTargetFinder_Test>();
     }
 
     private void OnEnable()
@@ -71,7 +71,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         agent.isStopped = true;
 
         // 타겟이 비어있지 않으면
-        if (finder.GetTarget() != null)
+        if (finder.GetTestTarget() != null)
         {
             // 데미지를 준다
             Debug.Log("AttackBehaviour()");
@@ -87,7 +87,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
     {
         // if (targetCharacter.GetIsDead()) return;
 
-        if (finder.GetTarget() != null)
+        if (finder.GetTestTarget() != null)
         {
             finder.GetTestTarget().CalculatePlayerHP(20f);
         }

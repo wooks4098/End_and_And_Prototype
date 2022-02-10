@@ -11,7 +11,7 @@ public class CreatureController : MonoBehaviour
     public CreatureState state;
 
     // ÄÄÆ÷³ÍÆ®   
-    private CreatureTargetFinder finder;
+    private CreatureTargetFinder_Test finder;
     private CreatureMover mover;    
     private CreatureCaster caster;
     private CreatureFighter fighter;
@@ -86,7 +86,7 @@ public class CreatureController : MonoBehaviour
 
     private void Awake()
     {
-        finder = GetComponent<CreatureTargetFinder>();
+        finder = GetComponent<CreatureTargetFinder_Test>();
         mover = GetComponent<CreatureMover>();
         caster = GetComponent<CreatureCaster>();
         fighter = GetComponent<CreatureFighter>();

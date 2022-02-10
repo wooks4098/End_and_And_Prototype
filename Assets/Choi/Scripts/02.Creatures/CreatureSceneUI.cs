@@ -5,8 +5,7 @@ using UnityEngine.UI;
 
 public class CreatureSceneUI : MonoBehaviour
 {
-    [SerializeField] CreaturePlayer playerA;
-    [SerializeField] CreaturePlayer playerB;
+    [SerializeField] CreatureAggro aggro;
 
     public Text scoreTextA;
     public Text scoreTextB;
@@ -17,15 +16,15 @@ public class CreatureSceneUI : MonoBehaviour
 
     public void UpScoreA()
     {
-        playerA.score++;
+        aggro.Player1Point += 1;
 
-        scoreTextA.text = "Score: " + playerA.score.ToString();
+        scoreTextA.text = "Score: " + aggro.Player1Point;
     }
 
     public void UpScoreB()
     {
-        playerB.score++;
+        aggro.Player2Point += 1;
 
-        scoreTextB.text = "Score: " + playerB.score.ToString();
+        scoreTextB.text = "Score: " + aggro.Player2Point;
     }
 }

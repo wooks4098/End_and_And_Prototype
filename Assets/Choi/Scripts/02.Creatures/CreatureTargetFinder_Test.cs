@@ -5,14 +5,10 @@ using UnityEngine;
 /// <summary>
 /// 타겟을 찾기 위해 만든 컴포넌트
 /// </summary>
-public class CreatureTargetFinder : MonoBehaviour
+public class CreatureTargetFinder_Test : MonoBehaviour
 {
     // 크리쳐 정보
     [SerializeField] CreatureSO creature;
-
-    /* ============== 타겟 관리 ================ */
-    [SerializeField] PlayerController target;
-    public PlayerController GetTarget() { return target; }
 
     /* ============== 테스트용 타겟 관리 ================ */
     [SerializeField] CreaturePlayer testTarget;
@@ -25,10 +21,10 @@ public class CreatureTargetFinder : MonoBehaviour
     /// </summary>
     public bool IsInTrackingRange()
     {
-        if (target == null) return false;
+        if (testTarget == null) return false;
 
         // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(target.transform.position, transform.position);
+        float distanceToPlayer = Vector3.Distance(testTarget.transform.position, transform.position);
         // Debug.Log(distanceToPlayer);
 
         // 비교한 값이 tracking 범위보다 적으면 true
@@ -40,10 +36,10 @@ public class CreatureTargetFinder : MonoBehaviour
     /// </summary>
     public bool IsInAttackRange()
     {
-        if (target == null) return false;
+        if (testTarget == null) return false;
 
         // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(target.transform.position, transform.position);
+        float distanceToPlayer = Vector3.Distance(testTarget.transform.position, transform.position);
         //Debug.Log(distanceToPlayer);
 
         // 비교한 값이 attack 범위보다 적으면 true
@@ -60,17 +56,17 @@ public class CreatureTargetFinder : MonoBehaviour
         foreach (var activeCollider in hitCollider)
         {
             // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
-            if (activeCollider.GetComponent<PlayerController>() != null
-                && activeCollider.GetComponent<PlayerController>().GetPlayerState() != PlayerState.Crawl
+            if (activeCollider.GetComponent<CreaturePlayer>() != null
+                && !activeCollider.GetComponent<CreaturePlayer>().GetIsDead()
                 && activeCollider.gameObject.activeSelf)
             {
-                target = activeCollider.GetComponent<PlayerController>();
+                testTarget = activeCollider.GetComponent<CreaturePlayer>();
             }
         }
 
-        if (target != null && target.GetComponent<PlayerController>().GetPlayerState() == PlayerState.Crawl)
+        if (testTarget != null && testTarget.GetComponent<CreaturePlayer>().GetIsDead())
         {
-            target = null;
+            testTarget = null;
         }
     }
 }

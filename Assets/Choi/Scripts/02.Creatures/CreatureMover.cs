@@ -12,7 +12,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     private Animator animator;
     private NavMeshAgent agent;
 
-    private CreatureTargetFinder finder;
+    private CreatureTargetFinder_Test finder;
 
     /* ============== 시간 ================ */
     // 패트롤 끝난 후 대기 시간
@@ -42,7 +42,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     {
         // 다음 (목표) 위치
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(v3nextPosition, 3);
+        Gizmos.DrawWireSphere(v3nextPosition, 0.5f);
     }
 
     #region OnEnable, OnDisable
@@ -62,7 +62,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
 
-        finder = GetComponent<CreatureTargetFinder>();
+        finder = GetComponent<CreatureTargetFinder_Test>();
     }
     private void Update()
     {
@@ -126,10 +126,10 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
     }
     private void Tracking()
     {
-        transform.LookAt(finder.GetTarget().transform);
+        transform.LookAt(finder.GetTestTarget().transform);
 
         // 임시 타겟이 비어있을 때만 코루틴 실행
-        if (finder.GetTarget() == null)
+        if (finder.GetTestTarget() == null)
         {
             if (timeLastPatrolCoroutine == null)
             {
@@ -141,7 +141,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         animator.SetFloat("Speed", 0.6f);
 
         // 다음 목표 좌표를 플레이어로 설정
-        v3nextPosition = finder.GetTarget().transform.position;
+        v3nextPosition = finder.GetTestTarget().transform.position;
 
         // 다음 목표로 이동
         agent.destination = v3nextPosition;
@@ -196,7 +196,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
         while (true)
         {
             // 임시 타겟이 생기는 순간 루프를 빠져나감
-            if (finder.GetTarget() != null) break;
+            if (finder.GetTestTarget() != null) break;
 
             // 마지막으로 패트롤한지
             timeSinceLastPatrol += Time.deltaTime;
@@ -210,7 +210,7 @@ public class CreatureMover : MonoBehaviour, ICreatureAction
                 finder.FindTarget();
 
                 // 임시 타겟이 없으면
-                if (finder.GetTarget() == null)
+                if (finder.GetTestTarget() == null)
                 {
                     // 1. 타겟을 없음으로 표시
                     // hasTarget = false;
