@@ -98,16 +98,17 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     private void Patrol()
     {
         if (patrolPath == null) return;
-
-        // 에이전트 설정
-        agent.updateRotation = true;
-        agent.isStopped = false;
+                
         // 에이전트 좌표 설정        
         agent.destination = v3nextPosition;
         agent.speed = creature.GetPatrolSpeed();
 
         // 애니메이션
         animator.SetFloat("Speed", 0.1f);
+
+        // 에이전트 설정
+        agent.updateRotation = true;
+        agent.isStopped = false;
 
         // 지정한 위치에 도착했는지
         if (AtWaypoint())
@@ -168,9 +169,22 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
             if (timeForWaitingPatrol < 0f)
             {
                 // 새로운 좌표를 지정하고
-                CycleWaypoint(); // 인덱스 변경
-                v3nextPosition = GetCurrentWaypoint(); // 새로운 인덱스를 토대로 다음좌표 설정
-               
+                // 인덱스 변경
+                CycleWaypoint(); 
+
+                /* 에이전트 회전 관리 */
+                { 
+                    // 에이전트 잠시 멈춤
+                    agent.updateRotation = false;
+                    agent.isStopped = true;
+
+                    // 새로운 인덱스를 토대로 다음좌표 설정
+                    v3nextPosition = GetCurrentWaypoint();
+
+                    // 바라보기
+                    transform.LookAt(v3nextPosition);
+                }
+
                 break; // 빠져나간다
             }
         }
