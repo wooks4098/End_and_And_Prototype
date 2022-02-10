@@ -11,8 +11,14 @@ public class CreatureTargetFinder : MonoBehaviour
     [SerializeField] CreatureSO creature;
 
     /* ============== 타겟 관리 ================ */
-    [SerializeField] CreaturePlayer target;
-    public CreaturePlayer GetTarget() { return target; }
+    [SerializeField] PlayerController target;
+    public PlayerController GetTarget() { return target; }
+
+    /* ============== 테스트용 타겟 관리 ================ */
+    [SerializeField] CreaturePlayer testTarget;
+    public CreaturePlayer GetTestTarget() { return testTarget; }
+
+
 
     /// <summary>
     /// 플레이어와의 거리 계산 (트래킹 범위)
@@ -54,15 +60,15 @@ public class CreatureTargetFinder : MonoBehaviour
         foreach (var activeCollider in hitCollider)
         {
             // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
-            if (activeCollider.gameObject.GetComponent<CreaturePlayer>() != null
-                && !activeCollider.gameObject.GetComponent<CreaturePlayer>().GetIsDead()
+            if (activeCollider.GetComponent<PlayerController>() != null
+                && activeCollider.GetComponent<PlayerController>().GetPlayerState() != PlayerState.Crawl
                 && activeCollider.gameObject.activeSelf)
             {
-                target = activeCollider.GetComponent<CreaturePlayer>();
+                target = activeCollider.GetComponent<PlayerController>();
             }
         }
 
-        if (target!= null && target.GetIsDead())
+        if (target!= null && target.GetComponent<PlayerController>().GetPlayerState() == PlayerState.Crawl)
         {
             target = null;
         }

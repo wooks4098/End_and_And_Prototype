@@ -12,6 +12,7 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     // 컴포넌트
     private Animator animator;
     private NavMeshAgent agent;
+    private CreatureTargetFinder finder;
 
     /* ============== 시간 ================ */
     // 패트롤 끝난 후 대기 시간
@@ -25,15 +26,7 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     // 마지막으로 패트롤한 시간을 재는 코루틴 -> 적 추격 상태를 빠져나올 때 사용
     private Coroutine timeLastPatrolCoroutine;
 
-    /* ============== 체크용 bool 타입 ================ */
-    // [SerializeField] bool hasTarget = false; // 타겟유무
-
-    /* ============== 타겟 ================ */
-    // 실제 타겟
-    [SerializeField] PlayerController trackingTargetCharacter;
-    //[SerializeField] CreaturePlayer trackingTargetCharacter;
-    public PlayerController GetTargetCharacter() { return trackingTargetCharacter; }
-
+    // 타겟 포지션
     Transform targetPosition1;
     Transform targetPosition2;
 
@@ -52,7 +45,7 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     {
         // 다음 (목표) 위치
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(v3nextPosition, 3f);
+        Gizmos.DrawWireSphere(v3nextPosition, 0.2f);
     }
 
     #endregion
@@ -60,21 +53,17 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
 
     private void OnEnable()
     {
-        timeForWaitingPatrol = 5f;
+        timeForWaitingPatrol = 3f;
 
         v3nextPosition = GetCurrentWaypoint();
     }
-    private void OnDisable()
-    {
-
-    }
-
     #endregion
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        finder = GetComponent<CreatureTargetFinder>();
     }
 
     private void Start()
@@ -85,29 +74,12 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
 
     private void Update()
     {
-        if (GetComponent<MazeCreatureController>().IsInAttackRange()) return;
+        finder.FindTarget();
 
-        FindTrackingTargetCharacter();
-
-        if (IsInTrackingRange())
+        if (finder.IsInTrackingRange() && !finder.IsInAttackRange())
         {
             StartTrackingBehaviour();
         }
-    }
-    
-    /// <summary>
-    /// 플레이어와의 거리 계산 (트래킹 범위)
-    /// </summary>
-    private bool IsInTrackingRange()
-    {
-        if (trackingTargetCharacter == null) return false;
-
-        // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(trackingTargetCharacter.transform.position, transform.position);
-        // Debug.Log(distanceToPlayer);
-
-        // 비교한 값이 tracking 범위보다 적으면 true
-        return distanceToPlayer < creature.GetTrackingRange();
     }
 
     /// <summary>
@@ -115,6 +87,8 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     /// </summary>
     public void StartPatrolBehaviour()
     {
+        Debug.Log("Mover.StartPatrolBehaviour()");
+
         GetComponent<CreatureActionScheduler>().StartAction(this);
 
         // 패트롤
@@ -160,7 +134,7 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     private bool AtWaypoint()
     {
         float distanceToWaypoint = Vector3.Distance(transform.position, v3nextPosition);
-        return distanceToWaypoint <= 2.6f;
+        return distanceToWaypoint <= 0.1f;
     }
     /// <summary>
     /// 패드롤 할 인덱스 순환 (-> 새로운 인덱스를 얻음)
@@ -215,59 +189,67 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
     }
     private void Tracking()
     {
-        transform.LookAt(trackingTargetCharacter.transform);
+        transform.LookAt(finder.GetTarget().transform);
+
+        // 타겟이 비어있을 때만 코루틴 실행
+        if (finder.GetTarget() == null)
+        {
+            if (timeLastPatrolCoroutine == null)
+            {
+                timeLastPatrolCoroutine = StartCoroutine(TimeLastPatrol());
+            }
+        }
 
         // 애니메이션
         animator.SetFloat("Speed", 0.6f);
 
         // 다음 목표 좌표를 플레이어로 설정
-        v3nextPosition = trackingTargetCharacter.transform.position;
+        // v3nextPosition = finder.GetTarget().transform.position;
+        if(finder.GetTarget().CompareTag("Player1"))
+        {
+            // 좌표
+            v3nextPosition = GameManager.Instance.GetPlayerTrans(PlayerType.FirstPlayer).position;
+        }
+        else if (finder.GetTarget().CompareTag("Player2"))
+        {
+            // 좌표
+            v3nextPosition = GameManager.Instance.GetPlayerTrans(PlayerType.SecondPlayer).position;
+        }
 
         // 다음 목표로 이동
         agent.destination = v3nextPosition;
+
         // 트래킹 속도로 전환
         agent.speed = creature.GetTrackingSpeed();
     }
 
-    /// <summary>
-    ///  쫓아갈 타겟 캐릭터 찾기
-    /// </summary>
-    private void FindTrackingTargetCharacter()
+    private IEnumerator TimeLastPatrol()
     {
-        Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.GetTrackingRange());
-
-        //if(hitCollider.Length != 0)
-        //{
-        //    Debug.Log("뭔가 찾았습니다!");
-        //}
-
-        /*
-        GameManager.Instance.GetPlayerState(PlayerType.FirstPlayer);
-        PlayerState.Crawl; // 빈사상태 -> 어그로 없음 (탐색)
-        */
-
-        foreach (var activeCollider in hitCollider)
+        while (true)
         {
-            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 빈사상태가 아니고 3. 활성화 되어있는 것
-            if (activeCollider.GetComponent<PlayerController>() != null
-                && activeCollider.GetComponent<PlayerController>().GetPlayerState() != PlayerState.Crawl
-                && activeCollider.gameObject.activeSelf)
-            {                                
-                agent.isStopped = false;
+            // 임시 타겟이 생기는 순간 루프를 빠져나감
+            if (finder.GetTarget() != null) break;
 
-                // 타겟에 PlayerController를 전달
-                trackingTargetCharacter = activeCollider.GetComponent<PlayerController>();
+            // 마지막으로 패트롤한지
+            timeSinceLastPatrol += Time.deltaTime;
 
-                // 태그 확인
-                // Debug.Log(trackingTargetCharacter.gameObject.tag);
-                // 상태 확인
-                // Debug.Log(trackingTargetCharacter.GetComponent<PlayerController>().GetPlayerState());
+            yield return new WaitForFixedUpdate();
 
-                // hasTarget = true;
+            // 10초를 초과하면
+            if (timeSinceLastPatrol > 10f)
+            {
+                // 타겟을 찾아본다
+                finder.FindTarget();
+
+                // 임시 타겟이 없으면
+                if (finder.GetTarget() == null)
+                {
+                    // 빠져나간다
+                    break;
+                }
             }
         }
     }
-
 
     public void Cancel()
     {
@@ -280,10 +262,10 @@ public class MazeCreatureMover : MonoBehaviour, ICreatureAction
         }
 
         // 시간 초기화
-        timeForWaitingPatrol = 2f;
+        timeForWaitingPatrol = 3f;
 
         // target을 비운다
-        trackingTargetCharacter = null;
+        // trackingTargetCharacter = null;
 
         // agent 초기화
         agent.ResetPath();

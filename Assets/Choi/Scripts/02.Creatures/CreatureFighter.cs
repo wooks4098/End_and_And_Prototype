@@ -56,6 +56,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
 
     private void Attack()
     {
+        // 공격 중임을 표시
         isAttacking = true;
 
         // 애니메이터
@@ -65,6 +66,9 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
         // 공격 실행
         animator.SetTrigger("Try Attack");
         // animator.ResetTrigger("Prepare Attack");        
+
+        // 에이전트
+        agent.isStopped = true;
 
         // 타겟이 비어있지 않으면
         if (finder.GetTarget() != null)
@@ -85,7 +89,7 @@ public class CreatureFighter : MonoBehaviour, ICreatureAction
 
         if (finder.GetTarget() != null)
         {
-            finder.GetTarget().CalculatePlayerHP(20f);
+            finder.GetTestTarget().CalculatePlayerHP(20f);
         }
 
         if(!GetComponent<CreatureCaster>().GetIsCasting())

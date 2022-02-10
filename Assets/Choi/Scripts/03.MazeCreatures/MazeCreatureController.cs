@@ -11,13 +11,12 @@ public class MazeCreatureController : MonoBehaviour
     // 컴포넌트
     private MazeCreatureMover mover;
     private MazeCreatureFighter fighter;
+    private CreatureTargetFinder finder;
 
     private Animator animator;
     private NavMeshAgent agent;
 
     /* ============== 체크용 bool 타입 ================ */
-    // [SerializeField] bool hasTarget = false; // 타겟유무
-    // [SerializeField] bool isCasting = false; // 캐스팅 중인지
     [SerializeField] bool canAttack = false; // 공격할 수 있는지
     public bool CanAttack { get { return canAttack; } set { canAttack = value; } }
 
@@ -26,19 +25,11 @@ public class MazeCreatureController : MonoBehaviour
     [SerializeField] Transform createPosition;
     public Transform GetCreatePosition() { return createPosition; }
 
-    /* ============== 시간 ================ */
-    // 마지막으로 플레이어를 본 시간
-    // private float timeSinceLastSawPlayer = 0f;
-
 
     #region OnDrawGizmos
 
     private void OnDrawGizmos()
     {
-        // 패트롤 범위
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(createPosition.position, 3f);
-
         // 인식 시야 범위
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, creature.GetTrackingRange());
@@ -61,14 +52,15 @@ public class MazeCreatureController : MonoBehaviour
 
         // createPosition = CreatuerPool.GetInstance().GetCreatePosition();
         transform.position = createPosition.position;
+
+        canAttack = false;
     }
 
     #endregion
 
     private void Awake()
     {
-        // patroller = GetComponent<CreaturePatroller>();
-        // tracker = GetComponent<CreatureTracker>();
+        finder = GetComponent<CreatureTargetFinder>();
         mover = GetComponent<MazeCreatureMover>();
         fighter = GetComponent<MazeCreatureFighter>();
 
@@ -78,8 +70,12 @@ public class MazeCreatureController : MonoBehaviour
 
     private void Update()
     {
-        if (GetComponent<CreatureHp>().GetIsDead()) return;
+        // 공격 범위에 들어오면 = 공격가능
+        if (finder.IsInAttackRange()) canAttack = true;
+        // 아니라면 = 불가능
+        else canAttack = false;
 
+        // 크리쳐 행동 결정
         DecideBehaviours();
     }
 
@@ -88,41 +84,27 @@ public class MazeCreatureController : MonoBehaviour
     /// </summary>
     private void DecideBehaviours()
     {
-        // 공격 범위에 들어오면
-        if (IsInAttackRange())
+        if(canAttack)
         {
-            AttackBehaviour();
+            if(!fighter.GetIsAttacking())
+            {
+                AttackBehaviour();
+            }
         }
         else
         {
-            MoveBehaviour();
+            if (!fighter.GetIsAttacking())
+            {
+                MoveBehaviour();
+            }                
         }
     }
-
-    #region CalculateRanges
-
-    /// <summary>
-    /// 플레이어와 거리 계산 (공격 범위)
-    /// </summary>
-    public bool IsInAttackRange()
-    {
-        if (mover.GetTargetCharacter() == null) return false;
-
-        // 플레이어와 크리처의 거리 계산
-        float distanceToPlayer = Vector3.Distance(mover.GetTargetCharacter().transform.position, transform.position);
-        //Debug.Log(distanceToPlayer);
-
-        // 비교한 값이 attack 범위보다 적으면 true
-        return distanceToPlayer < creature.GetAttackRange();
-    }
-
-    #endregion
 
     #region Behaviours()
 
     private void MoveBehaviour()
     {
-        fighter.Cancel();
+        // fighter.Cancel();
 
         mover.StartPatrolBehaviour();
     }

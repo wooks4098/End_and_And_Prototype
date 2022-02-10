@@ -7,8 +7,9 @@ using UnityEngine.AI;
 public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
 {
     // 컴포넌트
-    Animator animator;
-    NavMeshAgent agent;
+    private Animator animator;
+    private NavMeshAgent agent;
+    private CreatureTargetFinder finder;
 
     // 크리쳐 정보
     [SerializeField] CreatureSO creature;
@@ -18,9 +19,6 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
     [SerializeField] bool isAttacking = false;
     public bool GetIsAttacking() { return isAttacking; }
 
-    /* ============== 타겟 ================ */
-    // 실제 타겟
-    [SerializeField] PlayerController targetCharacter;
     // 타겟 타입
     PlayerType targetType;
 
@@ -29,12 +27,17 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
+        finder = GetComponent<CreatureTargetFinder>();
     }
 
 
     public void StartAttackBehaviour()
     {
+        Debug.Log("Fighter.StartAttackBehaviour()");
         GetComponent<CreatureActionScheduler>().StartAction(this);
+
+        // 타겟 찾기
+        finder.FindTarget();
 
         // 공격
         Attack();
@@ -49,42 +52,11 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
         // 에이전트
         agent.isStopped = true;
 
-        // 타겟을 찾는다
-        FindTargetsForAttack();
-
         // 타겟이 비어있지 않으면
-        if (targetCharacter != null)
+        if (finder.GetTarget() != null)
         {
             // 데미지를 준다
             Debug.Log("AttackBehaviour()");
-        }
-
-        // 공격할 수 없다고 체크
-        GetComponent<MazeCreatureController>().CanAttack = false;
-    }
-
-    /// <summary>
-    /// 공격할 타겟 캐릭터 찾기
-    /// </summary>
-    private void FindTargetsForAttack()
-    {
-        Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.GetAttackRange());
-
-        //if(hitCollider.Length != 0)
-        //{
-        //    Debug.Log("뭔가 찾았습니다!");
-        //}
-
-        foreach (var activeCollider in hitCollider)
-        {
-            // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 빈사상태가 아니고 3. 활성화 되어있는 것
-            if (activeCollider.GetComponent<PlayerController>() != null
-                && activeCollider.GetComponent<PlayerController>().GetPlayerState() != PlayerState.Crawl
-                && activeCollider.gameObject.activeSelf)
-            {
-                // 타겟 지정
-                targetCharacter = activeCollider.GetComponent<PlayerController>();
-            }
         }
     }
 
@@ -101,17 +73,19 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
          */
 
         // 타겟이 비어있지 않으면
-        if (targetCharacter != null)
+        if (finder.GetTarget() != null)
         {
             // tag가 "Player1"이면
-            if(targetCharacter.gameObject.tag == "Player1")
+            if(finder.GetTarget().gameObject.tag == "Player1")
             {
+                Debug.Log("Damage to Player1");
                 // 데미지를 주는 함수 호출... 
                 GameManager.Instance.PlayerDamage(PlayerType.FirstPlayer, creature.GetDamageValue());
             }
             // tag가 "Player2"이면
-            else if (targetCharacter.gameObject.tag == "Player2")
+            else if (finder.GetTarget().gameObject.tag == "Player2")
             {
+                Debug.Log("Damage to Player2");
                 GameManager.Instance.PlayerDamage(PlayerType.SecondPlayer, creature.GetDamageValue());
             }
         }
@@ -122,6 +96,9 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
     public void ExitAttack()
     {
         animator.ResetTrigger("Try Attack");
+
+        // 공격 중이 아님을 표시
+        isAttacking = false;
     }
     #endregion
 
@@ -130,6 +107,6 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
     {
         Debug.Log("Fighter.Cancel()");
 
-        animator.ResetTrigger("Try Attack");
+        ExitAttack();
     }
 }

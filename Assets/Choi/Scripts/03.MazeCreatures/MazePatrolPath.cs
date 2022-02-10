@@ -7,6 +7,17 @@ using UnityEngine;
 /// </summary>
 public class MazePatrolPath : MonoBehaviour
 {
+    private Stack<Transform> wayPoints;
+
+    private void Awake()
+    {
+        wayPoints = new Stack<Transform>();
+    }
+    private void Start()
+    {
+        
+    }
+
     public int GetNextIndex(int i)
     {
         if (i + 1 == transform.childCount)
