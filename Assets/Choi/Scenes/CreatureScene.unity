@@ -3092,9 +3092,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4223297277503768781, guid: c53f6c1e1e2b9f049b98807869e9d350, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4223297277503768781, guid: c53f6c1e1e2b9f049b98807869e9d350, type: 3}
       propertyPath: createPosition
       value: 
       objectReference: {fileID: 1784403515}
+    - target: {fileID: 7206807534570270697, guid: c53f6c1e1e2b9f049b98807869e9d350, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7468011489713412472, guid: c53f6c1e1e2b9f049b98807869e9d350, type: 3}
       propertyPath: createPosition
       value: 
@@ -3102,7 +3110,7 @@ PrefabInstance:
     - target: {fileID: 7777847541153375003, guid: c53f6c1e1e2b9f049b98807869e9d350, type: 3}
       propertyPath: goCastingProjector
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 7190465578421413054}
     - target: {fileID: 8857941272775408067, guid: c53f6c1e1e2b9f049b98807869e9d350, type: 3}
       propertyPath: m_Name
       value: Creature Plant_for Test
@@ -3307,6 +3315,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70e28b9e31f157b4f9356feeecfb5e29, type: 3}
+--- !u!1 &7190465578421413054 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8858150276011101549, guid: c53f6c1e1e2b9f049b98807869e9d350, type: 3}
+  m_PrefabInstance: {fileID: 1812649262804167123}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &7190674385292513305 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7327495762880515261, guid: c53f6c1e1e2b9f049b98807869e9d350, type: 3}

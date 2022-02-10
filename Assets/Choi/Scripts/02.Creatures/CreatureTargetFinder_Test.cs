@@ -10,11 +10,18 @@ public class CreatureTargetFinder_Test : MonoBehaviour
     // 크리쳐 정보
     [SerializeField] CreatureSO creature;
 
+    // aggro
+    private CreatureAggro aggro;
+
     /* ============== 테스트용 타겟 관리 ================ */
     [SerializeField] CreaturePlayer testTarget;
     public CreaturePlayer GetTestTarget() { return testTarget; }
 
 
+    private void Awake()
+    {
+        aggro = GetComponent<CreatureAggro>();
+    }
 
     /// <summary>
     /// 플레이어와의 거리 계산 (트래킹 범위)
@@ -53,6 +60,13 @@ public class CreatureTargetFinder_Test : MonoBehaviour
     {
         Collider[] hitCollider = Physics.OverlapSphere(transform.position, creature.GetTrackingRange());
 
+        // 플레이어 1, 2 점수 비교
+        var value = Mathf.Max(aggro.Player1Point, aggro.Player2Point);
+        if (value > aggro.Player1Point)
+        {
+
+        }
+
         foreach (var activeCollider in hitCollider)
         {
             // 1. 플레이어 관련 컴포넌트를 가지고 있고 2. 죽지않았고 3. 활성화 되어있는 것
@@ -60,6 +74,8 @@ public class CreatureTargetFinder_Test : MonoBehaviour
                 && !activeCollider.GetComponent<CreaturePlayer>().GetIsDead()
                 && activeCollider.gameObject.activeSelf)
             {
+                
+
                 testTarget = activeCollider.GetComponent<CreaturePlayer>();
             }
         }
