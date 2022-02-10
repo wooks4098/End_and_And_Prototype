@@ -87,7 +87,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void SheathSword(PlayerType _playerType)
+    {
+        switch (_playerType)
+        {
+            case PlayerType.FirstPlayer:
+                player1.StartSheathSword();
+                break;
+            case PlayerType.SecondPlayer:
+                player2.StartSheathSword();
+                break;
+        }
 
+    }
+
+
+   
 
     //플레이어 리턴
     public PlayerState GetPlayerState(PlayerType _playerType)
@@ -141,7 +156,17 @@ public class GameManager : MonoBehaviour
         }
         return null;
     }
-
+    public bool GetUseSword(PlayerType _playerType)
+    {
+        switch (_playerType)
+        {
+            case PlayerType.FirstPlayer:
+                return player1.GetUseSword();
+            case PlayerType.SecondPlayer:
+                return player2.GetUseSword();
+        }
+        return false;
+    }
     #endregion
 
     #region 인벤토리 아이템 관련

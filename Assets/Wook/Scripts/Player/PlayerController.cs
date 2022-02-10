@@ -48,6 +48,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Animator ani;
     PlayerStatus playerStatus;
     [SerializeField] PlayerRevival playerRevival;
+
+    [SerializeField] PlayerAttack playerAttack;
+
     //[SerializeField] PlayerInput playerInput;
     //test
     [SerializeField] GameObject playerCamera;
@@ -61,16 +64,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float fallLength; //벽타기시 떨어질 수 있는 거리
     [Header("Attack")]
     //공격 변수
-    [SerializeField] int AttackComboCount = 0;//콤보 번호 초기 0 | 공격종류 1~3
-    [SerializeField] bool CanAttack = true; // 공격 가능한지
-    [SerializeField] ParticleSystem[] AttackParticle;
-    [SerializeField] BoxCollider AttackCollider;//공격 충돌용 콜라이더
-   // [SerializeField] bool CanNextCombo = true;//다음 공격으로 이어갈 수 있는지
+    [SerializeField] bool isUsingSword;
+    [Header("Skin")]
+    //무기
+    [SerializeField] GameObject HandSword; //손에 들고있는 칼
+    [SerializeField] GameObject BackSword; //등에 집어넣은 칼
+    // [SerializeField] bool CanNextCombo = true;//다음 공격으로 이어갈 수 있는지
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         ani = GetComponentInChildren<Animator>();
         playerStatus = GetComponent<PlayerStatus>();
+        isUsingSword = false;
+
+        playerAttack.Getcomponent(playerType, characterController, this);
     }
     private void Start()
     {
@@ -121,14 +128,14 @@ public class PlayerController : MonoBehaviour
                 InputManager.Instance.OnFrontBackPlayer1 += Move;
                 InputManager.Instance.OnLeftRightPlayer1 += Rotation;
                 InputManager.Instance.OnRunPlayer1 += Run;
-                InputManager.Instance.OnAttackPlayer1 += Attack;
+                //InputManager.Instance.OnAttackPlayer1 += Attack;
                 break;
 
             case PlayerType.SecondPlayer:
                 InputManager.Instance.OnFrontBackPlayer2 += Move;
                 InputManager.Instance.OnLeftRightPlayer2 += Rotation;
                 InputManager.Instance.OnRunPlayer2 += Run;
-                InputManager.Instance.OnAttackPlayer2 += Attack;
+                //InputManager.Instance.OnAttackPlayer2 += Attack;
 
                 break;
         }
@@ -537,96 +544,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
 
-    #region 공격
-
-    void Attack(PlayerState playerstate)
-    {
-        if (CanAttack == false)
-            return;
-        switch(playerstate)
-        {
-            case PlayerState.ClimbWall:
-            case PlayerState.ClimbUpWall:
-            case PlayerState.ClimbWallFall:
-            case PlayerState.HoldRope:
-            case PlayerState.SafeBox:
-            case PlayerState.Die:
-                return;
-        }
-        if(AttackComboCount<3)
-        {
-            PlayerStateChange(PlayerState.Attack);
-            AttackComboCount++;
-            ani.SetTrigger("Attack" + AttackComboCount.ToString());
-            StartCoroutine(ShowParticle());
-            AttackCollider.enabled = true;
-            if (AttackComboCount <3)
-            {
-                StartCoroutine(ComboEndCheck(AttackComboCount));
-                StartCoroutine(AniNextCombo());
-
-            }
-            else
-                StartCoroutine(AttackCoolTime());
-            CanAttack = false;
-        }
-    }
-    IEnumerator ShowParticle()
-    {
-        switch (AttackComboCount)
-        {
-            case 1:
-            case 3:
-                yield return new WaitForSeconds(0.3f);
-                break;
-            case 2:
-                yield return new WaitForSeconds(0.4f);
-                break;
-
-
-        }
-    AttackParticle[AttackComboCount-1].Emit(1);
-
-    }
-    //콤보를 이어가지 않아 끝났는지 확인하는 함수
-    IEnumerator ComboEndCheck(int lastComboNumber)
-    {
-        yield return new WaitForSeconds(1f);
-        if( lastComboNumber == AttackComboCount)
-        {
-            AttackCollider.enabled = false;
-
-            CanAttack = false;
-            PlayerStateChange(PlayerState.Walk);
-            yield return new WaitForSeconds(0.2f);
-            CanAttack = true;
-            AttackComboCount = 0;
-        }
-    }
-
-    IEnumerator AniNextCombo()
-    {
-
-        yield return new WaitForSeconds(0.7f);
-        CanAttack = true;
-        PlayerStateChange(PlayerState.Walk);
-
-    }
-
-    IEnumerator AttackCoolTime()
-    {
-
-        CanAttack = false;
-        yield return new WaitForSeconds(0.7f);
-        AttackCollider.enabled = false;
-
-        PlayerStateChange(PlayerState.Walk);
-        yield return new WaitForSeconds(0.3f);
-        CanAttack = true;
-        AttackComboCount = 0;
-    }
-
-    #endregion
+   
 
 
     public void PlayerStateChange(PlayerState _playerState)
@@ -677,11 +595,41 @@ public class PlayerController : MonoBehaviour
         meshRenderer.enabled = _State;
     }
 
+    public void ChangeUseSowrd(bool _UseSword)
+    {
+        isUsingSword = _UseSword;
+    }
+
+    //칼집어넣기
+
+    public void StartSheathSword()
+    {
+        StartCoroutine(SheathSword());
+    }
+
+    IEnumerator SheathSword()
+    {
+        if (isUsingSword == true)
+        {
+            ani.SetTrigger("SheathSword");
+            yield return new WaitForSeconds(0.8f);
+            HandSword.SetActive(false);
+            BackSword.SetActive(true);
+            isUsingSword = !isUsingSword;
+        }
+    }
 
     #region Get
     public PlayerState GetPlayerState()
     {
         return playerState;
     }
+
+    public bool GetUseSword()
+    {
+        return isUsingSword;
+    }
+
+
     #endregion
 }

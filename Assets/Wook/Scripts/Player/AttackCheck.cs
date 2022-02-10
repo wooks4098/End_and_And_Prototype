@@ -6,9 +6,10 @@ using UnityEngine;
 /// </summary>
 public class AttackCheck : MonoBehaviour
 {
+
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Enemy")
+        if (other.tag == "Enemy")
         {
             //Enemy데미지 주기
             CreatureHp creatureHp = other.GetComponent<CreatureHp>();
@@ -16,3 +17,4 @@ public class AttackCheck : MonoBehaviour
         }
     }
 }
+   
