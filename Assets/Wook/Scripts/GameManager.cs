@@ -7,8 +7,8 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
     //플레이어 컨트롤러
-    PlayerController player1;
-    PlayerController player2;
+    [SerializeField] PlayerController player1;
+    [SerializeField] PlayerController player2;
     //인벤토리
     [SerializeField] Inventory inventoryP1;
     [SerializeField] Inventory inventoryP2;
@@ -23,9 +23,6 @@ public class GameManager : MonoBehaviour
             //DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
-
-        player1 = GameObject.FindWithTag("Player1").gameObject.GetComponent<PlayerController>();
-        player2 = GameObject.FindWithTag("Player2").gameObject.GetComponent<PlayerController>();
         gPlayer1 = player1.GetComponent<GameObject>();
         gPlayer2 = player2.GetComponent<GameObject>();
     }

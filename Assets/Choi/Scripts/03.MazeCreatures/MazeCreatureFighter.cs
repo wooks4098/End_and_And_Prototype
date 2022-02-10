@@ -80,13 +80,13 @@ public class MazeCreatureFighter : MonoBehaviour, ICreatureAction
             {
                 Debug.Log("Damage to Player1");
                 // 데미지를 주는 함수 호출... 
-                GameManager.Instance.PlayerDamage(PlayerType.FirstPlayer, creature.GetDamageValue());
+                GameManager.Instance.PlayerDamage(PlayerType.FirstPlayer, -creature.GetDamageValue());
             }
             // tag가 "Player2"이면
             else if (finder.GetTarget().gameObject.tag == "Player2")
             {
                 Debug.Log("Damage to Player2");
-                GameManager.Instance.PlayerDamage(PlayerType.SecondPlayer, creature.GetDamageValue());
+                GameManager.Instance.PlayerDamage(PlayerType.SecondPlayer, -creature.GetDamageValue());
             }
         }
     }
