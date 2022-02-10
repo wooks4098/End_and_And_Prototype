@@ -37,8 +37,6 @@ public class MazePatrolPath : MonoBehaviour
         // 순방향이면
         if (!isReverse)
         {
-            Debug.Log("!isReverese");
-
             // 값을 채운다
             wayPoints.Push(transform.GetChild(i));
             
@@ -47,8 +45,6 @@ public class MazePatrolPath : MonoBehaviour
         // 역방향이면
         else 
         {
-            Debug.Log("isReverese");
-
             // 값을 1개씩 뺀다
             wayPoints.Pop();
 
