@@ -6,6 +6,7 @@ public enum PlayerType
 {//1P 2P
     FirstPlayer = 0,
     SecondPlayer,
+    Nonem
 }
 //플레이어 행동 상태
 public enum PlayerState

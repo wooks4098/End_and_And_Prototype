@@ -18,9 +18,37 @@ public class UIManager : MonoBehaviour
             //DontDestroyOnLoad(gameObject);
         }
         else Destroy(gameObject);
+
+        dialogSystem = gameObject.GetComponent<DialogSystem>();
     }
     [SerializeField] UiController P1UI;
     [SerializeField] UiController P2UI;
+    DialogSystem dialogSystem;
+    int i = 0;
+    #region Dialog
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            DialogData test = new DialogData();
+            test.name = "Å×½ºÆ®";
+            test.dialog = i.ToString();
+            i++;
+            dialogSystem.AddDialog(test);
+        }
+    }
+    public void AddDialog(DialogData _dialogData)
+    {
+        dialogSystem.AddDialog(_dialogData);
+    }
+
+    public void DecreaseDialog(DialogType _DialogType,PlayerType _playertype)
+    {
+        dialogSystem.DecreaseDialog(_DialogType, _playertype);
+    }
+
+
+    #endregion
 
 
     #region Status 
@@ -40,6 +68,8 @@ public class UIManager : MonoBehaviour
 
 
     #endregion
+
+
 
     #region ClimbWall
 
