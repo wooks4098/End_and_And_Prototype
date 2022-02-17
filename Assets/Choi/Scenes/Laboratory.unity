@@ -236,9 +236,9 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &781978178 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8015511558472685396, guid: ab0668e05e694cd4ba1670f9f22598a6, type: 3}
+--- !u!95 &781978183 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8015511558472685393, guid: ab0668e05e694cd4ba1670f9f22598a6, type: 3}
   m_PrefabInstance: {fileID: 8015511558766550294}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &964590823
@@ -607,9 +607,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 77209512, guid: 765e570a2c7c0a64bac53bf31514e2ba, type: 3}
-      propertyPath: goDoor
+      propertyPath: doorAnimator
       value: 
-      objectReference: {fileID: 781978178}
+      objectReference: {fileID: 781978183}
     - target: {fileID: 5111191539864015825, guid: 765e570a2c7c0a64bac53bf31514e2ba, type: 3}
       propertyPath: m_RootOrder
       value: 9

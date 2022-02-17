@@ -5,10 +5,8 @@ using UnityEngine;
 public class LabDoorButtonTrigger : MonoBehaviour
 {
     // 컴포넌트
-    private Animator animator;
-
-    // 문
-    [SerializeField] GameObject goDoor;
+    private Animator buttonAnimator;
+    [SerializeField] Animator doorAnimator;
 
     // 버튼에서 이미 한 번 갔다왔는지
     [SerializeField] bool hasExitFromButton = false;
@@ -16,7 +14,7 @@ public class LabDoorButtonTrigger : MonoBehaviour
 
     private void Awake()
     {
-        animator = GetComponentInParent<Animator>();
+        buttonAnimator = GetComponentInParent<Animator>();
     }
 
     private void Start()
@@ -32,8 +30,8 @@ public class LabDoorButtonTrigger : MonoBehaviour
         if(_other.tag == "Player1" || _other.tag == "Player2")
         {
             // 문열기
-            animator.SetBool("IsOpen", true);
-            goDoor.GetComponent<Animator>().SetBool("IsOpen", true);
+            buttonAnimator.SetBool("IsOpen", true);
+            doorAnimator.SetBool("IsOpen", true);
         }
     }
 
@@ -44,8 +42,8 @@ public class LabDoorButtonTrigger : MonoBehaviour
             hasExitFromButton = false; // 버튼을 한 번 눌렀었음을 체크
 
             // 문닫기
-            animator.SetBool("IsOpen", false);
-            goDoor.GetComponent<Animator>().SetBool("IsOpen", false);
+            buttonAnimator.SetBool("IsOpen", false);
+            doorAnimator.SetBool("IsOpen", false);
         }
     }
 }

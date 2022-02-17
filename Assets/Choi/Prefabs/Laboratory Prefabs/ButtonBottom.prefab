@@ -153,6 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7f4baaaa44b8634f8f6ede21cf3cea4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorAnimator: {fileID: 0}
+  hasExitFromButton: 0
 --- !u!1 &5111191541507840186
 GameObject:
   m_ObjectHideFlags: 0
