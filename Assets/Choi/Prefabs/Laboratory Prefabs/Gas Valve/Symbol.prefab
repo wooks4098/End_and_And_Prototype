@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 7291349010214342549}
   - component: {fileID: 7291349010214342551}
   - component: {fileID: 7291349010214342550}
+  - component: {fileID: 1778344240501531066}
   m_Layer: 5
-  m_Name: Pattern
+  m_Name: Symbol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,3 +76,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1778344240501531066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7291349010214342548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 406fff51023c17b4e97b43329283b50a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goController: {fileID: 0}
+  goMovePlate: {fileID: 0}
+  symbols:
+  - {fileID: 21300000, guid: da27fd719848b3146aa4c245c1c2ac74, type: 3}
+  - {fileID: 21300000, guid: 15d3d3d778aed364c87ba3491489c601, type: 3}
+  - {fileID: 21300000, guid: cfd72d99974ef40469761406153a1d71, type: 3}
+  - {fileID: 21300000, guid: 870769da846990849add8c58ae46497e, type: 3}
+  - {fileID: 21300000, guid: 245b533cf3909364080e26125a4d62fe, type: 3}

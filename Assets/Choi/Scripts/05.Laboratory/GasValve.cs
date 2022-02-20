@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class GasValve : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] GameObject piece;
 
-    // Update is called once per frame
-    void Update()
+    private GameObject[,] positions = new GameObject[5, 5];
+    private GameObject[] symbols = new GameObject[5];
+
+    private void Start()
     {
-        
+        Instantiate(piece, new Vector3(0, 0, -1), Quaternion.identity);
     }
 }
