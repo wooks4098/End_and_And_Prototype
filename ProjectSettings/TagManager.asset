@@ -28,7 +28,7 @@ TagManager:
   - FogVolumeUniform
   - Enemy
   - MiniMap
-  - 
+  - TargetGroupCamera
   - 
   - 
   - 
