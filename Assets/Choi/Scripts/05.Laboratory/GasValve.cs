@@ -11,6 +11,7 @@ public class GasValve : MonoBehaviour
 
     // 블록(문양)을 저장하는 배열
     [SerializeField] GameObject[] symbols;
+    public GameObject GetSymbol(int _index) { return symbols[_index]; }
 
     private int currentSymbol = 0; // 0~4, 총 5개
 

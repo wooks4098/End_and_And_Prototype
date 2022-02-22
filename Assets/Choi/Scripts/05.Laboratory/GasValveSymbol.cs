@@ -7,7 +7,6 @@ public class GasValveSymbol : MonoBehaviour
 {
     // 컴포넌트
     private RectTransform rectTransform;
-    public GameObject goController;
     public GameObject goMovePlate;
 
     // array 인덱스 (보드 인덱스) - 외부(에디터)에서 설정
@@ -17,54 +16,48 @@ public class GasValveSymbol : MonoBehaviour
     // 선택되었는지
     public bool isSelect = false;
 
-
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
     }
-    private void Start()
+    private void OnEnable()
     {
         // 선택되지 않음 설정
         isSelect = false;
 
         // 인덱스에 맞게 위치 이동
+        // 배열을 맞추기 위해 y좌표에 -1 해줌
         float x = xBoard * 100;
-        float y = yBoard * 100;
+        float y = yBoard * 100 * -1;
+
+        rectTransform.anchoredPosition = new Vector3(x, y, 0);
+    }
+    private void Start()
+    {
+    }
+
+        
+    /// <param name="_num"> 양수 및 음수 전환을 위해 사용하는 파라미터 </param>
+    private void SetPosition()
+    {
+        float x = xBoard * 100;
+        float y = yBoard * 100 * -1;
+
         rectTransform.anchoredPosition = new Vector3(x, y, 0);
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.S))
+
+
+        if (isSelect)
         {
-            float x = GetComponent<RectTransform>().anchoredPosition.x;
-            float y = GetComponent<RectTransform>().anchoredPosition.y;
-
-            y -= 100;
-
-            GetComponent<RectTransform>().anchoredPosition = new Vector3(x, y, 0);
-        }
-    }
-
-    public void Activate()
-    {
-        // 게임 컨트롤러 찾기
-        goController = GameObject.Find("Gas Valve Controller");
-    }
-
-    public void SetCoord()
-    {
-        //
-        float x = xBoard;
-        float y = yBoard;
-
-        x *= 0.66f;
-        y *= 0.66f;
-
-        x += -2.3f;
-        y += -2.3f;
-
-        transform.position = new Vector3(x, y, -1.0f);
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                yBoard++;
+                SetPosition();
+            }
+        }        
     }
 
     public int GetXBoard()
