@@ -1,6 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+public enum CameraState
+{
+    Division = 0, //분할
+    All, //전체
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -14,6 +19,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] Inventory inventoryP2;
     GameObject gPlayer1;
     GameObject gPlayer2;
+
+    [Header("Camera")]
+    [SerializeField] CameraState cameraState; //분할상태인지
+    [SerializeField] GameObject[] DivisionCamera = new GameObject[2]; //분할카메라
+    [SerializeField] GameObject AllCamera; //전체카메라
     private void Awake()
     {
 
@@ -26,6 +36,62 @@ public class GameManager : MonoBehaviour
         gPlayer1 = player1.GetComponent<GameObject>();
         gPlayer2 = player2.GetComponent<GameObject>();
     }
+
+    public CameraState GetCameraState()
+    {
+        return cameraState;
+    }
+
+    public void ChangeCameraState(CameraState _camreaState)
+    {
+        cameraState = _camreaState;
+        switch(cameraState)
+        {
+            case CameraState.Division:
+                ChangeCameraDivision();
+                break;
+            case CameraState.All:
+                ChangeCameraAll();
+                break;
+        }
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            switch(cameraState)
+            {
+                case CameraState.All:
+                    ChangeCameraState(CameraState.Division);
+                    break;
+                case CameraState.Division:
+                    ChangeCameraState(CameraState.All);
+                    break;
+            }
+        }
+    }
+
+    public void ChangeCameraDivision()
+    {
+        for (int i = 0; i < DivisionCamera.Length; i++)
+            DivisionCamera[i].SetActive(true);
+        AllCamera.SetActive(false);
+        UIManager.Instance.ShowHideAllUI(false);
+        UIManager.Instance.ShowHideDivisionUI(true);
+
+    }
+
+    //전체 카메라로 변경
+    void ChangeCameraAll()
+    {
+        for (int i = 0; i < DivisionCamera.Length; i++)
+            DivisionCamera[i].SetActive(false);
+        AllCamera.SetActive(true);
+        UIManager.Instance.ShowHideAllUI(true);
+        UIManager.Instance.ShowHideDivisionUI(false);
+    }
+
 
     #region 플레이어 관련
 
