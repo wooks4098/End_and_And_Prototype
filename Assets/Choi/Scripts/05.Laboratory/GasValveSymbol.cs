@@ -5,46 +5,51 @@ using UnityEngine.UI;
 
 public class GasValveSymbol : MonoBehaviour
 {
-    // References
+    // 컴포넌트
+    private RectTransform rectTransform;
     public GameObject goController;
     public GameObject goMovePlate;
 
-    // Positions
-    private int xBoard = -1;
-    private int yBoard = -1;
+    // array 인덱스 (보드 인덱스) - 외부(에디터)에서 설정
+    [SerializeField] int xBoard = -1;
+    [SerializeField] int yBoard = -1;
 
-    //Variable for keeping track of the player it belongs to "black" or "white"
-    private string player;
+    // 선택되었는지
+    public bool isSelect = false;
 
-    // 사용할 모든 스프라이트
-    [SerializeField] Sprite[] symbols;
+
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+    }
+    private void Start()
+    {
+        // 선택되지 않음 설정
+        isSelect = false;
+
+        // 인덱스에 맞게 위치 이동
+        float x = xBoard * 100;
+        float y = yBoard * 100;
+        rectTransform.anchoredPosition = new Vector3(x, y, 0);
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            float x = GetComponent<RectTransform>().anchoredPosition.x;
+            float y = GetComponent<RectTransform>().anchoredPosition.y;
+
+            y -= 100;
+
+            GetComponent<RectTransform>().anchoredPosition = new Vector3(x, y, 0);
+        }
+    }
 
     public void Activate()
     {
         // 게임 컨트롤러 찾기
         goController = GameObject.Find("Gas Valve Controller");
-
-        // 좌표 지정(계산)
-        SetCoord();
-
-        switch (this.name)
-        {
-            case "Symbol (1)":
-                GetComponent<Image>().sprite = symbols[0];
-                break;
-            case "Symbol (2)":
-                GetComponent<Image>().sprite = symbols[1];
-                break;
-            case "Symbol (3)":
-                GetComponent<Image>().sprite = symbols[2];
-                break;
-            case "Symbol (4)":
-                GetComponent<Image>().sprite = symbols[3];
-                break;
-            case "Symbol (5)":
-                GetComponent<Image>().sprite = symbols[4];
-                break;
-        }
     }
 
     public void SetCoord()
@@ -80,77 +85,7 @@ public class GasValveSymbol : MonoBehaviour
         yBoard = _y;
     }
 
-    private void OnMouseUp()
-    {
-        DestroyMovePlates();
-
-        InitiateMovePlates();
-    }
-
     public void InitiateMovePlates()
     {
-        LineMovePlate(1,0);
-        LMovePlate();
-        SurroundMovePlate();
-        //PawnMovePlate(xBoard, yBoard - 1);
-    }
-
-    public void LineMovePlate(int _xIncrement, int _yIncrement)
-    {
-        GasValve valve = goController.GetComponent<GasValve>();
-
-        int x = xBoard + _xIncrement;
-        int y = yBoard + _yIncrement;
-
-        while (valve.PositionOnBoard(x, y) && valve.GetPosition(x, y) == null)
-        {
-            //MovePlateSpawn(x, y);
-            x += _xIncrement;
-            y += _yIncrement;
-        }
-
-        if(valve.PositionOnBoard(x,y) && valve.GetPosition(x,y).GetComponent<GasValveSymbol>().player != player)
-        {
-            //MovePlateAttackSpawn(x, y);
-        }
-    }
-    public void LMovePlate()
-    {
-        PointMovePlate(xBoard + 1, yBoard + 2);
-        PointMovePlate(xBoard - 1, yBoard + 2);
-    }
-    public void SurroundMovePlate()
-    {
-        PointMovePlate(xBoard, yBoard + 2);
-    }
-    public void PointMovePlate(int _x, int _y)
-    {
-        GasValve gv = goController.GetComponent<GasValve>();
-        if(gv.PositionOnBoard(_x,_y))
-        {
-            GameObject cp = gv.GetPosition(_x, _y);
-
-            if(cp == null)
-            {
-                //MovePlateSpawn(_x, _y);
-            }
-            else if(cp.GetComponent<GasValveSymbol>().player != player)
-            {
-
-            }
-        }
-    }
-    public void PawnMovePlate()
-    {
-
-    }
-
-    public void DestroyMovePlates()
-    {
-        GameObject[] movePlates = GameObject.FindGameObjectsWithTag("MovePlate");
-        for(int i = 0; i < movePlates.Length; i++)
-        {
-            Destroy(movePlates[i]);
-        }
     }
 }

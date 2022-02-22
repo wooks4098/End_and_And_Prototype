@@ -10,50 +10,54 @@ public class MovePlate : MonoBehaviour
     GameObject reference = null;
 
     // Board Positions, not world Positions
-    int matrixX;
-    int matrixY;
+    private int matrixX;
+    private int matrixY;
 
-    // false: movement, true: attacking
-    public bool attack = false;
+    // 블록(문양) 인덱스
+    private int index;
 
-    private void OnEnable()
+    // false: 블록 선택, true: 블록 이동 가능
+    public bool isConfirm = false;
+
+    public void Start()
     {
         
     }
 
-    public void Start()
+    private void Update()
     {
-        if(attack)
+        if(Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.D))
+        {
+            index++;
+            if(index > 5)
+            {
+                index = 0;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.A))
+        {
+            index--;
+            if(index < 0)
+            {
+                index = 5;
+            }
+        }
+    }
+    
+    private void ChangeColor()
+    {
+        // 색상 변경
+        if (isConfirm)
         {
             // Change to red
             gameObject.GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-            // gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
         }
-    }
-
-    public void OnMouseUp()
-    {
-        controller = GameObject.Find("Gas Valve Controller");
-
-        if(attack)
+        else
         {
-            GameObject cp = controller.GetComponent<GasValve>().GetPosition(matrixX, matrixY);
-
-            Destroy(cp);
+            gameObject.GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         }
-
-        controller.GetComponent<GasValve>().SetPositionEmpty(reference.GetComponent<GasValveSymbol>().GetXBoard(),
-                                                             reference.GetComponent<GasValveSymbol>().GetYBoard());
-
-        reference.GetComponent<GasValveSymbol>().SetXBoard(matrixX);
-        reference.GetComponent<GasValveSymbol>().SetYBoard(matrixY);
-
-        reference.GetComponent<GasValveSymbol>().SetCoord();
-
-        controller.GetComponent<GasValve>().SetPosition(reference);
-
-        reference.GetComponent<GasValveSymbol>().DestroyMovePlates();
     }
+       
 
     public void SetCoords(int _x, int _y)
     {

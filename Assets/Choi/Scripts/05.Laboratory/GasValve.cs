@@ -4,56 +4,51 @@ using UnityEngine;
 
 public class GasValve : MonoBehaviour
 {
-    [SerializeField] GameObject piece;
+    // 정답 위치를 저장하는 배열
+    private int[,] correct;
+    // 전체 배열을 관리하는 배열
+    private int[,] array;
 
-    private GameObject[,] positions = new GameObject[5, 5];
-    private GameObject[] symbols = new GameObject[5];
+    // 블록(문양)을 저장하는 배열
+    [SerializeField] GameObject[] symbols;
 
     private int currentSymbol = 0; // 0~4, 총 5개
 
-    private void Start()
+    private void Awake()
     {
-        symbols = new GameObject[] { Create(0, 1, 2), Create(1, 4, 0), Create(2, 3, 1), Create(3, 2, 4), Create(4, 0, 3)};
-
-        for (int i = 0; i < symbols.Length; i++)
-        {
-            SetPosition(symbols[i]);
-        }
-    }
-
-    public GameObject Create(int _current, int _x, int _y)
-    {
-        GameObject obj = Instantiate(piece, new Vector3(0, 0, -1), Quaternion.identity);
-        GasValveSymbol sm = obj.GetComponent<GasValveSymbol>();
-        sm.name = name;
-
-        sm.SetXBoard(_x);
-        sm.SetYBoard(_y);
-        sm.Activate();
-
-        return obj;
+        correct = new int[,] { { 0, 0, 0, 1, 0 },
+                               { 0, 0, 1, 0, 0 },
+                               { 0, 0, 0, 0, 1 },
+                               { 0, 1, 0, 0, 0 },
+                               { 1, 0, 0, 0, 0 } };
+        
+        array = new int[,] { { 0, 0, 0, 0, 0 },
+                             { 0, 0, 0, 0, 0 },
+                             { 0, 0, 0, 0, 0 },
+                             { 0, 0, 0, 0, 0 },
+                             { 0, 0, 0, 0, 0 } };
     }
 
     public void SetPosition(GameObject _obj)
     {
         GasValveSymbol sm = _obj.GetComponent<GasValveSymbol>();
 
-        positions[sm.GetXBoard(), sm.GetYBoard()] = _obj;
+        // array[sm.GetXBoard(), sm.GetYBoard()] = _obj;
     }
 
     public void SetPositionEmpty(int _x, int _y)
     {
-        positions[_x, _y] = null;
+        array[_x, _y] = 0;
     }
 
-    public GameObject GetPosition(int _x, int _y)
+    public int GetPosition(int _x, int _y)
     {
-        return positions[_x, _y];
+        return array[_x, _y];
     }
 
     public bool PositionOnBoard(int _x, int _y)
     {
-        if( _x < 0 || _y < 0 || _x >= positions.GetLength(0) || _y >= positions.GetLength(1))
+        if( _x < 0 || _y < 0 || _x >= array.GetLength(0) || _y >= array.GetLength(1))
         {
             return false;
         }
