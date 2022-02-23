@@ -8,7 +8,7 @@ public class GasValve : MonoBehaviour
 {
     // 정답 위치를 저장하는 배열
     private int[,] correct;
-    // 전체 배열을 관리하는 배열
+    // 플레이어가 입력한 값을 관리하는 배열
     private int[,] array;
     public int GetArray(int _x, int _y)  { return array[_x, _y]; }
 
@@ -105,15 +105,5 @@ public class GasValve : MonoBehaviour
 
         // 아니면 false
         return false;
-    }
-
-    public bool PositionOnBoard(int _x, int _y)
-    {
-        if( _x < 0 || _y < 0 || _x >= array.GetLength(0) || _y >= array.GetLength(1))
-        {
-            return false;
-        }
-
-        return true;
     }
 }
