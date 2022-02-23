@@ -14,6 +14,6 @@ public class GasValveCanvas : MonoBehaviour
 
         Canvas canvas = gameObject.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        canvas.worldCamera = camPlayerA;
+        canvas.worldCamera = camPlayerB;
     }
 }

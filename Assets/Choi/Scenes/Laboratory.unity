@@ -294,6 +294,8 @@ GameObject:
   - component: {fileID: 204099639}
   - component: {fileID: 204099638}
   - component: {fileID: 204099637}
+  - component: {fileID: 204099642}
+  - component: {fileID: 204099641}
   m_Layer: 5
   m_Name: Switchgear
   m_TagString: Untagged
@@ -350,9 +352,9 @@ Canvas:
   m_GameObject: {fileID: 204099636}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -382,6 +384,32 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &204099641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204099636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a162474e74cc50d4e9d5f40b60184aa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camPlayerA: {fileID: 19838921}
+  camPlayerB: {fileID: 380487850}
+--- !u!114 &204099642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 204099636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b0a4ca1b0625224da53f1393269acbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &246363290
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,7 +1233,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &964803305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2858,6 +2886,18 @@ PrefabInstance:
     - target: {fileID: 5111191539864015829, guid: 765e570a2c7c0a64bac53bf31514e2ba, type: 3}
       propertyPath: m_Name
       value: ButtonBottom
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111191541404619302, guid: 765e570a2c7c0a64bac53bf31514e2ba, type: 3}
+      propertyPath: m_Size.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111191541404619302, guid: 765e570a2c7c0a64bac53bf31514e2ba, type: 3}
+      propertyPath: m_Size.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5111191541404619302, guid: 765e570a2c7c0a64bac53bf31514e2ba, type: 3}
+      propertyPath: m_Size.z
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 765e570a2c7c0a64bac53bf31514e2ba, type: 3}

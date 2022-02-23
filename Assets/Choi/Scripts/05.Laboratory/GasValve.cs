@@ -22,20 +22,12 @@ public class GasValve : MonoBehaviour
 
     private void Awake()
     {
-        correct = new int[,] { { 0, 0, 0, 1, 0 },
-                               { 0, 0, 1, 0, 0 },
-                               { 0, 0, 0, 0, 1 },
-                               { 0, 1, 0, 0, 0 },
-                               { 1, 0, 0, 0, 0 } };
-
-        /*
         // 0을 제외, 1~5의 값은 각 블록(문양) 인덱스에서 +1한 값
         correct = new int[,] { { 0, 0, 0, 5, 0 },
                                { 0, 0, 1, 0, 0 },
                                { 0, 0, 0, 0, 4 },
                                { 0, 3, 0, 0, 0 },
                                { 2, 0, 0, 0, 0 } };
-        */
 
         array = new int[,] { { 0, 0, 0, 0, 0 },
                              { 0, 0, 0, 0, 0 },
@@ -48,8 +40,8 @@ public class GasValve : MonoBehaviour
     public void SetArray(int _x, int _y, int _index)
     {
         // 해당 칸이 차있음을 표시 = 각 블록(문양)의 인덱스 +1 한 값
-        // array[_x, _y] = _index + 1;
-        array[_x, _y] = 1;
+        array[_x, _y] = _index + 1;
+        // array[_x, _y] = 1;
 
         // 정답인지 체크
         isPerfect = CheckArray();

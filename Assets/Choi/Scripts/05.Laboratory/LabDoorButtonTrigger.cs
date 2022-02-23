@@ -39,7 +39,7 @@ public class LabDoorButtonTrigger : MonoBehaviour
     {
         if (_other.tag == "Player1" || _other.tag == "Player2")
         {
-            hasExitFromButton = false; // 버튼을 한 번 눌렀었음을 체크
+            hasExitFromButton = true; // 버튼을 한 번 눌렀었음을 체크
 
             // 문닫기
             buttonAnimator.SetBool("IsOpen", false);
