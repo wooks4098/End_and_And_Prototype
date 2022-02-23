@@ -995,7 +995,7 @@ GameObject:
   - component: {fileID: 761471261}
   - component: {fileID: 761471263}
   m_Layer: 5
-  m_Name: Symbol (2)
+  m_Name: Symbol (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1070,7 +1070,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406fff51023c17b4e97b43329283b50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goMovePlate: {fileID: 0}
+  gasValve: {fileID: 964803310}
+  index: 1
   xBoard: 3
   yBoard: 2
   isSelect: 0
@@ -1319,6 +1320,7 @@ MonoBehaviour:
   - {fileID: 1151654740}
   - {fileID: 1195601061}
   - {fileID: 1561569450}
+  isPerfect: 0
 --- !u!1 &977377871
 GameObject:
   m_ObjectHideFlags: 0
@@ -1652,7 +1654,7 @@ GameObject:
   - component: {fileID: 1151654742}
   - component: {fileID: 1151654744}
   m_Layer: 5
-  m_Name: Symbol (3)
+  m_Name: Symbol (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1727,7 +1729,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406fff51023c17b4e97b43329283b50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goMovePlate: {fileID: 0}
+  gasValve: {fileID: 964803310}
+  index: 2
   xBoard: 1
   yBoard: 4
   isSelect: 0
@@ -1744,7 +1747,7 @@ GameObject:
   - component: {fileID: 1195601063}
   - component: {fileID: 1195601065}
   m_Layer: 5
-  m_Name: Symbol (4)
+  m_Name: Symbol (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1819,7 +1822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406fff51023c17b4e97b43329283b50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goMovePlate: {fileID: 0}
+  gasValve: {fileID: 964803310}
+  index: 3
   xBoard: 0
   yBoard: 0
   isSelect: 0
@@ -1965,7 +1969,7 @@ GameObject:
   - component: {fileID: 1492573602}
   - component: {fileID: 1492573604}
   m_Layer: 5
-  m_Name: Symbol (1)
+  m_Name: Symbol (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2040,7 +2044,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406fff51023c17b4e97b43329283b50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goMovePlate: {fileID: 0}
+  gasValve: {fileID: 964803310}
+  index: 0
   xBoard: 4
   yBoard: 4
   isSelect: 0
@@ -2057,7 +2062,7 @@ GameObject:
   - component: {fileID: 1561569452}
   - component: {fileID: 1561569454}
   m_Layer: 5
-  m_Name: Symbol (5)
+  m_Name: Symbol (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2132,7 +2137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 406fff51023c17b4e97b43329283b50a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goMovePlate: {fileID: 0}
+  gasValve: {fileID: 964803310}
+  index: 4
   xBoard: 2
   yBoard: 1
   isSelect: 0
