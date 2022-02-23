@@ -22,13 +22,21 @@ public class GasValve : MonoBehaviour
 
     private void Awake()
     {
+        correct = new int[,] { { 0, 0, 0, 1, 0 },
+                               { 0, 0, 1, 0, 0 },
+                               { 0, 0, 0, 0, 1 },
+                               { 0, 1, 0, 0, 0 },
+                               { 1, 0, 0, 0, 0 } };
+
+        /*
         // 0을 제외, 1~5의 값은 각 블록(문양) 인덱스에서 +1한 값
         correct = new int[,] { { 0, 0, 0, 5, 0 },
                                { 0, 0, 1, 0, 0 },
                                { 0, 0, 0, 0, 4 },
                                { 0, 3, 0, 0, 0 },
                                { 2, 0, 0, 0, 0 } };
-        
+        */
+
         array = new int[,] { { 0, 0, 0, 0, 0 },
                              { 0, 0, 0, 0, 0 },
                              { 0, 0, 0, 0, 0 },
@@ -40,7 +48,8 @@ public class GasValve : MonoBehaviour
     public void SetArray(int _x, int _y, int _index)
     {
         // 해당 칸이 차있음을 표시 = 각 블록(문양)의 인덱스 +1 한 값
-        array[_x, _y] = _index + 1;
+        // array[_x, _y] = _index + 1;
+        array[_x, _y] = 1;
 
         // 정답인지 체크
         isPerfect = CheckArray();
@@ -56,11 +65,41 @@ public class GasValve : MonoBehaviour
 
     private bool CheckArray()
     {
-        if(array.Equals(correct))
+        // 2차원 배열을 1차원 배열로 변환
+        int[] tempCorrect = new int[25];
+        int[] tempArray = new int[25];
+        int temp = 0;
+
+        for (int i = 0; i < array.GetLength(0); i++)
         {
-            return true;
+            for (int j = 0; j < array.GetLength(1); j++)
+            {
+                temp = array[j, i];
+                tempArray[i * array.GetLength(1) + j] = temp;
+
+                temp = correct[i, j];
+                tempCorrect[i * array.GetLength(1) + j] = temp;
+            }
         }
+
+        // 값 비교
+        if (Enumerable.SequenceEqual(tempArray, tempCorrect)) return true;
         return false;
+
+        /* 디버그.로그
+         * 
+         * int index1 = 0, index2 = 0;
+         * foreach(var x in tempCorrect)
+         * {
+         *     Debug.Log("correct "+ index1 + " : " + x.ToString());
+         *     index1++;
+         * }
+         * foreach (var y in tempArray)
+         * {
+         *     Debug.Log("array " + index2 + " : " + y.ToString());
+         *     index2++;
+         * }
+         */
     }
 
 
