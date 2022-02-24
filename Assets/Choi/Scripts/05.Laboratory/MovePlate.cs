@@ -11,8 +11,6 @@ public class MovePlate : MonoBehaviour
     private RectTransform rectTransform;
     private Image image;
 
-    GameObject reference = null;
-
     // 블록(문양) 인덱스
     private int symbolIndex;
     // 현재 블록(문양)
@@ -133,15 +131,5 @@ public class MovePlate : MonoBehaviour
         {
             image.color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
         }
-    }
-
-    public void SetReference(GameObject _obj)
-    {
-        reference = _obj;
-    }
-
-    public GameObject GetReference()
-    {
-        return reference;
     }
 }
