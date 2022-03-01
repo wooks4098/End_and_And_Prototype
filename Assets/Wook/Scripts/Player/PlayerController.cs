@@ -15,7 +15,7 @@ public enum PlayerState
     ClimbWall, //벽 오르는중(벽타기)
     ClimbUpWall, //벽 올라가기
     Wait, //대기상태
-    ClimbRope,//로프 오르는중ayer
+    ClimbRope,//로프 오르는중
     //ClimbRopeUp,//로프 올라가기
     ClimbWallFall,//벽 타기중 떨어지기
     HoldRope,//로프 잡는중
@@ -114,7 +114,10 @@ public class PlayerController : MonoBehaviour
             case PlayerState.Walk:
                 moveDirection.y -= gravity * Time.deltaTime;
                 break;
+
         }
+
+
     }
 
     //input event 등록
@@ -153,6 +156,7 @@ public class PlayerController : MonoBehaviour
                 moveDirection = Vector3.zero;
                 return;
         }
+
         characterController.Move(direction * (isRun == false ? moveSpeed : moveSpeed * 2.3f) * Time.deltaTime);
     }
     void Move(MoveType moveType, PlayerState _playerState)
